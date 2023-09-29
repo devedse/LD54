@@ -6,6 +6,7 @@ namespace UnityGameServer.Hubs
     public class UltraHub : Hub
     {
         private static readonly ConcurrentBag<string> roomNames = new ConcurrentBag<string>();
+        private static readonly ConcurrentDictionary<string, string> connectionToRoomMap = new ConcurrentDictionary<string, string>();
 
         public string CreateUniqueRoomName()
         {
@@ -31,18 +32,30 @@ namespace UnityGameServer.Hubs
         {
             string roomName = CreateUniqueRoomName();
             await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
-            Console.WriteLine($"Created room {roomName} for {Context.ConnectionId}");
             await Clients.Caller.SendAsync("Server_ReceiveRoomName", roomName);
+
+            Console.WriteLine($"Created room {roomName} for {Context.ConnectionId}");
         }
 
-        public Task Client_JoinRoom(string roomName)
+        public async Task Client_JoinRoom(string roomName, string clientName)
         {
-            return Groups.AddToGroupAsync(Context.ConnectionId, roomName);
+            Console.WriteLine($"Received join room {roomName} from {Context.ConnectionId}");
+
+            connectionToRoomMap[Context.ConnectionId] = clientName;
+            await Clients.Group(roomName).SendAsync("Server_ReceiveJoinRoom", clientName);
         }
 
         public Task Client_SendButtonPress(int button)
         {
-            return Clients.Others.SendAsync("Server_ReceiveButtonPress", button);
+            Console.WriteLine($"Received button press {button} from {Context.ConnectionId}");
+
+            //Get the room name associated with the current connection
+            if (connectionToRoomMap.TryGetValue(Context.ConnectionId, out string roomName))
+            {
+                //Send to clients in the room (group)
+                return Clients.Group(roomName).SendAsync("Server_ReceiveButtonPress", button);
+            }
+            return Task.CompletedTask;
         }
     }
 }
