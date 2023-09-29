@@ -1,4 +1,7 @@
 
+using Microsoft.AspNetCore.Rewrite;
+using UnityGameServer.Hubs;
+
 namespace UnityGameServer
 {
     public class Program
@@ -14,14 +17,19 @@ namespace UnityGameServer
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddSignalR();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+
+            //Redirect to /swagger
+            var option = new RewriteOptions();
+            option.AddRedirect("^$", "swagger");
+            app.UseRewriter(option);
+
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
             app.UseHttpsRedirection();
 
@@ -29,6 +37,8 @@ namespace UnityGameServer
 
 
             app.MapControllers();
+
+            app.MapHub<UltraHub>("/ultrahub");
 
             app.Run();
         }
