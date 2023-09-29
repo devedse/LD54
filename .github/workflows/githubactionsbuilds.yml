@@ -43,7 +43,7 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
         name: build_linux_WebGL
-        path: UnityGame/build/WebGL
+        path: build/WebGL
 
     # Docker build steps
     - name: Set up QEMU
