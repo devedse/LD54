@@ -1,0 +1,171 @@
+name: GitHubActionsBuilds
+
+on: push
+
+jobs:
+  generate_version_number:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    outputs:
+      build_number: ${{ github.ref == 'refs/heads/master' && steps.buildnumber.outputs.build_number || 1 }}
+    steps:
+    - name: Generate build number
+      if: github.ref == 'refs/heads/master'
+      id: buildnumber
+      uses: onyxmueller/build-tag-number@v1
+      with:
+        token: ${{secrets.github_token}}
+
+  build_linux_WebGL:
+    needs: generate_version_number
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: devedse
+        password: ${{ secrets.DOCKERHUBTOKEN }}
+
+    - uses: game-ci/unity-builder@v3
+      name: Build WebGL
+      env:
+        UNITY_LICENSE: ${{ secrets.UNITY_LICENSE_FILE }}
+        UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+        UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+      with:
+        targetPlatform: WebGL
+      
+    - run: find ./build
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: build_linux_WebGL
+        path: build/WebGL
+
+    # Docker build steps
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v2
+      with:
+        image: tonistiigi/binfmt:latest
+        platforms: all
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Set Image Tags
+      id: tags
+      run: |
+        VERSION=1.0.${{needs.generate_version_number.outputs.build_number}}
+        BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//-/g')
+
+        if [[ "${{ github.ref }}" == 'refs/heads/master' ]]; then
+          echo "TAGS=-t devedse/ld54_webgl:${VERSION} -t devedse/ld54_webgl:latest" >> $GITHUB_OUTPUT
+        elif [[ "${{ github.actor }}" == 'dependabot[bot]' ]]; then
+          echo "TAGS=-t devedse/ld54_webgl:beta_${BRANCH_NAME}" >> $GITHUB_OUTPUT
+        else 
+          echo "TAGS=-t devedse/ld54_webgl:beta_${BRANCH_NAME} -t devedse/ld54_webgl:beta_nightly" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Run Buildx
+      run: |
+        docker buildx build -f UnityGame/Docker/Dockerfile --build-arg BUILD_VERSION=${{steps.tags.outputs.version}} --platform linux/arm64,linux/amd64 ${{steps.tags.outputs.tags}} ${{ (github.event_name != 'pull_request' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)) && '--push' || '' }} ./UnityGame
+  
+  
+
+
+  build_linux_StandaloneWindows64:
+    needs: generate_version_number
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Disable IL2CPP
+      run: |
+        sed -i '/scriptingBackend:/,/Standalone:/ s/Standalone: [0-9]*/Standalone: 0/' ProjectSettings/ProjectSettings.asset
+
+    - uses: game-ci/unity-builder@v3
+      name: Build StandaloneWindows64
+      env:
+        UNITY_LICENSE: ${{ secrets.UNITY_LICENSE_FILE }}
+        UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+        UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+      with:
+        targetPlatform: StandaloneWindows64
+        allowDirtyBuild: true
+
+    - run: find ./build
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: build_linux_StandaloneWindows64
+        path: build/StandaloneWindows64
+  
+  
+  # build_windows_StandaloneWindows64:
+  #   needs: generate_version_number
+  #   runs-on: windows-2019
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #   - name: Login to Docker Hub
+  #     uses: docker/login-action@v3
+  #     with:
+  #       username: devedse
+  #       password: ${{ secrets.DOCKERHUBTOKEN }}
+
+  #   - uses: game-ci/unity-builder@v3
+  #     name: Build StandaloneWindows64
+  #     env:
+  #       UNITY_LICENSE: ${{ secrets.UNITY_LICENSE_FILE }}
+  #       UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+  #       UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+  #     with:
+  #       targetPlatform: StandaloneWindows64
+
+  #   - run: find ./build
+
+  #   - uses: actions/upload-artifact@v3
+  #     with:
+  #       name: build_windows_StandaloneWindows64
+  #       path: build/StandaloneWindows64
+
+  release_github:
+    permissions:
+      contents: write
+    needs: [generate_version_number, build_linux_WebGL, build_linux_StandaloneWindows64]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: ./artifacts/
+
+      - name: Create Zip Archives
+        run: |
+          cd ./artifacts/
+          for dir in */; do
+            zip -r "${dir%/}.zip" "$dir"
+          done
+          ls -R
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: 1.0.${{ needs.generate_version_number.outputs.build_number }}
+          release_name: 1.0.${{ needs.generate_version_number.outputs.build_number }}
+          body: |
+            ${{ github.event.head_commit.message }}
+          draft: false
+          prerelease: false
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: 1.0.${{ needs.generate_version_number.outputs.build_number }}
+          files: |
+            ./artifacts/*.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
