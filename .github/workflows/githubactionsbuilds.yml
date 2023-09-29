@@ -17,11 +17,7 @@ jobs:
       with:
         token: ${{secrets.github_token}}
 
-  build_linux_WebGL:
-    defaults:
-      run:
-        working-directory: ./UnityGame
-      
+  build_linux_WebGL:      
     needs: generate_version_number
     runs-on: ubuntu-latest
     steps:
@@ -40,13 +36,14 @@ jobs:
         UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
       with:
         targetPlatform: WebGL
+        projectPath: './UnityGame'
       
-    - run: find ./build
+    - run: find ./UnityGame/build
 
     - uses: actions/upload-artifact@v3
       with:
         name: build_linux_WebGL
-        path: build/WebGL
+        path: UnityGame/build/WebGL
 
     # Docker build steps
     - name: Set up QEMU
@@ -80,9 +77,6 @@ jobs:
 
 
   build_linux_StandaloneWindows64:
-    defaults:
-      run:
-        working-directory: ./UnityGame
     needs: generate_version_number
     runs-on: ubuntu-latest
     steps:
@@ -101,13 +95,14 @@ jobs:
       with:
         targetPlatform: StandaloneWindows64
         allowDirtyBuild: true
+        projectPath: './UnityGame'
 
-    - run: find ./build
+    - run: find ./UnityGame/build
 
     - uses: actions/upload-artifact@v3
       with:
         name: build_linux_StandaloneWindows64
-        path: build/StandaloneWindows64
+        path: UnityGame/build/StandaloneWindows64
   
   
   # build_windows_StandaloneWindows64:
