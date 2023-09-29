@@ -33,6 +33,7 @@ jobs:
       with:
         path: |
           UnityGame/Library
+          UnityGame/Temp
         key: build_linux_WebGL
 
     - uses: game-ci/unity-builder@v3
@@ -50,6 +51,7 @@ jobs:
       with:
         path: |
           UnityGame/Library
+          UnityGame/Temp
         key: build_linux_WebGL
 
     - run: find ./build
