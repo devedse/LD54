@@ -28,6 +28,13 @@ jobs:
         username: devedse
         password: ${{ secrets.DOCKERHUBTOKEN }}
 
+    - name: Load Cache
+      uses: actions/cache/restore@v3
+      with:
+        path: |
+          UnityGame/Library
+        key: build_linux_WebGL
+
     - uses: game-ci/unity-builder@v3
       name: Build WebGL
       env:
@@ -37,7 +44,14 @@ jobs:
       with:
         targetPlatform: WebGL
         projectPath: './UnityGame'
-      
+
+    - name: Save Cache
+      uses: actions/cache/save@v3
+      with:
+        path: |
+          UnityGame/Library
+        key: build_linux_WebGL
+
     - run: find ./build
 
     - uses: actions/upload-artifact@v3
@@ -86,6 +100,13 @@ jobs:
       run: |
         sed -i '/scriptingBackend:/,/Standalone:/ s/Standalone: [0-9]*/Standalone: 0/' UnityGame/ProjectSettings/ProjectSettings.asset
 
+    - name: Load Cache
+      uses: actions/cache/restore@v3
+      with:
+        path: |
+          UnityGame/Library
+        key: build_linux_StandaloneWindows64
+
     - uses: game-ci/unity-builder@v3
       name: Build StandaloneWindows64
       env:
@@ -96,6 +117,13 @@ jobs:
         targetPlatform: StandaloneWindows64
         allowDirtyBuild: true
         projectPath: './UnityGame'
+
+    - name: Save Cache
+      uses: actions/cache/save@v3
+      with:
+        path: |
+          UnityGame/Library
+        key: build_linux_StandaloneWindows64
 
     - run: find ./build
 
