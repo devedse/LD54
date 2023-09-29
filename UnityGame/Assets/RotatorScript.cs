@@ -13,6 +13,6 @@ public class RotatorScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.localRotation = Quaternion.Euler(transform.eulerAngles + new Vector3(0, 0, 1));
+        transform.localRotation = Quaternion.Euler(transform.eulerAngles + new Vector3(0.2f, 0.1f, 1));
     }
 }
