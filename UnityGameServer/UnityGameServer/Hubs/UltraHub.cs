@@ -27,10 +27,12 @@ namespace UnityGameServer.Hubs
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
-        public Task Server_CreateRoom()
+        public async Task Server_CreateRoom(dynamic a)
         {
             string roomName = CreateUniqueRoomName();
-            return Groups.AddToGroupAsync(Context.ConnectionId, roomName);
+            await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
+            Console.WriteLine($"Created room {roomName} for {Context.ConnectionId}");
+            await Clients.Caller.SendAsync("Server_ReceiveRoomName", roomName);
         }
 
         public Task Client_JoinRoom(string roomName)
