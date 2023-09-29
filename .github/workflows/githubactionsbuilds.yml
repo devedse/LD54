@@ -18,6 +18,10 @@ jobs:
         token: ${{secrets.github_token}}
 
   build_linux_WebGL:
+    defaults:
+      run:
+        working-directory: ./UnityGame
+      
     needs: generate_version_number
     runs-on: ubuntu-latest
     steps:
@@ -76,6 +80,9 @@ jobs:
 
 
   build_linux_StandaloneWindows64:
+    defaults:
+      run:
+        working-directory: ./UnityGame
     needs: generate_version_number
     runs-on: ubuntu-latest
     steps:
