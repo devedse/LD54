@@ -17,11 +17,7 @@ jobs:
       with:
         token: ${{secrets.github_token}}
 
-  build_linux_WebGL:
-    defaults:
-      run:
-        working-directory: ./UnityGame
-      
+  build_linux_WebGL:      
     needs: generate_version_number
     runs-on: ubuntu-latest
     steps:
@@ -40,23 +36,24 @@ jobs:
         UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
       with:
         targetPlatform: WebGL
+        projectPath: './UnityGame'
       
     - run: find ./build
 
     - uses: actions/upload-artifact@v3
       with:
         name: build_linux_WebGL
-        path: build/WebGL
+        path: UnityGame/build/WebGL
 
     # Docker build steps
     - name: Set up QEMU
-      uses: docker/setup-qemu-action@v2
+      uses: docker/setup-qemu-action@v3
       with:
         image: tonistiigi/binfmt:latest
         platforms: all
 
     - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
+      uses: docker/setup-buildx-action@v3
 
     - name: Set Image Tags
       id: tags
@@ -74,15 +71,12 @@ jobs:
 
     - name: Run Buildx
       run: |
-        docker buildx build -f UnityGame/Docker/Dockerfile --build-arg BUILD_VERSION=${{steps.tags.outputs.version}} --platform linux/arm64,linux/amd64 ${{steps.tags.outputs.tags}} ${{ (github.event_name != 'pull_request' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)) && '--push' || '' }} ./UnityGame
+        docker buildx build -f UnityGame/Docker/Dockerfile --build-arg BUILD_VERSION=${{steps.tags.outputs.version}} --platform linux/arm64,linux/amd64 ${{steps.tags.outputs.tags}} ${{ (github.event_name != 'pull_request' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)) && '--push' || '' }} .
   
   
 
 
   build_linux_StandaloneWindows64:
-    defaults:
-      run:
-        working-directory: ./UnityGame
     needs: generate_version_number
     runs-on: ubuntu-latest
     steps:
@@ -90,7 +84,7 @@ jobs:
 
     - name: Disable IL2CPP
       run: |
-        sed -i '/scriptingBackend:/,/Standalone:/ s/Standalone: [0-9]*/Standalone: 0/' ProjectSettings/ProjectSettings.asset
+        sed -i '/scriptingBackend:/,/Standalone:/ s/Standalone: [0-9]*/Standalone: 0/' UnityGame/ProjectSettings/ProjectSettings.asset
 
     - uses: game-ci/unity-builder@v3
       name: Build StandaloneWindows64
@@ -101,6 +95,7 @@ jobs:
       with:
         targetPlatform: StandaloneWindows64
         allowDirtyBuild: true
+        projectPath: './UnityGame'
 
     - run: find ./build
 
