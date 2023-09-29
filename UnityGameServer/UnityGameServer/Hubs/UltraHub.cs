@@ -5,7 +5,6 @@ namespace UnityGameServer.Hubs
 {
     public class UltraHub : Hub
     {
-        // Use ConcurrentBag to ensure thread safety when adding or checking room names
         private static readonly ConcurrentBag<string> roomNames = new ConcurrentBag<string>();
 
         public string CreateUniqueRoomName()
