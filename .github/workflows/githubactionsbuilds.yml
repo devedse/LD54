@@ -84,7 +84,7 @@ jobs:
 
     - name: Disable IL2CPP
       run: |
-        sed -i '/scriptingBackend:/,/Standalone:/ s/Standalone: [0-9]*/Standalone: 0/' ProjectSettings/ProjectSettings.asset
+        sed -i '/scriptingBackend:/,/Standalone:/ s/Standalone: [0-9]*/Standalone: 0/' UnityGame/ProjectSettings/ProjectSettings.asset
 
     - uses: game-ci/unity-builder@v3
       name: Build StandaloneWindows64
