@@ -5,4 +5,4 @@ FROM nginx:latest
 COPY ./build/WebGL/* /etc/nginx/html
 
 # Copy the custom nginx configuration to the default config location in nginx
-COPY ./Docker/nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./UnityGame/Docker/nginx.conf /etc/nginx/conf.d/default.conf
