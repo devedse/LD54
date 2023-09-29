@@ -38,7 +38,7 @@ jobs:
         targetPlatform: WebGL
         projectPath: './UnityGame'
       
-    - run: find ./UnityGame/build
+    - run: find ./build
 
     - uses: actions/upload-artifact@v3
       with:
@@ -71,7 +71,7 @@ jobs:
 
     - name: Run Buildx
       run: |
-        docker buildx build -f UnityGame/Docker/Dockerfile --build-arg BUILD_VERSION=${{steps.tags.outputs.version}} --platform linux/arm64,linux/amd64 ${{steps.tags.outputs.tags}} ${{ (github.event_name != 'pull_request' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)) && '--push' || '' }} ./UnityGame
+        docker buildx build -f UnityGame/Docker/Dockerfile --build-arg BUILD_VERSION=${{steps.tags.outputs.version}} --platform linux/arm64,linux/amd64 ${{steps.tags.outputs.tags}} ${{ (github.event_name != 'pull_request' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)) && '--push' || '' }} .
   
   
 
@@ -97,12 +97,12 @@ jobs:
         allowDirtyBuild: true
         projectPath: './UnityGame'
 
-    - run: find ./UnityGame/build
+    - run: find ./build
 
     - uses: actions/upload-artifact@v3
       with:
         name: build_linux_StandaloneWindows64
-        path: UnityGame/build/StandaloneWindows64
+        path: build/StandaloneWindows64
   
   
   # build_windows_StandaloneWindows64:
