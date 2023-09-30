@@ -1,3 +1,5 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerControls : MonoBehaviour
@@ -10,7 +12,7 @@ public class PlayerControls : MonoBehaviour
     public int CurrentHealth = 100;
     public RectTransform hud_Health;
 
-    Transform chainsaw;
+    public List<GameObject> SocketAttachments;
 
     public int Armor = 10;
     public int ShipSpeed = 10;
