@@ -15,6 +15,7 @@ namespace UnityGameServer.Hubs
 
     public class UltraHub : Hub
     {
+        public static readonly ConcurrentDictionary<string, string> ConnectionIdToPlayerNameMapping = new ConcurrentDictionary<string, string>();
         public static readonly ConcurrentDictionary<string, Room> Rooms = new ConcurrentDictionary<string, Room>();
         private static readonly ConcurrentDictionary<string, string> ConnectionToRoomMap = new ConcurrentDictionary<string, string>();
 
@@ -84,6 +85,7 @@ namespace UnityGameServer.Hubs
         public async Task Client_JoinRoom(string roomName, string clientName)
         {
             roomName = roomName.ToUpperInvariant();
+            ConnectionIdToPlayerNameMapping[Context.ConnectionId] = clientName;
 
             Console.WriteLine($"Received join room {roomName} from {Context.ConnectionId} with client name: {clientName}");
             await LeaveRoomsForConnection(Context.ConnectionId);
@@ -112,7 +114,12 @@ namespace UnityGameServer.Hubs
             {
                 if (Rooms.TryGetValue(roomName, out Room room))
                 {
-                    await Clients.Clients(room.ConnectionIdsClients.Keys.ToList()).SendAsync("Server_ReceiveButtonPress", button, pressed);
+                    var playerName = "???";
+                    if (ConnectionIdToPlayerNameMapping.TryGetValue(Context.ConnectionId, out var obtainedPlayerName)
+                    {
+                        playerName = obtainedPlayerName;
+                    }
+                    await Clients.Clients(room.ConnectionIdsClients.Keys.ToList()).SendAsync("Server_ReceiveButtonPress", button, pressed, playerName);
                 }
                 else
                 {
