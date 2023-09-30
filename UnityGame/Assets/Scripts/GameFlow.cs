@@ -12,6 +12,10 @@ public class GameFlow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        foreach (var p in MinigameManager.Instance.SignalR.Players.Values)
+        {
+            p.ResetButtonBindings();
+        }
         StartTutorial.Invoke();
     }
 

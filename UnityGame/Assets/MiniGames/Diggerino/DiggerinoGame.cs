@@ -75,8 +75,8 @@ public class DiggerinoGame : MonoBehaviour
             dp.SpawnX = spawnX;
             dp.PosZ = 0;
             dp.DirectionZ = 1;
-            if (signalRPlayer.PlayerImageTexture)
-                dp.SetPlayerImage(signalRPlayer.PlayerImageTexture);
+            if (signalRPlayer.PlayerImage)
+                dp.SetPlayerImage(signalRPlayer.PlayerImage.texture);
             signalRPlayer.OnButton0Press.AddListener(() => dp.TurnLeft());
             signalRPlayer.OnButton1Press.AddListener(() => dp.MoveForward());
             signalRPlayer.OnButton2Press.AddListener(() => dp.TurnRight());

@@ -47,18 +47,6 @@ public class PlayerCard : MonoBehaviour
     {
         CurrentImage = imageSO;
         PC.PlayerImage = CurrentImage.ImageIdle;
-        var sprite = CurrentImage.ImageIdle;
-
-        // assume "sprite" is your Sprite object
-        var croppedTexture = new Texture2D((int)sprite.rect.width, (int)sprite.rect.height);
-        var pixels = sprite.texture.GetPixels((int)sprite.textureRect.x,
-                                                (int)sprite.textureRect.y,
-                                                (int)sprite.textureRect.width,
-                                                (int)sprite.textureRect.height);
-        croppedTexture.SetPixels(pixels);
-        croppedTexture.Apply();
-
-        PC.PlayerImageTexture = croppedTexture;
         PlayerImage.sprite = CurrentImage.ImageIdle;
     }
 
