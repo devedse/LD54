@@ -104,7 +104,7 @@ namespace UnityGameServer.Hubs
             }
         }
 
-        public async Task Client_SendButtonPress(int button, bool pressed)
+        public async Task Client_SendButtonPress(int button, string pressed)
         {
             Console.WriteLine($"Received button press {button} from {Context.ConnectionId} {pressed}");
 
