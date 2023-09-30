@@ -7,6 +7,8 @@ public class SpaceShipFiller : MonoBehaviour
     public MeshRenderer FaceL;
     public MeshRenderer FaceR;
 
+    public MeshRenderer ShipRenderer;
+
     public GameObject FrontSocket;
     public GameObject SideSocket;
     public GameObject RearSocket;
@@ -48,6 +50,8 @@ public class SpaceShipFiller : MonoBehaviour
     {
         if (player?.PlayerImage?.texture != null)
         {
+            var desiredColor = MinigameManager.Instance.GetPlayerColor(player.PlayerIndex);
+
             var texture = faceType switch
             {
                 FaceType.Normal => player.PlayerImage.texture,
@@ -62,6 +66,8 @@ public class SpaceShipFiller : MonoBehaviour
             AddModule(0, (0 + player.PlayerIndex) % 3);
             AddModule(1, (1 + player.PlayerIndex) % 3);
             AddModule(2, (2 + player.PlayerIndex) % 3);
+
+            ShipRenderer.material.color = desiredColor;
         }
     }
 }

@@ -329,6 +329,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FaceL: {fileID: 6425842875141605046}
   FaceR: {fileID: 6513969436483054964}
+  ShipRenderer: {fileID: 4266448702282045679}
   FrontSocket: {fileID: 5730299844246708983}
   SideSocket: {fileID: 3794268297063867408}
   RearSocket: {fileID: 126395866319490130}
@@ -558,6 +559,12 @@ PrefabInstance:
 --- !u!4 &3870912969217509314 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2108824021282374772, guid: 15110a5e11306324c9f366e97ad3bf0d,
+    type: 3}
+  m_PrefabInstance: {fileID: 2953291050190455734}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &4266448702282045679 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1425753140602592089, guid: 15110a5e11306324c9f366e97ad3bf0d,
     type: 3}
   m_PrefabInstance: {fileID: 2953291050190455734}
   m_PrefabAsset: {fileID: 0}
