@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -42,6 +44,11 @@ public class MinigameManager : MonoBehaviour
         }
     }
 
+    internal static void ShowPodiumBetweenGames()
+    {
+        SceneManager.LoadScene("InBetweenPodium");
+    }
+
     public SignalRTest SignalR;
     public MinigamesScriptableObject Games;
     public int GameIndex = -1;
@@ -54,6 +61,26 @@ public class MinigameManager : MonoBehaviour
     public void StartNextGame()
     {
         GameIndex++;
-        SceneManager.LoadScene(Games.Minigames[GameIndex].SceneName);
+        if (GameIndex >= Games.Minigames.Count)
+            GameIndex = 0;
+        if (Games)
+        {
+            if (_instance.SignalR.Players.Count < Games.Minigames[GameIndex].MinPlayers || _instance.SignalR.Players.Count > Games.Minigames[GameIndex].MaxPlayers)
+            {
+
+                if (!Games.Minigames.Any(x => _instance.SignalR.Players.Count >= x.MinPlayers && _instance.SignalR.Players.Count <= x.MaxPlayers))
+                {
+                    throw new System.Exception("No matching games for playercount");
+                }
+                else
+                {
+                    StartNextGame();
+                }
+            }
+            else
+            {
+                SceneManager.LoadScene(Games.Minigames[GameIndex].SceneName);
+            }
+        }
     }
 }

@@ -14,5 +14,17 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/MiniGames/1_Cheezy/1_Cheezy.unity
     guid: 501e0632ca0d0454e987dfb952441f6a
+  - enabled: 1
+    path: Assets/MiniGames/2_Flappy/2_Flappy.unity
+    guid: d6bfde299e518d6418ff853a2c3f673a
+  - enabled: 1
+    path: Assets/MiniGames/Diggerino/Diggerino.unity
+    guid: 48b7b262b4ded4441809069ab552700a
+  - enabled: 1
+    path: Assets/MiniGames/FinalSpaceGame/FinalSpaceGame.unity
+    guid: 0b4ad1fed6ff6fc4b86a85ed47e60216
+  - enabled: 1
+    path: Assets/Scenes/InBetweenPodium.unity
+    guid: 143da8d315aa9384789e6a69a456852b
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

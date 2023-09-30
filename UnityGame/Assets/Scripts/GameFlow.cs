@@ -12,6 +12,11 @@ public class GameFlow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        foreach (var p in MinigameManager.Instance.SignalR.Players.Values)
+        {
+            p.ResetButtonBindings();
+            p.ScoreFromCurrentMinigame = 0;
+        }
         StartTutorial.Invoke();
     }
 
@@ -27,7 +32,8 @@ public class GameFlow : MonoBehaviour
 
     public void EndGame()
     {
-        NextGame(); // todo victory etc
+        MinigameManager.ShowPodiumBetweenGames();
+        //NextGame(); // todo victory etc
     }
 
     public void NextGame()
