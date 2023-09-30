@@ -41,6 +41,8 @@ public class Core : MonoBehaviour
                     player.OnButton1Release.AddListener(() => playerControls.Button1Released());
                     player.OnButton2Release.AddListener(() => playerControls.Button2Released());
 
+                    player.GetComponentInChildren<SpaceShipFiller>().SetProps(player);
+
                     newPlayer.transform.position = transformChild.transform.position;
                     newPlayer.transform.rotation = transformChild.transform.rotation;
 
