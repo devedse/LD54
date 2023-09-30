@@ -7,6 +7,9 @@ public class PlayerControls : MonoBehaviour
     private bool btn_0_pressed, btn_1_pressed, btn_2_pressed;
 
     public int Health = 100;
+    public int CurrentHealth = 100;
+    Rect hud_Health;
+
     public int Armor = 10;
     public int ShipSpeed = 10;
     public float MaxSpeed = 10;
@@ -17,7 +20,7 @@ public class PlayerControls : MonoBehaviour
     private bool isFiring;
     public bool hasArmorUpgrade, hasHealthUpgrade, hasSpeedUpgrade, hasFireRateUpgrade;
     // Weapon upgrades:
-    public bool hasSawBlade, hasRocketLauncher, hasBooster, hasShield;
+    public bool hasChainSaw, hasRocketLauncher, hasBooster, hasShield;
 
     // Start is called before the first frame update
     void Start()
@@ -28,8 +31,34 @@ public class PlayerControls : MonoBehaviour
 
         timer = FireRate;
 
-        Transform getClass = transform.Find("SpaceGameShip");
-        Debug.Log(getClass);
+        int childCount = transform.childCount;
+        
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            Debug.Log("Found " + transform.GetChild(i).name);
+
+            if (transform.GetChild(i).name.Equals("Hardpoints")) 
+            {
+                int subChild = transform.GetChild(i).childCount;
+
+                for(int j = 0; j < subChild; j++)
+                {
+                    Debug.Log("Found subchild " + transform.GetChild(i).GetChild(j).name);
+
+                    if (transform.GetChild(i).GetChild(j).name == "Chainsaw") { transform.GetChild(i).GetChild(j).gameObject.SetActive(false); }
+                    if (transform.GetChild(i).GetChild(j).name == "Booster") { transform.GetChild(i).GetChild(j).gameObject.SetActive(false); }
+                    if (transform.GetChild(i).GetChild(j).name == "Booster") { transform.GetChild(i).GetChild(j).gameObject.SetActive(false); }
+                }
+
+
+            }
+
+            if (transform.GetChild(i).name.Equals("HealthBar"))
+            {
+                //hud_Health = transform.GetChild(i).GetChild(0);
+            }
+        }
+
     }
 
     // Update is called once per frame
@@ -41,17 +70,21 @@ public class PlayerControls : MonoBehaviour
 
         timer -= Time.deltaTime;
 
-        if (timer <= 0)
+        if (!hasChainSaw && !hasRocketLauncher)
         {
-            timer += FireRate;
+            if (timer <= 0)
+            {
+                timer += FireRate;
 
-            FireWeapon();
-        }
+                FireWeapon();
+            }
 
-        if (isFiring)
-        {
-            FireWeapon();
+            if (isFiring)
+            {
+                FireWeapon();
+            }
         }
+        
     }
 
     public void Button0Pressed()
@@ -91,5 +124,28 @@ public class PlayerControls : MonoBehaviour
         proj_Pellet.transform.rotation = hp_Gun.transform.rotation;
 
         isFiring = false;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.name.Contains("Pellet"))
+        {
+            Destroy(collision.gameObject);
+
+
+        }
+    }
+
+    private void GetHit(int damage)
+    {
+        if (Health <= 0)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Health -= damage + Armor;
+
+        }
     }
 }
