@@ -1,24 +1,11 @@
+using Assets.Scripts.Helpers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class MG1 : MonoBehaviour
 {
-    static public GameObject GetChildGameObject(GameObject fromGameObject, string withName)
-    {
-        foreach (Transform child in fromGameObject.transform)
-        {
-            if (child.name == withName)
-            {
-                return child.gameObject;
-            }
-        }
-        return null;
-    }
-
-
     public GameObject cheese;
     public GameObject allChildObjectStuff;
 
@@ -84,8 +71,8 @@ public class MG1 : MonoBehaviour
                 //Correct
                 playerCurRound[player]++;
 
-                var playerUI = GetChildGameObject(allChildObjectStuff, player.ToString());
-                var specificCheese = GetChildGameObject(playerUI, currentRoundForPlayer.ToString());
+                var playerUI = allChildObjectStuff.GetChildGameObjectByName(player.ToString());
+                var specificCheese = playerUI.GetChildGameObjectByName(currentRoundForPlayer.ToString());
                 Destroy(specificCheese);
 
 
