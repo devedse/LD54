@@ -430,6 +430,8 @@ MonoBehaviour:
   pellet: {fileID: 5519805745031406293, guid: 28ec8b47cb2824244a2a4fd0e793a6da, type: 3}
   rb: {fileID: 1280055296794055653}
   Health: 100
+  CurrentHealth: 100
+  hud_Health: {fileID: 3700559675473057999}
   Armor: 10
   ShipSpeed: 10
   MaxSpeed: 10

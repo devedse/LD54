@@ -6,8 +6,6 @@ public class Pellet : MonoBehaviour
     public int proj_Force = 25;
     public float timer, proj_LifeTime = 3;
 
-    public int pelletDamage = 30;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -26,5 +24,13 @@ public class Pellet : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!collision.gameObject.name.Contains("Player"))
+        {
+            Destroy(gameObject);
+        }
+    }
+
 }
