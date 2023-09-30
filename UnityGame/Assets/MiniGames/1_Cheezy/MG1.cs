@@ -31,6 +31,8 @@ public class MG1 : MonoBehaviour
 
     public GameObject CooldownUI;
 
+    private int playersFinished = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -137,13 +139,16 @@ public class MG1 : MonoBehaviour
                 if (playerCurRound[player] >= cheeseCountPerRound[currentRound])
                 {
                     //Player won
-                    Debug.Log("Player " + player + " won this round");
+                    //Debug.Log("Player " + player + " won this round");
+                    MinigameManager.Instance.SignalR.GetPlayerByNumber(player).ChangeScore(3 - playersFinished);
+                    playersFinished++;
                 }
             }
             else
             {
                 //Wrong
-                Debug.Log("Player " + player + " pressed wrong button");
+                //Debug.Log("Player " + player + " pressed wrong button");
+                MinigameManager.Instance.SignalR.GetPlayerByNumber(player).ChangeScore(0);
 
                 StartCoroutine(CooldownPlayer(player));
             }
@@ -170,6 +175,7 @@ public class MG1 : MonoBehaviour
 
     public void NewRound()
     {
+        playersFinished = 0;
 
         var scaleAlgorithmThingy = PlayerPositioner.DistributePlayers(playerCount, leftX, rightX, cheeseWidth, cheeseGap);
         currentScale = scaleAlgorithmThingy.scale;
