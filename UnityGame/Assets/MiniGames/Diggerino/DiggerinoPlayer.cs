@@ -15,7 +15,7 @@ public class DiggerinoPlayer : MonoBehaviour
     public int PosX;
     public int PosZ;
     public int SpawnX;
-    internal int Score;
+    internal PC PC;
 
     public void SetPlayerImage(Texture tex)
     {

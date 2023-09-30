@@ -47,6 +47,8 @@ public class PlayerCard : MonoBehaviour
     {
         CurrentImage = imageSO;
         PC.PlayerImage = CurrentImage.ImageIdle;
+        PC.PlayerHappy = CurrentImage.ImageWin;
+        PC.PlayerMad = CurrentImage.ImageSad;
         PlayerImage.sprite = CurrentImage.ImageIdle;
     }
 
