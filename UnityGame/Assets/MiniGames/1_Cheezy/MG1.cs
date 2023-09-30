@@ -184,10 +184,7 @@ public class MG1 : MonoBehaviour
         whatColorsThisRound = new List<int>();
         playerCurRound = new List<int>();
 
-        foreach (Transform child in allChildObjectStuff.transform)
-        {
-            GameObject.Destroy(child.gameObject);
-        }
+        allChildObjectStuff.RemoveAllChildObjects();
 
 
         var rootPlayerObjects = new List<GameObject>();
