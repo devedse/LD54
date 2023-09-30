@@ -21,7 +21,10 @@ public class SpaceShipFiller : MonoBehaviour
 
     public void SetProps(PC player)
     {
-        FaceL.material.mainTexture = player?.PlayerImage?.texture;
-        FaceR.material.mainTexture = player?.PlayerImage?.texture;
+        if (player?.PlayerImage?.texture != null)
+        {
+            FaceL.material.mainTexture = player.PlayerImage.texture;
+            FaceR.material.mainTexture = player.PlayerImage.texture;
+        }
     }
 }
