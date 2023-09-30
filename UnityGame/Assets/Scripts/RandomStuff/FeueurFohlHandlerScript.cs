@@ -29,7 +29,7 @@ public class FeueurFohlHandlerScript : MonoBehaviour
 
         if (HostScreen.activeInHierarchy && (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Joystick1Button0)))
         {
-            MinigameManager.Instance.StartNextGame();
+            MinigameManager.Instance.InitializeNewGame();
         }
     }
 

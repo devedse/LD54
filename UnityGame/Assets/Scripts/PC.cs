@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,11 @@ public class PC : MonoBehaviour
     public Sprite PlayerHappy;
     public Sprite PlayerMad;
 
+    internal void ResetScore()
+    {
+        ScoreFromCurrentMinigame = 0;
+    }
+
     public UnityEvent OnButton0Press = new UnityEvent();
     public UnityEvent OnButton1Press = new UnityEvent();
     public UnityEvent OnButton2Press = new UnityEvent();
@@ -24,7 +30,7 @@ public class PC : MonoBehaviour
     public bool ListenToKeyboardZXC = false;
     public bool ListenToKeyboardArrowKeys = false;
 
-    public int ScoreFromCurrentMinigame;
+    private int ScoreFromCurrentMinigame;
     public List<IngameScoreScreenCard> Cards;
 
     public void ChangeScore(int amount)
