@@ -22,12 +22,12 @@ public class FeueurFohlHandlerScript : MonoBehaviour
     {
         TextMeshProUGUI.text = GetAllPressedKeys();
 
-        if (MainMenu.activeInHierarchy && Input.GetKeyDown(KeyCode.JoystickButton0))
+        if (MainMenu.activeInHierarchy && Input.GetKeyDown(KeyCode.KeypadEnter))
         {
             MinigameManager.Instance.SignalR.OnHostLobby();
         }
 
-        if (HostScreen.activeInHierarchy && Input.GetKeyDown(KeyCode.JoystickButton0))
+        if (HostScreen.activeInHierarchy && Input.GetKeyDown(KeyCode.KeypadEnter))
         {
             MinigameManager.Instance.StartNextGame();
         }
