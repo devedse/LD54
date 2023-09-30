@@ -119,7 +119,7 @@ namespace UnityGameServer.Hubs
                     {
                         playerName = obtainedPlayerName;
                     }
-                    await Clients.Clients(room.ConnectionIdsClients.Keys.ToList()).SendAsync("Server_ReceiveButtonPress", button, pressed, playerName);
+                    await Clients.Client(room.ConnectionIdServer).SendAsync("Server_ReceiveButtonPress", button, pressed, playerName);
                 }
                 else
                 {
