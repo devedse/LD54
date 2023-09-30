@@ -5,8 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class MinigameManager : MonoBehaviour
 {
+    public static MinigameManager Instance;
+
+    public SignalRTest SignalR;
     public MinigamesScriptableObject Games;
     public int GameIndex = -1;
+
+    public void Start()
+    {
+        Instance = this;
+    }
 
     public void StartNextGame()
     {

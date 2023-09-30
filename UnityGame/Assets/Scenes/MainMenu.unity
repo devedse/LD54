@@ -2038,7 +2038,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc1e2c1ef2ef4d4488c83b167cde7dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Games: {fileID: 0}
+  SignalR: {fileID: 1595624814}
+  Games: {fileID: 11400000, guid: d23a8f37d71b5e54bbfcfec848ba3417, type: 2}
   GameIndex: -1
 --- !u!1 &1772230579
 GameObject:
