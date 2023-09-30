@@ -6,10 +6,12 @@ public class PlayerControls : MonoBehaviour
     public KeyCode btnRight = KeyCode.Mouse1;
     public KeyCode btnMiddle = KeyCode.Mouse2;
 
+    public Rigidbody rb;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -22,24 +24,17 @@ public class PlayerControls : MonoBehaviour
     {
         if (Input.GetKeyDown(btnLeft))
         {
-            var rotation = this.transform.localEulerAngles;
-            var rotationQuat = Quaternion.Euler(new Vector3(rotation.x, rotation.y - 10, rotation.z));
-            this.transform.localRotation = rotationQuat;
+            rb.AddTorque(new Vector3(0, -100, 0), ForceMode.Acceleration);
         }
 
         if (Input.GetKeyDown(btnRight))
         {
-            Quaternion rotation = this.transform.localRotation;
-            rotation = Quaternion.Euler(new Vector3(rotation.x, rotation.y + 10, rotation.z));
-            this.transform.localRotation = rotation;
+            rb.AddTorque(new Vector3(0, 100, 0), ForceMode.Acceleration);
         }
 
         if (Input.GetKeyDown(btnMiddle))
         {
-            
-            Vector3 position = this.transform.localPosition;
-            position += transform.forward * 5;
-            this.transform.localPosition = position;
+            rb.AddForce(transform.forward * 10, ForceMode.VelocityChange);
         }
     }
 }

@@ -8,13 +8,11 @@ public class Core : MonoBehaviour
     public List<GameObject> playerSpawns;
     public int playerCount;
 
-    private List<GameObject> players;
     private Transform spawnpoints;
 
     // Start is called before the first frame update
     void Start()
     {
-
         Instantiate(arena);
         GameObject players = Instantiate(new GameObject("Players"));
 
@@ -31,8 +29,6 @@ public class Core : MonoBehaviour
                     GameObject newPlayer = Instantiate(spaceship);
                     newPlayer.transform.position = transformChild.transform.position;
                     newPlayer.transform.rotation = transformChild.transform.rotation;
-
-                    newPlayer.AddComponent<PlayerControls>();
 
                     newPlayer.name = "Player" + (i + 1);
                     newPlayer.transform.SetParent(players.transform);
