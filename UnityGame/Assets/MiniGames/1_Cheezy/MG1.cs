@@ -23,9 +23,20 @@ public class MG1 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        var mgm = MinigameManager.Instance;
+        var sig = mgm.SignalR;
+        playerCount = sig.Players.Count;
+
+        foreach(var player in sig.Players.Values)
+        {
+            player.OnButton0Press.AddListener(PlayerButtonPress(player.PlayerIndex, 0));
+            player.OnButton1Press.AddListener(PlayerButtonPress(player.PlayerIndex, 1));
+            player.OnButton2Press.AddListener(PlayerButtonPress(player.PlayerIndex, 2));
+        }
+
         NewRound();
 
-        StartCoroutine(FakeButtons());
+        //StartCoroutine(FakeButtons());
     }
 
     // Update is called once per frame
