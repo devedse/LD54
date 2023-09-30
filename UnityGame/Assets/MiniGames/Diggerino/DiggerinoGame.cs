@@ -59,8 +59,10 @@ public class DiggerinoGame : MonoBehaviour
                 UpdateTileColor(Map[x][z]);
             }
         }
+    }
 
-
+    public void BindPlayers()
+    {
         var playerCount = MinigameManager.Instance.SignalR.Players.Values.Count;
         int spawnX = (GridSize / playerCount) / 2;
         foreach (var signalRPlayer in MinigameManager.Instance.SignalR.Players.Values)
@@ -153,7 +155,7 @@ public class DiggerinoGame : MonoBehaviour
 
     private void EndGame()
     {
-        throw new System.NotImplementedException();
+        FindFirstObjectByType<GameFlow>().EndGame();
     }
 
     // Update is called once per frame

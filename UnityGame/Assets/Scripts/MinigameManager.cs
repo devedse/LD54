@@ -54,10 +54,6 @@ public class MinigameManager : MonoBehaviour
     public void StartNextGame()
     {
         GameIndex++;
-        foreach (var p in SignalR.Players.Values)
-        {
-
-        }
         SceneManager.LoadScene(Games.Minigames[GameIndex].SceneName);
     }
 }
