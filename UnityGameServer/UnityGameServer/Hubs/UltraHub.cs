@@ -3,10 +3,20 @@ using System.Collections.Concurrent;
 
 namespace UnityGameServer.Hubs
 {
+    public class Room
+    {
+        public required string ConnectionIdServer { get; set; }
+
+        /// <summary>
+        /// ConnectionId, ClientName
+        /// </summary>
+        public ConcurrentDictionary<string, string> ConnectionIdsClients { get; set; } = new ConcurrentDictionary<string, string>();
+    }
+
     public class UltraHub : Hub
     {
-        private static readonly ConcurrentBag<string> roomNames = new ConcurrentBag<string>();
-        private static readonly ConcurrentDictionary<string, string> connectionToRoomMap = new ConcurrentDictionary<string, string>();
+        private static readonly ConcurrentDictionary<string, Room> Rooms = new ConcurrentDictionary<string, Room>();
+        private static readonly ConcurrentDictionary<string, string> ConnectionToRoomMap = new ConcurrentDictionary<string, string>();
 
         public string CreateUniqueRoomName()
         {
@@ -14,9 +24,8 @@ namespace UnityGameServer.Hubs
             do
             {
                 roomName = CreateRandomRoomName();
-            } while (roomNames.Contains(roomName));
+            } while (!Rooms.TryAdd(roomName, new Room() { ConnectionIdServer = Context.ConnectionId }));
 
-            roomNames.Add(roomName);
             return roomName;
         }
 
@@ -28,10 +37,38 @@ namespace UnityGameServer.Hubs
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
+
+        public async Task LeaveRoomsForConnection(string connectionId)
+        {
+            if (ConnectionToRoomMap.TryRemove(connectionId, out string roomName))
+            {
+                if (Rooms.TryGetValue(roomName, out Room room))
+                {
+                    if (room.ConnectionIdsClients.TryRemove(connectionId, out string _))
+                    {
+                        Console.WriteLine($"Removed client {connectionId} from room {roomName}");
+                        await Clients.Client(room.ConnectionIdServer).SendAsync("Server_ReceiveClientDisconnected", connectionId);
+                    }
+                    if (room.ConnectionIdServer == connectionId)
+                    {
+                        Console.WriteLine($"Removed server {connectionId} from room {roomName}");
+                        await Clients.Clients(room.ConnectionIdsClients.Keys.ToList()).SendAsync("Server_ReceiveServerDisconnected", roomName);
+                        foreach (var client in room.ConnectionIdsClients.Keys.ToList())
+                        {
+                            ConnectionToRoomMap.TryRemove(client, out string _);
+                        }
+                        Rooms.TryRemove(roomName, out Room _);
+                    }
+                }
+            }
+        }
+
         public async Task Server_CreateRoom(dynamic a)
         {
+            Console.WriteLine($"Received create room from {Context.ConnectionId}");
+            await LeaveRoomsForConnection(Context.ConnectionId);
+
             string roomName = CreateUniqueRoomName();
-            await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
             await Clients.Caller.SendAsync("Server_ReceiveRoomName", roomName);
 
             Console.WriteLine($"Created room {roomName} for {Context.ConnectionId}");
@@ -40,26 +77,54 @@ namespace UnityGameServer.Hubs
         public async Task Client_JoinRoom(string roomName, string clientName)
         {
             Console.WriteLine($"Received join room {roomName} from {Context.ConnectionId}");
+            await LeaveRoomsForConnection(Context.ConnectionId);
 
-            connectionToRoomMap[Context.ConnectionId] = clientName;
-            await Clients.Group(roomName).SendAsync("Server_ReceiveJoinRoom", clientName);
+            if (Rooms.TryGetValue(roomName, out Room room))
+            {
+                room.ConnectionIdsClients.TryAdd(Context.ConnectionId, clientName);
+                ConnectionToRoomMap.TryAdd(Context.ConnectionId, roomName);
+                await Clients.Clients(room.ConnectionIdsClients.Keys.ToList()).SendAsync("Server_ReceiveJoinRoom", clientName);
+            }
+            else
+            {
+                Console.WriteLine($"Room {roomName} does not exist. Client {Context.ConnectionId} did not join");
+            }
+
+            if (!Rooms.ContainsKey(roomName))
+            {
+                Console.WriteLine($"Room {roomName} does not exist. Client {Context.ConnectionId} did not join");
+                return;
+            }
         }
 
-        public Task Client_SendButtonPress(int button, bool pressed)
+        public async Task Client_SendButtonPress(int button, bool pressed)
         {
             Console.WriteLine($"Received button press {button} from {Context.ConnectionId}");
 
-            //Get the room name associated with the current connection
-            if (connectionToRoomMap.TryGetValue(Context.ConnectionId, out string roomName))
+            if (ConnectionToRoomMap.TryGetValue(Context.ConnectionId, out string roomName))
             {
-                //Send to clients in the room (group)
-                return Clients.Group(roomName).SendAsync("Server_ReceiveButtonPress", button, pressed);
+                if (Rooms.TryGetValue(roomName, out Room room))
+                {
+                    await Clients.Clients(room.ConnectionIdsClients.Keys.ToList()).SendAsync("Server_ReceiveButtonPress", button, pressed);
+                }
+                else
+                {
+                    Console.WriteLine($"Room {roomName} does not exist. Client {Context.ConnectionId} did not join");
+                }
             }
             else
             {
                 Console.WriteLine("Could not find room name for connection id: " + Context.ConnectionId);
             }
-            return Task.CompletedTask;
+        }
+
+
+        public override async Task OnDisconnectedAsync(Exception exception)
+        {
+            Console.WriteLine($"Received disconnect from {Context.ConnectionId}, Exception: {exception.Message}");
+            await LeaveRoomsForConnection(Context.ConnectionId);
+
+            await base.OnDisconnectedAsync(exception);
         }
     }
 }
