@@ -19,6 +19,7 @@ public class MG1 : MonoBehaviour
     private List<int> playerCurRound = new List<int>();
 
     private float offsetYPerCheese = 1.1f;
+    private float currentScale = 1f;
 
     private Dictionary<int, bool> PlayerOnCooldown = new Dictionary<int, bool>();
 
@@ -50,7 +51,7 @@ public class MG1 : MonoBehaviour
         {
             var playerScore = playerCurRound[int.Parse(player.name)];
             //Lerp local position using offset per cheese * playerScore
-            var lerpY = Mathf.Lerp(player.localPosition.y, offsetYPerCheese * -playerScore, Time.deltaTime * 5f);
+            var lerpY = Mathf.Lerp(player.localPosition.y, (offsetYPerCheese * currentScale) * -playerScore, Time.deltaTime * 5f);
             player.localPosition = new Vector3(player.localPosition.x, lerpY, player.localPosition.z);
         }
     }
@@ -110,6 +111,8 @@ public class MG1 : MonoBehaviour
             {
                 //Wrong
                 Debug.Log("Player " + player + " pressed wrong button");
+
+                StartCoroutine(CooldownPlayer(player));
             }
         }
 
@@ -137,9 +140,8 @@ public class MG1 : MonoBehaviour
         float leftX = -8f;
         float rightX = 8f;
 
-        var playerXPositions = PlayerPositioner.DistributePlayers(playerCount, leftX, rightX, 4f, 1f);
-
-        var spaceRequired = playerCount * 4f + playerCount - 1 * 1f;
+        var scaleAlgorithmThingy = PlayerPositioner.DistributePlayers(playerCount, leftX, rightX, 4f, 1f);
+        currentScale = scaleAlgorithmThingy.scale;
 
 
         whatColorsThisRound = new List<int>();
@@ -156,8 +158,8 @@ public class MG1 : MonoBehaviour
         {
             var ga = new GameObject(i.ToString());
             ga.transform.parent = allChildObjectStuff.transform;
-            ga.transform.localPosition = new Vector3(playerXPositions.positions[i], 10, 0);
-            ga.transform.localScale = new Vector3(playerXPositions.scale, playerXPositions.scale, playerXPositions.scale);
+            ga.transform.localPosition = new Vector3(scaleAlgorithmThingy.positions[i], 10, 0);
+            ga.transform.localScale = new Vector3(scaleAlgorithmThingy.scale, scaleAlgorithmThingy.scale, scaleAlgorithmThingy.scale);
             rootPlayerObjects.Add(ga);
             playerCurRound.Add(0);
         }
