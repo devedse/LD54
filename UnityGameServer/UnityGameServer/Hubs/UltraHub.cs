@@ -119,7 +119,7 @@ namespace UnityGameServer.Hubs
         }
 
 
-        public override async Task OnDisconnectedAsync(Exception exception)
+        public override async Task OnDisconnectedAsync(Exception? exception)
         {
             Console.WriteLine($"Received disconnect from {Context.ConnectionId}, Exception: {exception?.Message}");
             await LeaveRoomsForConnection(Context.ConnectionId);
