@@ -19,7 +19,7 @@ public class MinigameManager : MonoBehaviour
                 _instance = new MinigameManager();
                 _instance.SignalR = new SignalRTest();
 
-                for (int i = 0; i < 2; i++)
+                for (int i = 0; i < 4; i++)
                 {
                     var keyboardPlayerControllerGA = new GameObject();
                     keyboardPlayerControllerGA.name = $"KeboardPlayerController{i}";
