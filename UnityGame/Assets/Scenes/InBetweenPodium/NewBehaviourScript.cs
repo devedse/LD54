@@ -66,7 +66,7 @@ public class NewBehaviourScript : MonoBehaviour
                     var diff = Time.time - start;
 
                     var wonk = new Vector3(Mathf.Sin(diff - 2f) * 5f, Mathf.Cos(diff - 2f) * 0.1f + 2f, Mathf.Cos(diff) * 5f);
-                    var dest = new Vector3(1, 0.165f, 0);
+                    var dest = new Vector3(2, 0.165f, 0);
 
                     spaceShip.transform.localPosition = Vector3.Lerp(wonk, dest, diff / totalDuration) ;
                     spaceShip.transform.LookAt(transform.position + new Vector3(0, 0.165f, 0));
@@ -86,7 +86,7 @@ public class NewBehaviourScript : MonoBehaviour
                     var diff = Time.time - start;
 
                     var wonk = new Vector3(Mathf.Sin(diff * 10f) * 1f - 3f, Mathf.Cos(diff) * 2 + 2f, 5f);
-                    var dest = new Vector3(-1, 0.4f, 0);
+                    var dest = new Vector3(-2, 0.4f, 0);
 
                     spaceShip.transform.localPosition = Vector3.Lerp(wonk, dest, diff / totalDuration);
                     spaceShip.transform.LookAt(transform.position + new Vector3(0, 0.4f, 0));

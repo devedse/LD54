@@ -7,6 +7,9 @@ using UnityEngine.SceneManagement;
 
 public class MinigameManager : MonoBehaviour
 {
+    public GameObject ScoreCanvas;
+    public IngameScoreScreen ScoreScreen;
+
     private static MinigameManager _instance;
 
     public static MinigameManager Instance
@@ -56,6 +59,15 @@ public class MinigameManager : MonoBehaviour
     public void Start()
     {
         _instance = this;
+    }
+
+    public void InitializeNewGame()
+    {
+        ScoreCanvas.SetActive(true);
+        DontDestroyOnLoad(ScoreCanvas);
+        ScoreScreen.Init();
+        StartNextGame();
+        ScoreCanvas.SetActive(false);
     }
 
     public void StartNextGame()
