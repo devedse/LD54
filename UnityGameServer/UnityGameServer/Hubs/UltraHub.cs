@@ -78,7 +78,9 @@ namespace UnityGameServer.Hubs
 
         public async Task Client_JoinRoom(string roomName, string clientName)
         {
-            Console.WriteLine($"Received join room {roomName} from {Context.ConnectionId}");
+            roomName = roomName.ToUpperInvariant();
+
+            Console.WriteLine($"Received join room {roomName} from {Context.ConnectionId} with client name: {clientName}");
             await LeaveRoomsForConnection(Context.ConnectionId);
 
             if (Rooms.TryGetValue(roomName, out Room room))
@@ -86,7 +88,7 @@ namespace UnityGameServer.Hubs
                 room.ConnectionIdsClients.TryAdd(Context.ConnectionId, clientName);
                 ConnectionToRoomMap.TryAdd(Context.ConnectionId, roomName);
                 await Clients.Caller.SendAsync("Client_JoinRoomResult", true);
-                await Clients.Clients(room.ConnectionIdsClients.Keys.ToList()).SendAsync("Server_ReceiveJoinRoom", clientName);
+                await Clients.Client(room.ConnectionIdServer).SendAsync("Server_ReceiveJoinRoom", clientName);
                 Console.WriteLine($"Client {Context.ConnectionId} joined room {roomName}. Count in room: {room.ConnectionIdsClients.Count}");
                 return;
             }
