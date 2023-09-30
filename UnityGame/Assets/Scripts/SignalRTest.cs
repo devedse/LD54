@@ -5,8 +5,12 @@ using UnityEngine;
 
 public class SignalRTest : MonoBehaviour
 {
+    public GameObject PlayerPrefab;
+    public Dictionary<string, PC> Players = new Dictionary<string, PC>();
+
     public SignalR SignalR;
     public MainMenu MainMenu;
+    public HostScreen HostScreen;
 
     private string DeveURL = "https://LD54_Server.Devedse.DuckDNS.org/UltraHub";
 
@@ -36,16 +40,16 @@ public class SignalRTest : MonoBehaviour
     {
         SignalR = new SignalR();
 #if UNITY_EDITOR
-        DeveURL = "http://10.88.10.1:5281/UltraHub";
-
+//        DeveURL = "http://10.88.10.1:5281/UltraHub";
 #endif
         SignalR.Init(DeveURL);
 
         // Handler callbacks
-        SignalR.On("Server_ReceiveButtonPress", (string payload) =>
+        SignalR.On("Server_ReceiveButtonPress", (string button, string pressed, string playername) =>
         {
             // Deserialize payload A from JSON
-            Debug.Log($"Server_ReceiveButtonPress: {payload}");
+            Debug.Log($"Server_ReceiveButtonPress: {playername} {button} {pressed}");
+            Players[playername].OnPress(int.Parse(button), pressed == "true");
         });
         SignalR.On("Server_ReceiveRoomName", (string payload) =>
         {
@@ -60,6 +64,7 @@ public class SignalRTest : MonoBehaviour
             // Deserialize payload B from JSON
             //var json = JsonUtility.FromJson<JsonPayload>(payload);
             //Debug.Log($"Server_ReceiveRoomName: {json.message}");
+            AddClient(payload);
             Debug.Log($"Server_ReceiveJoinRoom: {payload}");
         });
         SignalR.On("Client_JoinRoomResult", (string payload) =>
@@ -82,6 +87,16 @@ public class SignalRTest : MonoBehaviour
 
     }
 
+    private void AddClient(string name)
+    {
+        var player = Instantiate(PlayerPrefab, transform);
+        var pc = player.GetComponent<PC>();
+        pc.PlayerName = name;
+        Players.Add(name, pc);
+
+        HostScreen.AddPlayer(pc);
+    }
+
     public void OnJoinLobby(string lobbyCode)
     {
         SetupSignalR();
@@ -90,7 +105,7 @@ public class SignalRTest : MonoBehaviour
             // Log the connected ID
             Debug.Log($"Connected: {e.ConnectionId}");
 
-            JoinRoom(lobbyCode, "nietdevedse");
+            JoinRoom(lobbyCode, Guid.NewGuid().ToString());
         };
         Debug.Log("Connecting");
         SignalR.Connect();
