@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,6 +44,11 @@ public class MinigameManager : MonoBehaviour
         }
     }
 
+    internal static void ShowPodiumBetweenGames()
+    {
+        SceneManager.LoadScene("InBetweenPodium");
+    }
+
     public SignalRTest SignalR;
     public MinigamesScriptableObject Games;
     public int GameIndex = -1;
@@ -55,6 +61,8 @@ public class MinigameManager : MonoBehaviour
     public void StartNextGame()
     {
         GameIndex++;
+        if (GameIndex >= Games.Minigames.Count)
+            GameIndex = 0;
         if (Games)
         {
             if (_instance.SignalR.Players.Count < Games.Minigames[GameIndex].MinPlayers || _instance.SignalR.Players.Count > Games.Minigames[GameIndex].MaxPlayers)
