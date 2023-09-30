@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b432ac4b3cf2f5b4b97de5e9f5347ac2, type: 3}
   m_Name: Image5
   m_EditorClassIdentifier: 
-  ImageIdle: {fileID: 21300000, guid: 39fbb661212bbdd4a952323159a20b1d, type: 3}
+  ImageIdle: {fileID: 21300000, guid: 67823de3e3288fa42bfa8ba13e4f7781, type: 3}
+  ImageSad: {fileID: 21300000, guid: b75d68a925678e0438c326d18a145d80, type: 3}
+  ImageWin: {fileID: 21300000, guid: 7197155dc1d2dd74db7e7942c91b181d, type: 3}

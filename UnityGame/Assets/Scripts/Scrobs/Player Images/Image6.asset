@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b432ac4b3cf2f5b4b97de5e9f5347ac2, type: 3}
-  m_Name: Image2
+  m_Name: Image6
   m_EditorClassIdentifier: 
-  ImageIdle: {fileID: 21300000, guid: 4f913078dec392e449ea566dcf477b11, type: 3}
-  ImageSad: {fileID: 21300000, guid: c9e4695f0d30ec44dbe83a56fb52abfd, type: 3}
-  ImageWin: {fileID: 21300000, guid: fb07fc4e5c3963740b8a3d25a02510ce, type: 3}
+  ImageIdle: {fileID: 21300000, guid: fe8e5a22341f39a489e65a4b98ad05f9, type: 3}
+  ImageSad: {fileID: 21300000, guid: c40ee4177808d3544acf71895bd11255, type: 3}
+  ImageWin: {fileID: 21300000, guid: bd89d467c74ebc44bbe20581ce156c58, type: 3}
