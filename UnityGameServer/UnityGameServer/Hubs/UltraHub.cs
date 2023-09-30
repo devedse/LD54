@@ -15,8 +15,13 @@ namespace UnityGameServer.Hubs
 
     public class UltraHub : Hub
     {
-        private static readonly ConcurrentDictionary<string, Room> Rooms = new ConcurrentDictionary<string, Room>();
+        public static readonly ConcurrentDictionary<string, Room> Rooms = new ConcurrentDictionary<string, Room>();
         private static readonly ConcurrentDictionary<string, string> ConnectionToRoomMap = new ConcurrentDictionary<string, string>();
+
+        public UltraHub()
+        {
+            Rooms.TryAdd("BLAH", new Room() { ConnectionIdServer = "BLAH" });
+        }
 
         public string CreateUniqueRoomName()
         {
@@ -78,15 +83,17 @@ namespace UnityGameServer.Hubs
 
         public async Task Client_JoinRoom(string roomName, string clientName)
         {
-            Console.WriteLine($"Received join room {roomName} from {Context.ConnectionId}");
+            roomName = roomName.ToUpperInvariant();
+
+            Console.WriteLine($"Received join room {roomName} from {Context.ConnectionId} with client name: {clientName}");
             await LeaveRoomsForConnection(Context.ConnectionId);
 
             if (Rooms.TryGetValue(roomName, out Room room))
             {
                 room.ConnectionIdsClients.TryAdd(Context.ConnectionId, clientName);
                 ConnectionToRoomMap.TryAdd(Context.ConnectionId, roomName);
-                await Clients.Caller.SendAsync("Client_JoinRoomResult", true);
-                await Clients.Clients(room.ConnectionIdsClients.Keys.ToList()).SendAsync("Server_ReceiveJoinRoom", clientName);
+                await Clients.Caller.SendAsync("Client_JoinRoomResult", "true");
+                await Clients.Client(room.ConnectionIdServer).SendAsync("Server_ReceiveJoinRoom", clientName);
                 Console.WriteLine($"Client {Context.ConnectionId} joined room {roomName}. Count in room: {room.ConnectionIdsClients.Count}");
                 return;
             }
@@ -97,7 +104,7 @@ namespace UnityGameServer.Hubs
             }
         }
 
-        public async Task Client_SendButtonPress(int button, bool pressed)
+        public async Task Client_SendButtonPress(int button, string pressed)
         {
             Console.WriteLine($"Received button press {button} from {Context.ConnectionId} {pressed}");
 
