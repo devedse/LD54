@@ -18,10 +18,18 @@ public class MG1 : MonoBehaviour
     private List<int> whatColorsThisRound = new List<int>();
     private List<int> playerCurRound = new List<int>();
 
-    private float offsetYPerCheese = 1.1f;
+    private const float offsetYPerCheese = 1.1f;
+    private const float leftX = -8f;
+    private const float rightX = 8f;
+    private const float cheeseWidth = 4f;
+    private const float cheeseGap = 1f;
+
     private float currentScale = 1f;
 
+
     private Dictionary<int, bool> PlayerOnCooldown = new Dictionary<int, bool>();
+
+    public GameObject CooldownUI;
 
     // Start is called before the first frame update
     void Start()
@@ -75,13 +83,38 @@ public class MG1 : MonoBehaviour
 
     public IEnumerator CooldownPlayer(int player)
     {
+        var start = Time.time;
+
+        var gimmePos = PlayerPositioner.DistributePlayers(playerCount, leftX, rightX, cheeseWidth, cheeseGap);
         PlayerOnCooldown[player] = true;
-        yield return new WaitForSeconds(1f);
+
+        var cdUI = GameObject.Instantiate(CooldownUI);
+        cdUI.transform.localPosition = new Vector3(gimmePos.positions[player], cdUI.transform.localPosition.y, cdUI.transform.localPosition.z);
+        var meshRender = cdUI.GetComponentInChildren<MeshRenderer>();
+
+        var madTexture = MinigameManager.Instance?.SignalR?.GetPlayerByNumber(player)?.PlayerMad?.texture;
+        if (madTexture != null)
+        {
+            meshRender.material.mainTexture = madTexture;
+        }
+
+        while (Time.time - start < 1f)
+        {
+            var diff = Time.time - start;
+            cdUI.transform.localScale = Vector3.one * 4 * gimmePos.scale * (Mathf.Sin(diff * 4f) / 10f + 1f);
+            yield return null;
+        }
+        Destroy(cdUI);
         PlayerOnCooldown[player] = false;
     }
 
     public bool PlayerButtonPress(int player, int button)
     {
+        if (PlayerOnCooldown.ContainsKey(player) && PlayerOnCooldown[player])
+        {
+            return false;
+        }
+
         if (playerCurRound[player] >= cheeseCountPerRound[currentRound])
         {
             //Round already over for player
@@ -137,10 +170,8 @@ public class MG1 : MonoBehaviour
 
     public void NewRound()
     {
-        float leftX = -8f;
-        float rightX = 8f;
 
-        var scaleAlgorithmThingy = PlayerPositioner.DistributePlayers(playerCount, leftX, rightX, 4f, 1f);
+        var scaleAlgorithmThingy = PlayerPositioner.DistributePlayers(playerCount, leftX, rightX, cheeseWidth, cheeseGap);
         currentScale = scaleAlgorithmThingy.scale;
 
 
