@@ -23,11 +23,15 @@ public class MG1 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+    }
+
+    public void StartGame()
+    {
         var mgm = MinigameManager.Instance;
         var sig = mgm.SignalR;
         playerCount = sig.Players.Count;
 
-        foreach(var player in sig.Players.Values)
+        foreach (var player in sig.Players.Values)
         {
             player.OnButton0Press.AddListener(() => PlayerButtonPress(player.PlayerIndex, 0));
             player.OnButton1Press.AddListener(() => PlayerButtonPress(player.PlayerIndex, 1));
@@ -35,8 +39,6 @@ public class MG1 : MonoBehaviour
         }
 
         NewRound();
-
-        //StartCoroutine(FakeButtons());
     }
 
     // Update is called once per frame
@@ -108,7 +110,8 @@ public class MG1 : MonoBehaviour
 
             if (currentRound >= cheeseCountPerRound.Length)
             {
-                return true;
+                FindFirstObjectByType<GameFlow>().EndGame();
+                //return true;
             }
             else
             {
