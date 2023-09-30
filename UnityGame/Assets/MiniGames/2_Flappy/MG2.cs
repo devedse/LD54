@@ -32,19 +32,19 @@ public class MG2 : MonoBehaviour
 
 
 
-        //var mgm = MinigameManager.Instance;
-        //var sig = mgm.SignalR;
-        //playerCount = sig.Players.Count;
+        var mgm = MinigameManager.Instance;
+        var sig = mgm.SignalR;
+        playerCount = sig.Players.Count;
 
-        //foreach (var player in sig.Players.Values)
-        //{
-        //    player.OnButton0Press.AddListener(() => PlayerButtonPress(player.PlayerIndex, 0, true));
-        //    player.OnButton1Press.AddListener(() => PlayerButtonPress(player.PlayerIndex, 1, true));
-        //    player.OnButton2Press.AddListener(() => PlayerButtonPress(player.PlayerIndex, 2, true));
-        //    player.OnButton0Release.AddListener(() => PlayerButtonPress(player.PlayerIndex, 0, false));
-        //    player.OnButton1Release.AddListener(() => PlayerButtonPress(player.PlayerIndex, 1, false));
-        //    player.OnButton2Release.AddListener(() => PlayerButtonPress(player.PlayerIndex, 2, false));
-        //}
+        foreach (var player in sig.Players.Values)
+        {
+            player.OnButton0Press.AddListener(() => PlayerButtonPress(player.PlayerIndex, 0, true));
+            player.OnButton1Press.AddListener(() => PlayerButtonPress(player.PlayerIndex, 1, true));
+            player.OnButton2Press.AddListener(() => PlayerButtonPress(player.PlayerIndex, 2, true));
+            player.OnButton0Release.AddListener(() => PlayerButtonPress(player.PlayerIndex, 0, false));
+            player.OnButton1Release.AddListener(() => PlayerButtonPress(player.PlayerIndex, 1, false));
+            player.OnButton2Release.AddListener(() => PlayerButtonPress(player.PlayerIndex, 2, false));
+        }
 
         for (int i = 0; i < playerCount; i++)
         {
@@ -59,7 +59,7 @@ public class MG2 : MonoBehaviour
         }
 
 
-        StartCoroutine(FakeButtons());
+        //StartCoroutine(FakeButtons());
 
     }
 
@@ -126,7 +126,7 @@ public class MG2 : MonoBehaviour
             var randomY = Random.Range(-7.5f, -3.2f);
 
             int startX = 15;
-            int gap = 3;
+            int gap = 5;
 
             newBuildingBot.transform.localPosition = new Vector3(startX, randomY, 0);
             newBuildingTop.transform.localEulerAngles = new Vector3(0, 0, 180);

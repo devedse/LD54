@@ -87,7 +87,7 @@ public class SignalRTest : MonoBehaviour
 
     }
 
-    private void AddClient(string name)
+    public PC AddClient(string name)
     {
         var player = Instantiate(PlayerPrefab, transform);
         var pc = player.GetComponent<PC>();
@@ -96,6 +96,8 @@ public class SignalRTest : MonoBehaviour
         Players.Add(name, pc);
 
         HostScreen.AddPlayer(pc);
+
+        return pc;
     }
 
     public void OnJoinLobby(string lobbyCode)
