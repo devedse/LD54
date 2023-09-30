@@ -1,7 +1,11 @@
+using NUnit.Framework.Internal;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Video;
 
 public class NewBehaviourScript : MonoBehaviour
 {
@@ -22,6 +26,57 @@ public class NewBehaviourScript : MonoBehaviour
     void Update()
     {
 
+    }
+
+
+    public GameObject InstantiateSpaceShipForPlayer(int player)
+    {
+        var spaceShip = GameObject.Instantiate(PrefabSpaceship, this.transform);
+
+        var playerObj = MinigameManager.Instance.SignalR.Players.FirstOrDefault(t => t.Value.PlayerIndex == player);
+
+        spaceShip.GetComponent<SpaceShipFiller>().SetProps(playerObj.Value);
+
+        return spaceShip;
+    }
+
+
+    IEnumerator GoGetOtherPlayers()
+    {
+        var totalPlayersRemaining = MinigameManager.Instance.SignalR.Players.Count - 3;
+        float rangeLeft = -2f;
+        float rangeRight = 2f;
+
+        float xPos = -2f;
+
+        for (int i = MinigameManager.Instance.SignalR.Players.Count - 1; i >= 3; i--)
+        {
+            float inBetween = (rangeRight - rangeLeft) / (totalPlayersRemaining); // Subtract by 1 to consider start and end points
+
+            var to = new Vector3(rangeLeft + (inBetween * (i - 3)), 0, xPos);
+            var from = to + new Vector3(0, 0, -3f);
+
+            var spaceShip = InstantiateSpaceShipForPlayer(i);
+            var scaleForViewers = 0.35f;
+            spaceShip.transform.localScale = new Vector3(scaleForViewers, scaleForViewers, scaleForViewers);
+
+
+            StartCoroutine(GoLerpViewer(spaceShip, from, to, 2f));
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+
+    IEnumerator GoLerpViewer(GameObject toMove, Vector3 from, Vector3 to, float duration)
+    {
+        float start = Time.time;
+
+        while (Time.time - start < duration)
+        {
+            var diff = Time.time - start;
+
+            toMove.transform.localPosition = Vector3.Lerp(from, to, diff / duration);
+            yield return null;
+        }
     }
 
     IEnumerator GoMoveObjects(List<GameObject> toMove)
@@ -48,28 +103,31 @@ public class NewBehaviourScript : MonoBehaviour
             m.transform.localPosition = originalPositions[m];
         }
 
+        StartCoroutine(GoGetOtherPlayers());
+
+
         var playerCount = math.min(3, MinigameManager.Instance.SignalR.Players.Count);
         for (int i = playerCount; i > 0; i--)
         {
-            var spaceShip = GameObject.Instantiate(PrefabSpaceship, this.transform);
-            
+            var spaceShip = InstantiateSpaceShipForPlayer(i);
+
             if (i == 3)
             {
                 spaceShip.transform.localPosition = new Vector3(5f, 0, 0);
 
                 float start = Time.time;
 
-                var totalDuration = 5f;
+                var totalDuration = 2f;
 
-                while (Time.time - start < 5f)
+                while (Time.time - start < totalDuration)
                 {
                     var diff = Time.time - start;
 
-                    var wonk = new Vector3(Mathf.Sin(diff - 2f) * 5f, Mathf.Cos(diff - 2f) * 0.1f + 2f, Mathf.Cos(diff) * 5f);
-                    var dest = new Vector3(2, 0.165f, 0);
+                    var wonk = new Vector3(Mathf.Cos(diff - 2f) * 5f, Mathf.Sin(diff - 2f) * 0.1f + 2f, Mathf.Cos(diff) * 5f);
+                    var dest = new Vector3(2, 0.33f, 0);
 
-                    spaceShip.transform.localPosition = Vector3.Lerp(wonk, dest, diff / totalDuration) ;
-                    spaceShip.transform.LookAt(transform.position + new Vector3(0, 0.165f, 0));
+                    spaceShip.transform.localPosition = Vector3.Lerp(wonk, dest, diff / totalDuration);
+                    spaceShip.transform.LookAt(transform.position + new Vector3(0, 0.33f, 0));
                     yield return null;
                 }
             }
@@ -79,20 +137,56 @@ public class NewBehaviourScript : MonoBehaviour
 
                 float start = Time.time;
 
-                var totalDuration = 5f;
+                var totalDuration = 3f;
 
-                while (Time.time - start < 5f)
+                while (Time.time - start < totalDuration)
                 {
                     var diff = Time.time - start;
 
-                    var wonk = new Vector3(Mathf.Sin(diff * 10f) * 1f - 3f, Mathf.Cos(diff) * 2 + 2f, 5f);
-                    var dest = new Vector3(-2, 0.4f, 0);
+                    var wonk = new Vector3(Mathf.Cos(diff * 10f) * 1f - 3f, Mathf.Sin(diff) * 2 + 2f, 5f);
+                    var dest = new Vector3(-2, 0.66f, 0);
 
                     spaceShip.transform.localPosition = Vector3.Lerp(wonk, dest, diff / totalDuration);
-                    spaceShip.transform.LookAt(transform.position + new Vector3(0, 0.4f, 0));
+                    spaceShip.transform.LookAt(transform.position + new Vector3(0, 0.66f, 0));
+                    yield return null;
+                }
+            }
+            if (i == 1)
+            {
+                var from = new Vector3(-5f, 1, -1f);
+                var to = new Vector3(5f, 1, -1f);
+                spaceShip.transform.LookAt(new Vector3(100f, 1f, -1f));
+
+                float start = Time.time;
+                var totalDuration = 0.5f;
+
+                while (Time.time - start < totalDuration)
+                {
+                    var diff = Time.time - start;
+
+                    spaceShip.transform.localPosition = Vector3.Lerp(from, to, diff / totalDuration);
+                    yield return null;
+                }
+
+
+                totalDuration = 3f;
+
+                while (Time.time - start < totalDuration)
+                {
+                    var diff = Time.time - start;
+
+                    var wonk = new Vector3(Mathf.Cos(diff * 5f) * 1f + 6f, Mathf.Sin(diff * 3f) * 2 + 2f, 5f);
+                    var dest = new Vector3(0, 1f, 0);
+
+                    spaceShip.transform.localPosition = Vector3.Lerp(wonk, dest, diff / totalDuration);
+                    spaceShip.transform.LookAt(transform.position + new Vector3(-1, 1f, 0));
                     yield return null;
                 }
             }
         }
+
+        yield return new WaitForSeconds(2f);
+
+        FindFirstObjectByType<GameFlow>().NextGame();
     }
 }
