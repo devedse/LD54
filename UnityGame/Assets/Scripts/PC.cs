@@ -5,6 +5,9 @@ using UnityEngine.Events;
 
 public class PC : MonoBehaviour
 {
+    public const string KeyboardZXCPlayerName = "PC Player ZXC";
+    public const string KeyboardArrowKeysPlayerName = "PC Player ArrowKeys";
+
     public int PlayerIndex; // never higher than playercount - 1
     public string PlayerName;
     public Sprite PlayerImage;

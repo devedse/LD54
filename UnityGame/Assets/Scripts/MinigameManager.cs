@@ -26,12 +26,12 @@ public class MinigameManager : MonoBehaviour
 
                     if (i == 0)
                     {
-                        pc.PlayerName = "PC Player ZXC";
+                        pc.PlayerName = PC.KeyboardZXCPlayerName;
                         pc.ListenToKeyboardZXC = true;
                     }
                     else if (i == 1)
                     {
-                        pc.PlayerName = "PC Player ArrowKeys";
+                        pc.PlayerName = PC.KeyboardArrowKeysPlayerName;
                         pc.ListenToKeyboardArrowKeys = true;
                     }
 
