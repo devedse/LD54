@@ -57,13 +57,16 @@ public class MinigameManager : MonoBehaviour
         GameIndex++;
         if (_instance.SignalR.Players.Count < Games.Minigames[GameIndex].MinPlayers || _instance.SignalR.Players.Count > Games.Minigames[GameIndex].MaxPlayers)
         {
-            if (!Games.Minigames.Any(x => _instance.SignalR.Players.Count >= x.MinPlayers && _instance.SignalR.Players.Count <= x.MaxPlayers))
+            if (Games)
             {
-                throw new System.Exception("No matching games for playercount");
-            }
-            else
-            {
-                StartNextGame();
+                if (!Games.Minigames.Any(x => _instance.SignalR.Players.Count >= x.MinPlayers && _instance.SignalR.Players.Count <= x.MaxPlayers))
+                {
+                    throw new System.Exception("No matching games for playercount");
+                }
+                else
+                {
+                    StartNextGame();
+                }
             }
         }
         else
