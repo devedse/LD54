@@ -20,6 +20,8 @@ public class MG1 : MonoBehaviour
 
     private float offsetYPerCheese = 1.1f;
 
+    private Dictionary<int, bool> PlayerOnCooldown = new Dictionary<int, bool>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -66,6 +68,15 @@ public class MG1 : MonoBehaviour
                 break;
             }
         }
+    }
+
+
+
+    public IEnumerator CooldownPlayer(int player)
+    {
+        PlayerOnCooldown[player] = true;
+        yield return new WaitForSeconds(1f);
+        PlayerOnCooldown[player] = false;
     }
 
     public bool PlayerButtonPress(int player, int button)
@@ -123,8 +134,12 @@ public class MG1 : MonoBehaviour
 
     public void NewRound()
     {
-        float offSetPerPlayer = 7f;
-        float startX = 0 - offSetPerPlayer;
+        float leftX = -8f;
+        float rightX = 8f;
+
+        var playerXPositions = PlayerPositioner.DistributePlayers(playerCount, leftX, rightX, 4f, 1f);
+
+        var spaceRequired = playerCount * 4f + playerCount - 1 * 1f;
 
 
         whatColorsThisRound = new List<int>();
@@ -141,7 +156,8 @@ public class MG1 : MonoBehaviour
         {
             var ga = new GameObject(i.ToString());
             ga.transform.parent = allChildObjectStuff.transform;
-            ga.transform.localPosition = new Vector3(startX + (offSetPerPlayer * i), 10, 0);
+            ga.transform.localPosition = new Vector3(playerXPositions.positions[i], 10, 0);
+            ga.transform.localScale = new Vector3(playerXPositions.scale, playerXPositions.scale, playerXPositions.scale);
             rootPlayerObjects.Add(ga);
             playerCurRound.Add(0);
         }
