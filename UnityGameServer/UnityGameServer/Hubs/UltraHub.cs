@@ -45,7 +45,7 @@ namespace UnityGameServer.Hubs
             await Clients.Group(roomName).SendAsync("Server_ReceiveJoinRoom", clientName);
         }
 
-        public Task Client_SendButtonPress(int button)
+        public Task Client_SendButtonPress(int button, bool pressed)
         {
             Console.WriteLine($"Received button press {button} from {Context.ConnectionId}");
 
@@ -53,7 +53,11 @@ namespace UnityGameServer.Hubs
             if (connectionToRoomMap.TryGetValue(Context.ConnectionId, out string roomName))
             {
                 //Send to clients in the room (group)
-                return Clients.Group(roomName).SendAsync("Server_ReceiveButtonPress", button);
+                return Clients.Group(roomName).SendAsync("Server_ReceiveButtonPress", button, pressed);
+            }
+            else
+            {
+                Console.WriteLine("Could not find room name for connection id: " + Context.ConnectionId);
             }
             return Task.CompletedTask;
         }
