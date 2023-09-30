@@ -3,7 +3,7 @@ using UnityEngine;
 public class Pellet : MonoBehaviour
 {
     public Rigidbody rb;
-    public int proj_Force = 3;
+    public int proj_Force = 25;
     public float timer, proj_LifeTime = 3;
 
     // Start is called before the first frame update

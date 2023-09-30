@@ -51,10 +51,7 @@ public class Core : MonoBehaviour
 
         }
 
-        
 
-        //Spel klaar
-        //FindFirstObjectByType<GameFlow>().EndGame();
     }
 
     // Start is called before the first frame update
