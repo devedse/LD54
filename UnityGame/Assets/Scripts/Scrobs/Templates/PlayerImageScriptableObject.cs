@@ -6,4 +6,6 @@ using UnityEngine;
 public class PlayerImageScriptableObject : ScriptableObject
 {
     public Sprite ImageIdle;
+    public Sprite ImageSad;
+    public Sprite ImageWin;
 }
