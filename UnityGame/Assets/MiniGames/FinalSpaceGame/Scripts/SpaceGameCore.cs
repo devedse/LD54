@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Core : MonoBehaviour
 {
-    public GameObject arena, spaceship;
+    public GameObject arena, spaceship, players;
     public List<GameObject> playerSpawns;
     private int playerCount;
 
@@ -16,9 +17,8 @@ public class Core : MonoBehaviour
         var sig = mgm.SignalR;
         playerCount = sig.Players.Count;
 
-
         Instantiate(arena);
-        GameObject players = Instantiate(new GameObject("Players"));
+        players = Instantiate(new GameObject("Players"));
 
         spawnpoints = arena.transform.Find("SpawnPoints");
 
@@ -37,6 +37,9 @@ public class Core : MonoBehaviour
                     player.OnButton1Press.AddListener(() => playerControls.Button1Pressed());
                     player.OnButton2Press.AddListener(() => playerControls.Button2Pressed());
 
+                    player.OnButton0Release.AddListener(() => playerControls.Button0Released());
+                    player.OnButton1Release.AddListener(() => playerControls.Button1Released());
+                    player.OnButton2Release.AddListener(() => playerControls.Button2Released());
 
                     newPlayer.transform.position = transformChild.transform.position;
                     newPlayer.transform.rotation = transformChild.transform.rotation;
@@ -48,6 +51,7 @@ public class Core : MonoBehaviour
 
         }
 
+        
 
         //Spel klaar
         //FindFirstObjectByType<GameFlow>().EndGame();
@@ -56,12 +60,19 @@ public class Core : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("PlayerCount = " + players.transform.childCount);
 
+        if (players.transform.childCount == 1)
+        {
+            Debug.Log(players.transform.GetChild(0) + " is Victorious!!");
+
+            FindFirstObjectByType<GameFlow>().EndGame();
+        }
     }
 }
