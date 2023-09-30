@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 55fc4e03258529d4ab2b5d339f4dc5dc, type: 3}
-  m_Name: Cheezy
+  m_Name: Diggerino
   m_EditorClassIdentifier: 
-  SceneName: 1_Cheezy
+  SceneName: Diggerino
   MinPlayers: 1
-  MaxPlayers: 3
+  MaxPlayers: 16
