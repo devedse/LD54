@@ -39,21 +39,36 @@ public class SpaceShipFiller : MonoBehaviour
 
         socket.RemoveAllChildObjects();
 
-        var moduleInstantiated = GameObject.Instantiate(module);
+        var moduleInstantiated = GameObject.Instantiate(module, socket.transform);
         moduleInstantiated.transform.localPosition = Vector3.zero;
         moduleInstantiated.transform.localRotation = Quaternion.identity;
     }
 
-    public void SetProps(PC player)
+    public void SetProps(PC player, FaceType faceType = FaceType.Normal)
     {
         if (player?.PlayerImage?.texture != null)
         {
-            FaceL.material.mainTexture = player.PlayerImage.texture;
-            FaceR.material.mainTexture = player.PlayerImage.texture;
+            var texture = faceType switch
+            {
+                FaceType.Normal => player.PlayerImage.texture,
+                FaceType.Happy => player.PlayerHappy.texture,
+                FaceType.Mad => player.PlayerMad.texture,
+                _ => throw new System.Exception("Invalid face type")
+            };
 
-            AddModule(0, 0);
-            AddModule(1, 1);
-            AddModule(2, 2);
+            FaceL.material.mainTexture = texture;
+            FaceR.material.mainTexture = texture;
+
+            AddModule(0, (0 + player.PlayerIndex) % 3);
+            AddModule(1, (1 + player.PlayerIndex) % 3);
+            AddModule(2, (2 + player.PlayerIndex) % 3);
         }
     }
+}
+
+public enum FaceType
+{
+    Normal,
+    Happy,
+    Mad
 }
