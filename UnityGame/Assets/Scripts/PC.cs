@@ -8,6 +8,7 @@ public class PC : MonoBehaviour
     public int PlayerIndex; // never higher than playercount - 1
     public string PlayerName;
     public Sprite PlayerImage;
+    public Texture PlayerImageTexture;
 
     public UnityEvent OnButton0Press;
     public UnityEvent OnButton1Press;
