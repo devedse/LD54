@@ -46,6 +46,8 @@ jobs:
       with:
         targetPlatform: WebGL
         projectPath: './UnityGame'
+        versioning: Custom
+        version: 1.0.${{needs.generate_version_number.outputs.build_number}}
 
     # - name: Save Cache
     #   uses: actions/cache/save@v3
@@ -119,7 +121,9 @@ jobs:
         targetPlatform: StandaloneWindows64
         allowDirtyBuild: true
         projectPath: './UnityGame'
-
+        versioning: Custom
+        version: 1.0.${{needs.generate_version_number.outputs.build_number}}
+        
     # - name: Save Cache
     #   uses: actions/cache/save@v3
     #   with:
