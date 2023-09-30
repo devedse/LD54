@@ -92,6 +92,7 @@ public class SignalRTest : MonoBehaviour
         var player = Instantiate(PlayerPrefab, transform);
         var pc = player.GetComponent<PC>();
         pc.PlayerName = name;
+        pc.PlayerIndex = Players.Count;
         Players.Add(name, pc);
 
         HostScreen.AddPlayer(pc);
