@@ -5,7 +5,42 @@ using UnityEngine.SceneManagement;
 
 public class MinigameManager : MonoBehaviour
 {
-    public static MinigameManager Instance;
+    private static MinigameManager _instance;
+
+    public static MinigameManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                //So that shit works in Editor as well
+                _instance = new MinigameManager();
+                _instance.SignalR = new SignalRTest();
+
+                for (int i = 0; i < 2; i++)
+                {
+                    var keyboardPlayerControllerGA = new GameObject();
+                    keyboardPlayerControllerGA.name = $"KeboardPlayerController{i}";
+                    var pc = keyboardPlayerControllerGA.AddComponent<PC>();
+                    pc.PlayerIndex = i;
+
+                    if (i == 0)
+                    {
+                        pc.PlayerName = PC.KeyboardZXCPlayerName;
+                        pc.ListenToKeyboardZXC = true;
+                    }
+                    else if (i == 1)
+                    {
+                        pc.PlayerName = PC.KeyboardArrowKeysPlayerName;
+                        pc.ListenToKeyboardArrowKeys = true;
+                    }
+
+                    _instance.SignalR.Players.Add(i.ToString(), pc);
+                }
+            }
+            return _instance;
+        }
+    }
 
     public SignalRTest SignalR;
     public MinigamesScriptableObject Games;
@@ -13,7 +48,7 @@ public class MinigameManager : MonoBehaviour
 
     public void Start()
     {
-        Instance = this;
+        _instance = this;
     }
 
     public void StartNextGame()
