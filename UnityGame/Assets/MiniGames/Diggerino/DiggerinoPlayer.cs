@@ -44,7 +44,7 @@ public class DiggerinoPlayer : MonoBehaviour
             DirectionZ = 0;
             DirectionX = 1;
         }
-        else if (DirectionZ == -1)
+        else if (DirectionZ == 1)
         {
             DirectionZ = 0;
             DirectionX = -1;
@@ -70,7 +70,7 @@ public class DiggerinoPlayer : MonoBehaviour
             DirectionZ = 0;
             DirectionX = -1;
         }
-        else if (DirectionZ == -1)
+        else if (DirectionZ == 1)
         {
             DirectionZ = 0;
             DirectionX = 1;

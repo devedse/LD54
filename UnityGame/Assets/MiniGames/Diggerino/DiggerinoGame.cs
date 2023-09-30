@@ -49,6 +49,7 @@ public class DiggerinoGame : MonoBehaviour
                 Map[x][z].Diamond = true;
                 Map[x][z].Strength = 0;
                 totalDiamonds++;
+                UpdateTileColor(Map[x][z]);
                 z = Random.Range(3, GridSize);
                 if (!Map[x][z].Diamond)
                 {
@@ -61,22 +62,26 @@ public class DiggerinoGame : MonoBehaviour
 
 
         var playerCount = MinigameManager.Instance.SignalR.Players.Values.Count;
-        int spawnX = 0;
+        int spawnX = (GridSize / playerCount) / 2;
         foreach (var signalRPlayer in MinigameManager.Instance.SignalR.Players.Values)
         {
             var pi = Instantiate(DiggerinoPlayerPrefab);
             pi.transform.position = new Vector3(spawnX, 0, 0);
-            spawnX += GridSize / playerCount;
             var dp = pi.GetComponent<DiggerinoPlayer>();
             dp.Game = this;
             dp.PosX = spawnX;
             dp.SpawnX = spawnX;
             dp.PosZ = 0;
             dp.DirectionZ = 1;
-            dp.SetPlayerImage(signalRPlayer.PlayerImageTexture);
+            if (signalRPlayer.PlayerImageTexture)
+                dp.SetPlayerImage(signalRPlayer.PlayerImageTexture);
             signalRPlayer.OnButton0Press.AddListener(() => dp.TurnLeft());
             signalRPlayer.OnButton1Press.AddListener(() => dp.MoveForward());
             signalRPlayer.OnButton2Press.AddListener(() => dp.TurnRight());
+            dp.UpdatePos();
+            spawnX += GridSize / playerCount;
+            if (spawnX >= GridSize)
+                spawnX -= GridSize;
         }
     }
 
