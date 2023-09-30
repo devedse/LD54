@@ -11,6 +11,13 @@ public class MinigameManager : MonoBehaviour
     public GameObject ScoreCanvas;
     public IngameScoreScreen ScoreScreen;
 
+    public PlayerToColorMappingScriptableObject PlayerColors;
+
+    public Color GetPlayerColor(int playerIndex)
+    {
+        return PlayerColors.Colors[playerIndex % PlayerColors.Colors.Count];
+    }
+
     private static MinigameManager _instance;
 
     public static MinigameManager Instance
@@ -57,6 +64,9 @@ public class MinigameManager : MonoBehaviour
 
                 var miniGames = AssetDatabase.FindAssets("Minigames").OrderBy(x => x).Select(x => AssetDatabase.GUIDToAssetPath(x)).Where(x => x.Contains("Minigames.asset")).ToList();
                 _instance.Games = AssetDatabase.LoadAssetAtPath<MinigamesScriptableObject>(miniGames[0]);
+
+                var colors = AssetDatabase.FindAssets("PlayerColors").OrderBy(x => x).Select(x => AssetDatabase.GUIDToAssetPath(x)).Where(x => x.Contains("PlayerColors.asset")).ToList();
+                _instance.PlayerColors = AssetDatabase.LoadAssetAtPath<PlayerToColorMappingScriptableObject>(colors[0]);
 
                 var scoreCanvasPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.FindAssets("IngameScoreScreenPrefab").OrderBy(x => x).Select(x => AssetDatabase.GUIDToAssetPath(x)).Where(x => x.Contains("IngameScoreScreenPrefab.prefab")).ToList()[0]);
                 var scp = Instantiate(scoreCanvasPrefab);
