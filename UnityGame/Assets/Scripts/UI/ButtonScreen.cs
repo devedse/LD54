@@ -19,11 +19,11 @@ public class ButtonScreen : MonoBehaviour
 
     public void OnPess(int index)
     {
-        SignalR.SendButtonPress(index, "true");
+        SignalR.SendButtonPress(index.ToString(), "true");
     }
 
     public void OnRelease(int index)
     {
-        SignalR.SendButtonPress(index, "false");
+        SignalR.SendButtonPress(index.ToString(), "false");
     }
 }

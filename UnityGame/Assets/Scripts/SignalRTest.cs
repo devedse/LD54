@@ -106,7 +106,7 @@ public class SignalRTest : MonoBehaviour
         Debug.Log("Joining room");
         SignalR.Invoke("Client_JoinRoom", roomId, clientName);
     }
-    public void SendButtonPress(int button, string pressed)
+    public void SendButtonPress(string button, string pressed)
     {
         SignalR.Invoke("Client_SendButtonPress", button, pressed);
     }
