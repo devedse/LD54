@@ -55,10 +55,11 @@ public class MinigameManager : MonoBehaviour
     public void StartNextGame()
     {
         GameIndex++;
-        if (_instance.SignalR.Players.Count < Games.Minigames[GameIndex].MinPlayers || _instance.SignalR.Players.Count > Games.Minigames[GameIndex].MaxPlayers)
+        if (Games)
         {
-            if (Games)
+            if (_instance.SignalR.Players.Count < Games.Minigames[GameIndex].MinPlayers || _instance.SignalR.Players.Count > Games.Minigames[GameIndex].MaxPlayers)
             {
+
                 if (!Games.Minigames.Any(x => _instance.SignalR.Players.Count >= x.MinPlayers && _instance.SignalR.Players.Count <= x.MaxPlayers))
                 {
                     throw new System.Exception("No matching games for playercount");
@@ -68,10 +69,10 @@ public class MinigameManager : MonoBehaviour
                     StartNextGame();
                 }
             }
-        }
-        else
-        {
-            SceneManager.LoadScene(Games.Minigames[GameIndex].SceneName);
+            else
+            {
+                SceneManager.LoadScene(Games.Minigames[GameIndex].SceneName);
+            }
         }
     }
 }
