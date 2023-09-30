@@ -22,6 +22,9 @@ public class PC : MonoBehaviour
     public bool ListenToKeyboardZXC = false;
     public bool ListenToKeyboardArrowKeys = false;
 
+    public int ScoreFromCurrentMinigame;
+
+
     public void OnPress(int button, bool pressed)
     {
         switch (button)

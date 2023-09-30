@@ -118,6 +118,7 @@ public class DiggerinoGame : MonoBehaviour
                 diggerinoPlayer.DirectionZ = 1;
                 diggerinoPlayer.ChangeRotation();
                 targetTile.Lava = false;
+                UpdateTileColor(targetTile);
             }
             else
             {
