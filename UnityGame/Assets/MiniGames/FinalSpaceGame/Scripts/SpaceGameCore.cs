@@ -6,36 +6,53 @@ public class Core : MonoBehaviour
 {
     public GameObject arena, spaceship;
     public List<GameObject> playerSpawns;
-    public int playerCount;
+    private int playerCount;
 
     private Transform spawnpoints;
 
-    // Start is called before the first frame update
-    void Start()
+    public void StartGame()
     {
+        var mgm = MinigameManager.Instance;
+        var sig = mgm.SignalR;
+        playerCount = sig.Players.Count;
+
+
         Instantiate(arena);
         GameObject players = Instantiate(new GameObject("Players"));
 
         spawnpoints = arena.transform.Find("SpawnPoints");
 
-        for (int i = 0; i < playerCount; i++)
+        foreach(var player in sig.Players.Values)
         {
             for (int j = 0; j < spawnpoints.childCount; j++)
             {
-                if (spawnpoints.GetChild(j).name.Contains((i + 1).ToString()))
+                if (spawnpoints.GetChild(j).name.Contains((player.PlayerIndex + 1).ToString()))
                 {
                     Transform transformChild = spawnpoints.GetChild(j).transform;
 
                     GameObject newPlayer = Instantiate(spaceship);
+                    var playerControls = newPlayer.GetComponent<PlayerControls>();
+
+                    player.OnButton0Press.AddListener(() => playerControls.Button0Pressed());
+                    player.OnButton1Press.AddListener(() => playerControls.Button1Pressed());
+                    player.OnButton2Press.AddListener(() => playerControls.Button2Pressed());
+
+
                     newPlayer.transform.position = transformChild.transform.position;
                     newPlayer.transform.rotation = transformChild.transform.rotation;
 
-                    newPlayer.name = "Player" + (i + 1);
+                    newPlayer.name = "Player" + (player.PlayerIndex + 1);
                     newPlayer.transform.SetParent(players.transform);
                 }
             }
-            
+
         }
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+       
     }
 
     // Update is called once per frame
