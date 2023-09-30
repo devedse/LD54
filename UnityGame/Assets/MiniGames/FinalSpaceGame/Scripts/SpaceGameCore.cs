@@ -22,7 +22,7 @@ public class Core : MonoBehaviour
 
         spawnpoints = arena.transform.Find("SpawnPoints");
 
-        foreach(var player in sig.Players.Values)
+        foreach (var player in sig.Players.Values)
         {
             for (int j = 0; j < spawnpoints.childCount; j++)
             {
@@ -47,17 +47,21 @@ public class Core : MonoBehaviour
             }
 
         }
+
+
+        //Spel klaar
+        //FindFirstObjectByType<GameFlow>().EndGame();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-       
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
