@@ -19,7 +19,7 @@ public class MainMenu : MonoBehaviour
     {
         HideAll();
         HostPanel.SetActive(true);
-        HostScreen.RoomText.text = name;
+        HostScreen.RoomText.text = $"Go to https://ld54.devedse.duckdns.org/ and join: {name}";
     }
 
     private void HideAll()

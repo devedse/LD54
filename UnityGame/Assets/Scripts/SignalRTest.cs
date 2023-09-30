@@ -12,7 +12,6 @@ public class SignalRTest : MonoBehaviour
     public MainMenu MainMenu;
     public HostScreen HostScreen;
 
-
     private string DeveURL = "https://LD54_Server.Devedse.DuckDNS.org/UltraHub";
 
     public void ReceiveRoomName(string name)
@@ -88,14 +87,17 @@ public class SignalRTest : MonoBehaviour
 
     }
 
-    private void AddClient(string name)
+    public PC AddClient(string name)
     {
         var player = Instantiate(PlayerPrefab, transform);
         var pc = player.GetComponent<PC>();
         pc.PlayerName = name;
+        pc.PlayerIndex = Players.Count;
         Players.Add(name, pc);
 
         HostScreen.AddPlayer(pc);
+
+        return pc;
     }
 
     public void OnJoinLobby(string lobbyCode)
