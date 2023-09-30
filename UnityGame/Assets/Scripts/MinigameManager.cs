@@ -18,9 +18,12 @@ public class MinigameManager : MonoBehaviour
         {
             if (_instance == null)
             {
+                var editorOnlyHackForInstanceWorkStuff = new GameObject();
+
+
                 //So that shit works in Editor as well
-                _instance = new MinigameManager();
-                _instance.SignalR = new SignalRTest();
+                _instance = editorOnlyHackForInstanceWorkStuff.AddComponent<MinigameManager>();
+                _instance.SignalR = editorOnlyHackForInstanceWorkStuff.AddComponent<SignalRTest>();
 
                 for (int i = 0; i < 2; i++)
                 {

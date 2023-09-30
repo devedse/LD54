@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SignalRTest : MonoBehaviour
@@ -13,6 +14,11 @@ public class SignalRTest : MonoBehaviour
     public HostScreen HostScreen;
 
     private string DeveURL = "https://LD54_Server.Devedse.DuckDNS.org/UltraHub";
+
+    public PC GetPlayerByNumber(int playerNumber)
+    {
+        return Players.Values.FirstOrDefault(t => t.PlayerIndex == playerNumber);
+    }
 
     public void ReceiveRoomName(string name)
     {
@@ -40,7 +46,7 @@ public class SignalRTest : MonoBehaviour
     {
         SignalR = new SignalR();
 #if UNITY_EDITOR
-//        DeveURL = "http://10.88.10.1:5281/UltraHub";
+        //        DeveURL = "http://10.88.10.1:5281/UltraHub";
 #endif
         SignalR.Init(DeveURL);
 
@@ -116,7 +122,7 @@ public class SignalRTest : MonoBehaviour
 
     void Start()
     {
-        
+
     }
 
     public void JoinRoom(string roomId, string clientName)
@@ -132,6 +138,6 @@ public class SignalRTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
