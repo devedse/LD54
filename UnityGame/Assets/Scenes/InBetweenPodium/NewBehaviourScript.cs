@@ -33,9 +33,9 @@ public class NewBehaviourScript : MonoBehaviour
     {
         var spaceShip = GameObject.Instantiate(PrefabSpaceship, this.transform);
 
-        var playerObj = MinigameManager.Instance.SignalR.Players.FirstOrDefault(t => t.Value.PlayerIndex == player);
+        var playerObj = MinigameManager.Instance.SignalR.GetPlayerByNumber(player);
 
-        spaceShip.GetComponent<SpaceShipFiller>().SetProps(playerObj.Value);
+        spaceShip.GetComponent<SpaceShipFiller>().SetProps(playerObj);
 
         return spaceShip;
     }

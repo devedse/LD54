@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -18,11 +19,14 @@ public class MinigameManager : MonoBehaviour
         {
             if (_instance == null)
             {
-                //So that shit works in Editor as well
-                _instance = new MinigameManager();
-                _instance.SignalR = new SignalRTest();
+                var editorOnlyHackForInstanceWorkStuff = new GameObject();
 
-                for (int i = 0; i < 8; i++)
+
+                //So that shit works in Editor as well
+                _instance = editorOnlyHackForInstanceWorkStuff.AddComponent<MinigameManager>();
+                _instance.SignalR = editorOnlyHackForInstanceWorkStuff.AddComponent<SignalRTest>();
+
+                for (int i = 0; i < 2; i++)
                 {
                     var keyboardPlayerControllerGA = new GameObject();
                     keyboardPlayerControllerGA.name = $"KeboardPlayerController{i}";
@@ -40,8 +44,26 @@ public class MinigameManager : MonoBehaviour
                         pc.ListenToKeyboardArrowKeys = true;
                     }
 
+
+                    var assettebandje = AssetDatabase.FindAssets("PlayerImagesScriptableObject").OrderBy(x => x).Select(x => AssetDatabase.GUIDToAssetPath(x)).Where(x => x.Contains("PlayerImagesScriptableObject.asset")).ToList();
+                    var imgScrobs = AssetDatabase.LoadAssetAtPath<PlayerImagesScriptableObject>(assettebandje[0]).Images;
+                    var imgScrob = imgScrobs[UnityEngine.Random.Range(0, imgScrobs.Count)];
+
+                    pc.PlayerImage = imgScrob.ImageIdle;
+                    pc.PlayerMad = imgScrob.ImageSad;
+                    pc.PlayerHappy = imgScrob.ImageWin;
                     _instance.SignalR.Players.Add(i.ToString(), pc);
                 }
+
+                var miniGames = AssetDatabase.FindAssets("Minigames").OrderBy(x => x).Select(x => AssetDatabase.GUIDToAssetPath(x)).Where(x => x.Contains("Minigames.asset")).ToList();
+                _instance.Games = AssetDatabase.LoadAssetAtPath<MinigamesScriptableObject>(miniGames[0]);
+
+                var scoreCanvasPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.FindAssets("IngameScoreScreenPrefab").OrderBy(x => x).Select(x => AssetDatabase.GUIDToAssetPath(x)).Where(x => x.Contains("IngameScoreScreenPrefab.prefab")).ToList()[0]);
+                var scp = Instantiate(scoreCanvasPrefab);
+                _instance.ScoreCanvas = scp;
+                _instance.ScoreScreen = scp.GetComponentInChildren<IngameScoreScreen>();
+                _instance.ScoreCanvas.SetActive(true);
+                _instance.ScoreScreen.Init();
             }
             return _instance;
         }

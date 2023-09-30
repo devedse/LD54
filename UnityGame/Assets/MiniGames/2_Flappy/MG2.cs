@@ -24,6 +24,8 @@ public class MG2 : MonoBehaviour
 
     private float StartTime;
 
+    private float LastScoreTime;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +34,7 @@ public class MG2 : MonoBehaviour
     public void StartGame()
     {
         StartTime = Time.timeSinceLevelLoad;
+        LastScoreTime = Time.timeSinceLevelLoad;
         Physics.gravity = new Vector3(0, -50, 0);
 
         var mgm = MinigameManager.Instance;
@@ -53,37 +56,19 @@ public class MG2 : MonoBehaviour
             GameObject playerFlap = GameObject.Instantiate(Flap, this.transform);
             playerFlap.name = i.ToString();
             playerFlap.transform.position = new Vector3(-5, 3 - (i * 2f), 0);
-            var meshRenderer = playerFlap.GetComponent<MeshRenderer>();
 
-            meshRenderer.material.color = PlayerColors[i];
+            var spaceShipFiller = playerFlap.GetComponent<SpaceShipFiller>();
+            var player = MinigameManager.Instance.SignalR.GetPlayerByNumber(i);
+            spaceShipFiller.SetProps(player);
+
+            //var meshRenderer = playerFlap.GetComponent<MeshRenderer>();
+
+            //meshRenderer.material.color = PlayerColors[i];
 
             Flappers.Add(playerFlap);
         }
 
         //StartCoroutine(FakeButtons());
-    }
-
-    public IEnumerator FakeButtons()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(0.1f);
-            var randomPlayer = Random.Range(0, playerCount);
-            var randomButton = Random.Range(0, 3);
-            var pressed = Random.Range(0, 2) == 0;
-
-            if (randomButton == 1)
-            {
-                //Temp ai skip
-                continue;
-            }
-
-            var gameIsOver = PlayerButtonPress(randomPlayer, randomButton, pressed);
-            if (gameIsOver)
-            {
-                break;
-            }
-        }
     }
 
     public bool PlayerButtonPress(int player, int button, bool pressed)
@@ -151,9 +136,18 @@ public class MG2 : MonoBehaviour
 
         var playersToRemove = new List<GameObject>();
 
+        bool shouldGiveScore = false;
+
+        if (LastScoreTime + 1f < Time.timeSinceLevelLoad)
+        {
+            shouldGiveScore = true;
+            LastScoreTime = Time.timeSinceLevelLoad;
+        }
+
         foreach (var flap in Flappers)
         {
             var playerNumber = int.Parse(flap.name);
+
             if (LeftButtonPressed.ContainsKey(playerNumber) && LeftButtonPressed[playerNumber])
             {
                 flap.transform.localPosition = new Vector3(flap.transform.localPosition.x - (5f * Time.deltaTime), flap.transform.localPosition.y, flap.transform.localPosition.z);
@@ -172,6 +166,8 @@ public class MG2 : MonoBehaviour
             var fscale = flap.transform.localScale;
             var fbounds = new Bounds(fpos, fscale);
 
+            bool dead = false;
+
             foreach (var building in Buildings)
             {
                 var bpos = building.transform.position;
@@ -180,10 +176,17 @@ public class MG2 : MonoBehaviour
 
                 if (fbounds.Intersects(bbounds))
                 {
+                    MinigameManager.Instance.SignalR.GetPlayerByNumber(playerNumber).ChangeScore(0);
+
                     playersToRemove.Add(flap);
+                    dead = true;
                 }
             }
 
+            if (!dead && shouldGiveScore)
+            {
+                MinigameManager.Instance.SignalR.GetPlayerByNumber(playerNumber).ChangeScore(1);
+            }
         }
 
         foreach (var flap in playersToRemove)

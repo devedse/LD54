@@ -46,10 +46,13 @@ public class DiggerinoGame : MonoBehaviour
             for (int i = 0; i < 1 + (MinigameManager.Instance.SignalR.Players.Count / 6); i++)
             {
                 var z = Random.Range(3, GridSize);
-                Map[x][z].Diamond = true;
-                Map[x][z].Strength = 0;
-                totalDiamonds++;
-                UpdateTileColor(Map[x][z]);
+                if (!Map[x][z].Diamond)
+                {
+                    Map[x][z].Diamond = true;
+                    Map[x][z].Strength = 0;
+                    totalDiamonds++;
+                    UpdateTileColor(Map[x][z]);
+                }
             }
         }
 

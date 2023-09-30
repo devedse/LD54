@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SceneName: 1_Cheezy
   MinPlayers: 1
-  MaxPlayers: 3
+  MaxPlayers: 16
