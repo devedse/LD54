@@ -18,6 +18,11 @@ namespace UnityGameServer.Hubs
         public static readonly ConcurrentDictionary<string, Room> Rooms = new ConcurrentDictionary<string, Room>();
         private static readonly ConcurrentDictionary<string, string> ConnectionToRoomMap = new ConcurrentDictionary<string, string>();
 
+        public UltraHub()
+        {
+            Rooms.TryAdd("BLAH", new Room() { ConnectionIdServer = "BLAH" });
+        }
+
         public string CreateUniqueRoomName()
         {
             string roomName;
@@ -87,7 +92,7 @@ namespace UnityGameServer.Hubs
             {
                 room.ConnectionIdsClients.TryAdd(Context.ConnectionId, clientName);
                 ConnectionToRoomMap.TryAdd(Context.ConnectionId, roomName);
-                await Clients.Caller.SendAsync("Client_JoinRoomResult", true);
+                await Clients.Caller.SendAsync("Client_JoinRoomResult", "true");
                 await Clients.Client(room.ConnectionIdServer).SendAsync("Server_ReceiveJoinRoom", clientName);
                 Console.WriteLine($"Client {Context.ConnectionId} joined room {roomName}. Count in room: {room.ConnectionIdsClients.Count}");
                 return;
