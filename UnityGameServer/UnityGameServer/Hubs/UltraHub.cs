@@ -15,7 +15,7 @@ namespace UnityGameServer.Hubs
 
     public class UltraHub : Hub
     {
-        private static readonly ConcurrentDictionary<string, Room> Rooms = new ConcurrentDictionary<string, Room>();
+        public static readonly ConcurrentDictionary<string, Room> Rooms = new ConcurrentDictionary<string, Room>();
         private static readonly ConcurrentDictionary<string, string> ConnectionToRoomMap = new ConcurrentDictionary<string, string>();
 
         public string CreateUniqueRoomName()
