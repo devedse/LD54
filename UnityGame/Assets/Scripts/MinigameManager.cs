@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -43,8 +44,19 @@ public class MinigameManager : MonoBehaviour
                         pc.ListenToKeyboardArrowKeys = true;
                     }
 
+
+                    var assettebandje = AssetDatabase.FindAssets("PlayerImagesScriptableObject").OrderBy(x => x).Select(x => AssetDatabase.GUIDToAssetPath(x)).Where(x => x.Contains("PlayerImagesScriptableObject.asset")).ToList();
+                    var imgScrobs = AssetDatabase.LoadAssetAtPath<PlayerImagesScriptableObject>(assettebandje[0]).Images;
+                    var imgScrob = imgScrobs[UnityEngine.Random.Range(0, imgScrobs.Count)];
+
+                    pc.PlayerImage = imgScrob.ImageIdle;
+                    pc.PlayerMad = imgScrob.ImageSad;
+                    pc.PlayerHappy = imgScrob.ImageWin;
                     _instance.SignalR.Players.Add(i.ToString(), pc);
                 }
+
+                var miniGames = AssetDatabase.FindAssets("Minigames").OrderBy(x => x).Select(x => AssetDatabase.GUIDToAssetPath(x)).Where(x => x.Contains("Minigames.asset")).ToList();
+                _instance.Games = AssetDatabase.LoadAssetAtPath<MinigamesScriptableObject>(miniGames[0]);
             }
             return _instance;
         }
