@@ -29,13 +29,13 @@ public class NewBehaviourScript : MonoBehaviour
     }
 
 
-    public GameObject InstantiateSpaceShipForPlayer(int player)
+    public GameObject InstantiateSpaceShipForPlayer(int player, FaceType faceType)
     {
         var spaceShip = GameObject.Instantiate(PrefabSpaceship, this.transform);
 
         var playerObj = MinigameManager.Instance.SignalR.GetPlayerByNumber(player);
 
-        spaceShip.GetComponent<SpaceShipFiller>().SetProps(playerObj);
+        spaceShip.GetComponent<SpaceShipFiller>().SetProps(playerObj, faceType);
 
         return spaceShip;
     }
@@ -56,7 +56,7 @@ public class NewBehaviourScript : MonoBehaviour
             var to = new Vector3(rangeLeft + (inBetween * (i - 3)), 0, xPos);
             var from = to + new Vector3(0, 0, -3f);
 
-            var spaceShip = InstantiateSpaceShipForPlayer(i);
+            var spaceShip = InstantiateSpaceShipForPlayer(i, FaceType.Normal);
             var scaleForViewers = 0.35f;
             spaceShip.transform.localScale = new Vector3(scaleForViewers, scaleForViewers, scaleForViewers);
 
@@ -109,7 +109,7 @@ public class NewBehaviourScript : MonoBehaviour
         var playerCount = math.min(3, MinigameManager.Instance.SignalR.Players.Count);
         for (int i = playerCount; i > 0; i--)
         {
-            var spaceShip = InstantiateSpaceShipForPlayer(i);
+            var spaceShip = InstantiateSpaceShipForPlayer(i, FaceType.Happy);
 
             if (i == 3)
             {
@@ -185,7 +185,7 @@ public class NewBehaviourScript : MonoBehaviour
             }
         }
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(200f);
 
         FindFirstObjectByType<GameFlow>().NextGame();
     }

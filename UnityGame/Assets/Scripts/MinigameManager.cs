@@ -26,7 +26,7 @@ public class MinigameManager : MonoBehaviour
                 _instance = editorOnlyHackForInstanceWorkStuff.AddComponent<MinigameManager>();
                 _instance.SignalR = editorOnlyHackForInstanceWorkStuff.AddComponent<SignalRTest>();
 
-                for (int i = 0; i < 2; i++)
+                for (int i = 0; i < 10; i++)
                 {
                     var keyboardPlayerControllerGA = new GameObject();
                     keyboardPlayerControllerGA.name = $"KeboardPlayerController{i}";

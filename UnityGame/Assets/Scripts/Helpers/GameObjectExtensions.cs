@@ -1,19 +1,25 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts.Helpers
+public static class GameObjectExtensions
 {
-    public static class GameObjectExtensions
+    static public GameObject GetChildGameObjectByName(this GameObject fromGameObject, string name)
     {
-        static public GameObject GetChildGameObjectByName(this GameObject fromGameObject, string name)
+        foreach (Transform child in fromGameObject.transform)
         {
-            foreach (Transform child in fromGameObject.transform)
+            if (child.name == name)
             {
-                if (child.name == name)
-                {
-                    return child.gameObject;
-                }
+                return child.gameObject;
             }
-            return null;
         }
+        return null;
+    }
+
+    static public GameObject RemoveAllChildObjects(this GameObject gameObject)
+    {
+        foreach (Transform child in gameObject.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+        return gameObject;
     }
 }
