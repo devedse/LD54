@@ -27,10 +27,12 @@ public class MG2 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+    }
+
+    public void StartGame()
+    {
         StartTime = Time.timeSinceLevelLoad;
         Physics.gravity = new Vector3(0, -50, 0);
-
-
 
         var mgm = MinigameManager.Instance;
         var sig = mgm.SignalR;
@@ -58,9 +60,7 @@ public class MG2 : MonoBehaviour
             Flappers.Add(playerFlap);
         }
 
-
         //StartCoroutine(FakeButtons());
-
     }
 
     public IEnumerator FakeButtons()
@@ -156,11 +156,11 @@ public class MG2 : MonoBehaviour
             var playerNumber = int.Parse(flap.name);
             if (LeftButtonPressed.ContainsKey(playerNumber) && LeftButtonPressed[playerNumber])
             {
-                flap.transform.localPosition = new Vector3(flap.transform.localPosition.x - (0.1f * Time.deltaTime), flap.transform.localPosition.y, flap.transform.localPosition.z);
+                flap.transform.localPosition = new Vector3(flap.transform.localPosition.x - (5f * Time.deltaTime), flap.transform.localPosition.y, flap.transform.localPosition.z);
             }
             if (RightButtonPressed.ContainsKey(playerNumber) && RightButtonPressed[playerNumber])
             {
-                flap.transform.localPosition = new Vector3(flap.transform.localPosition.x + (0.1f * Time.deltaTime), flap.transform.localPosition.y, flap.transform.localPosition.z);
+                flap.transform.localPosition = new Vector3(flap.transform.localPosition.x + (5f * Time.deltaTime), flap.transform.localPosition.y, flap.transform.localPosition.z);
             }
 
             if (flap.transform.localPosition.y < -3.5f)
@@ -195,7 +195,7 @@ public class MG2 : MonoBehaviour
         if (Flappers.Count == 0)
         {
             //Game over
-            Debug.Log("Game over");
+            FindFirstObjectByType<GameFlow>().EndGame();
             return;
         }
     }
