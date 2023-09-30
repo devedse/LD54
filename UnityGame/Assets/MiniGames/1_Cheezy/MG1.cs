@@ -29,9 +29,9 @@ public class MG1 : MonoBehaviour
 
         foreach(var player in sig.Players.Values)
         {
-            player.OnButton0Press.AddListener(PlayerButtonPress(player.PlayerIndex, 0));
-            player.OnButton1Press.AddListener(PlayerButtonPress(player.PlayerIndex, 1));
-            player.OnButton2Press.AddListener(PlayerButtonPress(player.PlayerIndex, 2));
+            player.OnButton0Press.AddListener(() => PlayerButtonPress(player.PlayerIndex, 0));
+            player.OnButton1Press.AddListener(() => PlayerButtonPress(player.PlayerIndex, 1));
+            player.OnButton2Press.AddListener(() => PlayerButtonPress(player.PlayerIndex, 2));
         }
 
         NewRound();
