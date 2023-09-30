@@ -11,6 +11,8 @@ public class PC : MonoBehaviour
     public int PlayerIndex; // never higher than playercount - 1
     public string PlayerName;
     public Sprite PlayerImage;
+    public Sprite PlayerHappy;
+    public Sprite PlayerMad;
 
     public UnityEvent OnButton0Press = new UnityEvent();
     public UnityEvent OnButton1Press = new UnityEvent();
@@ -23,7 +25,16 @@ public class PC : MonoBehaviour
     public bool ListenToKeyboardArrowKeys = false;
 
     public int ScoreFromCurrentMinigame;
+    public List<IngameScoreScreenCard> Cards;
 
+    public void ChangeScore(int amount)
+    {
+        ScoreFromCurrentMinigame += amount;
+        foreach (var card in Cards)
+        {
+            card.UpdateScore(ScoreFromCurrentMinigame, amount);
+        }
+    }
 
     public void OnPress(int button, bool pressed)
     {

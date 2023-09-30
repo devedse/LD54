@@ -58,6 +58,11 @@ public class MinigameManager : MonoBehaviour
         _instance = this;
     }
 
+    public void InitializeNewGame()
+    {
+        StartNextGame();
+    }
+
     public void StartNextGame()
     {
         GameIndex++;
