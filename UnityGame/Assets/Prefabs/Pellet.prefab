@@ -147,6 +147,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 15782368526331684}
-  proj_Force: 10
+  proj_Force: 23
   timer: 0
   proj_LifeTime: 2

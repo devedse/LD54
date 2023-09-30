@@ -57,6 +57,13 @@ public class MinigameManager : MonoBehaviour
 
                 var miniGames = AssetDatabase.FindAssets("Minigames").OrderBy(x => x).Select(x => AssetDatabase.GUIDToAssetPath(x)).Where(x => x.Contains("Minigames.asset")).ToList();
                 _instance.Games = AssetDatabase.LoadAssetAtPath<MinigamesScriptableObject>(miniGames[0]);
+
+                var scoreCanvasPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.FindAssets("IngameScoreScreenPrefab").OrderBy(x => x).Select(x => AssetDatabase.GUIDToAssetPath(x)).Where(x => x.Contains("IngameScoreScreenPrefab.prefab")).ToList()[0]);
+                var scp = Instantiate(scoreCanvasPrefab);
+                _instance.ScoreCanvas = scp;
+                _instance.ScoreScreen = scp.GetComponentInChildren<IngameScoreScreen>();
+                _instance.ScoreCanvas.SetActive(true);
+                _instance.ScoreScreen.Init();
             }
             return _instance;
         }
