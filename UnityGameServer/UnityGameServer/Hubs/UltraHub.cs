@@ -115,7 +115,7 @@ namespace UnityGameServer.Hubs
                 if (Rooms.TryGetValue(roomName, out Room room))
                 {
                     var playerName = "???";
-                    if (ConnectionIdToPlayerNameMapping.TryGetValue(Context.ConnectionId, out var obtainedPlayerName)
+                    if (ConnectionIdToPlayerNameMapping.TryGetValue(Context.ConnectionId, out var obtainedPlayerName))
                     {
                         playerName = obtainedPlayerName;
                     }
