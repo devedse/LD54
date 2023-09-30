@@ -107,11 +107,11 @@ public class NewBehaviourScript : MonoBehaviour
 
 
         var playerCount = math.min(3, MinigameManager.Instance.SignalR.Players.Count);
-        for (int i = playerCount; i > 0; i--)
+        for (int i = playerCount - 1; i >= 0; i--)
         {
             var spaceShip = InstantiateSpaceShipForPlayer(i, FaceType.Happy);
 
-            if (i == 3)
+            if (i == 2)
             {
                 spaceShip.transform.localPosition = new Vector3(5f, 0, 0);
 
@@ -131,7 +131,7 @@ public class NewBehaviourScript : MonoBehaviour
                     yield return null;
                 }
             }
-            if (i == 2)
+            if (i == 1)
             {
                 spaceShip.transform.localPosition = new Vector3(5f, 0, 0);
 
@@ -151,7 +151,7 @@ public class NewBehaviourScript : MonoBehaviour
                     yield return null;
                 }
             }
-            if (i == 1)
+            if (i == 0)
             {
                 var from = new Vector3(-5f, 1, -1f);
                 var to = new Vector3(5f, 1, -1f);
