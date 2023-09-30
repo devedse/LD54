@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -461,8 +461,8 @@ MonoBehaviour:
   arena: {fileID: 6556768203843916279, guid: 14e566824e501494cb89d054f1c06254, type: 3}
   spaceship: {fileID: 8386107060268115217, guid: 962bedd77ffdc814f884348721a5e146,
     type: 3}
+  players: {fileID: 0}
   playerSpawns: []
-  playerCount: 8
 --- !u!1 &1946005955
 GameObject:
   m_ObjectHideFlags: 0

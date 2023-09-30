@@ -1,3 +1,5 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerControls : MonoBehaviour
@@ -8,7 +10,9 @@ public class PlayerControls : MonoBehaviour
 
     public int Health = 100;
     public int CurrentHealth = 100;
-    Rect hud_Health;
+    public RectTransform hud_Health;
+
+    public List<GameObject> SocketAttachments;
 
     public int Armor = 10;
     public int ShipSpeed = 10;
@@ -35,7 +39,7 @@ public class PlayerControls : MonoBehaviour
         
         for (int i = 0; i < transform.childCount; i++)
         {
-            Debug.Log("Found " + transform.GetChild(i).name);
+            //Debug.Log("Found " + transform.GetChild(i).name);
 
             if (transform.GetChild(i).name.Equals("Hardpoints")) 
             {
@@ -43,11 +47,19 @@ public class PlayerControls : MonoBehaviour
 
                 for(int j = 0; j < subChild; j++)
                 {
-                    Debug.Log("Found subchild " + transform.GetChild(i).GetChild(j).name);
+                    //Debug.Log("Found subchild " + transform.GetChild(i).GetChild(j).name);
 
-                    if (transform.GetChild(i).GetChild(j).name == "Chainsaw") { transform.GetChild(i).GetChild(j).gameObject.SetActive(false); }
-                    if (transform.GetChild(i).GetChild(j).name == "Booster") { transform.GetChild(i).GetChild(j).gameObject.SetActive(false); }
-                    if (transform.GetChild(i).GetChild(j).name == "Booster") { transform.GetChild(i).GetChild(j).gameObject.SetActive(false); }
+                    if (transform.GetChild(i).GetChild(j).name == "ChainSaw") {
+
+                        Transform parent = transform.GetChild(i).GetChild(j);
+                        parent.gameObject.SetActive(false);
+
+                        //foreach (Transform child in parent) { child.gameObject.SetActive(false); }
+                    }
+                    if (transform.GetChild(i).GetChild(j).name == "Booster") { 
+                        transform.GetChild(i).GetChild(j).gameObject.SetActive(false);
+                    }
+                    //if (transform.GetChild(i).GetChild(j).name == "Booster") { transform.GetChild(i).GetChild(j).gameObject.SetActive(false); }
                 }
 
 
@@ -132,7 +144,7 @@ public class PlayerControls : MonoBehaviour
         {
             Destroy(collision.gameObject);
 
-
+            GetHit(30);
         }
     }
 
@@ -145,7 +157,7 @@ public class PlayerControls : MonoBehaviour
         else
         {
             Health -= damage + Armor;
-
+            hud_Health.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Health);
         }
     }
 }
