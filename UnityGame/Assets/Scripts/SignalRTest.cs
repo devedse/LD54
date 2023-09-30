@@ -36,7 +36,8 @@ public class SignalRTest : MonoBehaviour
     {
         SignalR = new SignalR();
 #if UNITY_EDITOR
-        //DeveURL = "http://10.88.10.1:5281/UltraHub";
+        DeveURL = "http://10.88.10.1:5281/UltraHub";
+
 #endif
         SignalR.Init(DeveURL);
 
@@ -61,13 +62,13 @@ public class SignalRTest : MonoBehaviour
             //Debug.Log($"Server_ReceiveRoomName: {json.message}");
             Debug.Log($"Server_ReceiveJoinRoom: {payload}");
         });
-        SignalR.On("Client_JoinRoomResult", (bool payload) =>
+        SignalR.On("Client_JoinRoomResult", (string payload) =>
         {
             // Deserialize payload B from JSON
             //var json = JsonUtility.FromJson<JsonPayload>(payload);
             //Debug.Log($"Server_ReceiveRoomName: {json.message}");
             Debug.Log($"Client_JoinRoomResult: {payload}");
-            if (payload)
+            if (payload == "true")
             {
                 MainMenu.ShowButtonScreen();
             }
@@ -91,6 +92,7 @@ public class SignalRTest : MonoBehaviour
 
             JoinRoom(lobbyCode, "nietdevedse");
         };
+        Debug.Log("Connecting");
         SignalR.Connect();
     }
 
@@ -101,9 +103,10 @@ public class SignalRTest : MonoBehaviour
 
     public void JoinRoom(string roomId, string clientName)
     {
+        Debug.Log("Joining room");
         SignalR.Invoke("Client_JoinRoom", roomId, clientName);
     }
-    public void SendButtonPress(int button, bool pressed)
+    public void SendButtonPress(int button, string pressed)
     {
         SignalR.Invoke("Client_SendButtonPress", button, pressed);
     }
