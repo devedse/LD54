@@ -5,7 +5,7 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:7.0-bullseye-slim-amd64 AS build
 WORKDIR /src
 COPY ["UnityGameServer/UnityGameServer.csproj", "UnityGameServer/"]
 RUN dotnet restore "UnityGameServer/UnityGameServer.csproj"
@@ -14,7 +14,9 @@ WORKDIR "/src/UnityGameServer"
 RUN dotnet build "UnityGameServer.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "UnityGameServer.csproj" -c Release -o /app/publish /p:UseAppHost=false
+ARG BUILD_VERSION
+ARG VER=${BUILD_VERSION:-1.0.0}
+RUN dotnet publish "UnityGameServer.csproj" -c Release -o /app/publish /p:Version=$VER /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app

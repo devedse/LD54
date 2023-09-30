@@ -19,6 +19,18 @@ namespace UnityGameServer
 
             builder.Services.AddSignalR();
 
+            // Add CORS services and configure to allow any origin, header, and method.
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins("http://localhost:8080")
+                           .AllowCredentials()
+                           .AllowAnyHeader()
+                           .AllowAnyMethod();
+                });
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -31,10 +43,12 @@ namespace UnityGameServer
             app.UseSwagger();
             app.UseSwaggerUI();
 
-            app.UseHttpsRedirection();
+            // Enable CORS
+            app.UseCors();
+
+            //app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
