@@ -31,8 +31,6 @@ public class SignalRTest : MonoBehaviour
 
     public void OnHostLobby()
     {
-        DontDestroyOnLoad(gameObject);// Connection callbacks
-
         SetupSignalR();
         SignalR.ConnectionStarted += (object sender, ConnectionEventArgs e) =>
         {
@@ -43,7 +41,7 @@ public class SignalRTest : MonoBehaviour
             var message = "Hallo Devedse ik ben een scherm :)))";
             SignalR.Invoke("Server_CreateRoom", message);
         };
-        SignalR.Connect();
+        SignalR.Connect(error => MinigameManager.Instance.CompletelyRestartGameAndShit(error));
     }
 
     public void SetupSignalR()
@@ -183,7 +181,7 @@ public class SignalRTest : MonoBehaviour
             JoinRoom(lobbyCode, playerName);
         };
         Debug.Log("Connecting");
-        SignalR.Connect();
+        SignalR.Connect(error => MinigameManager.Instance.CompletelyRestartGameAndShit(error));
     }
 
     void Start()
