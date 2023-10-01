@@ -114,6 +114,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7601638420983212487}
+  - component: {fileID: -3130340351259875048}
   m_Layer: 0
   m_Name: Parasolding
   m_TagString: Untagged
@@ -138,6 +139,19 @@ Transform:
   - {fileID: 7183641159965733573}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-3130340351259875048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2410442741241137607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6355f1a0072b6324d95054f825c7fd66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ModuleType: 3
 --- !u!1001 &5018467156821454796
 PrefabInstance:
   m_ObjectHideFlags: 0
