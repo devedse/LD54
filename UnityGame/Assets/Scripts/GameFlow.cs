@@ -15,7 +15,6 @@ public class GameFlow : MonoBehaviour
         foreach (var p in MinigameManager.Instance.SignalR.Players.Values)
         {
             p.ResetButtonBindings();
-            p.ResetScore();
         }
         StartTutorial.Invoke();
     }

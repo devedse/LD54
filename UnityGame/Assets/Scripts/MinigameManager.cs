@@ -113,6 +113,10 @@ public class MinigameManager : MonoBehaviour
     public void StartNextGame()
     {
         GameIndex++;
+        foreach (var p in SignalR.Players)
+        {
+            p.Value.ResetScore();
+        }
         NextModuleReward = AllModules.AllShipModules[Random.Range(0, AllModules.AllShipModules.Count)];
         if (GameIndex >= Games.Minigames.Count)
             GameIndex = 0;
