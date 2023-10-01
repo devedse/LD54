@@ -26,6 +26,8 @@ public class PlayerControls : MonoBehaviour
     // Weapon upgrades:
     public bool hasChainSaw, hasRocketLauncher, hasBooster, hasShield;
 
+    public PC pcplayer;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -36,6 +38,8 @@ public class PlayerControls : MonoBehaviour
         timer = FireRate;
 
         int childCount = transform.childCount;
+
+
         
         for (int i = 0; i < transform.childCount; i++)
         {
