@@ -103,6 +103,7 @@ namespace UnityGameServer.Hubs
 
                 if (whatConnectionIdsBelongToThisPlayer.Count == 0)
                 {
+                    Console.WriteLine($"Player with name {clientName} does not exist yet.");
                     //No player with the name clientName exists yet, so we just make a new one.
                     allowContinue = true;                    
                 }
@@ -111,15 +112,21 @@ namespace UnityGameServer.Hubs
                     //Count == 1
                     var firstConnectionId = whatConnectionIdsBelongToThisPlayer.First();
 
+                    Console.WriteLine($"Found existing connectionId {firstConnectionId} for player with name {clientName}");
+
                     //Check if this connectionId is active in a room
                     if (ConnectionToRoomMap.ContainsKey(firstConnectionId))
                     {
+                        Console.WriteLine($"ConnectionToRoomMap contains the key: {firstConnectionId}. {string.Join(",", ConnectionToRoomMap.Keys.ToList())}");
+
                         //This player is currently active in another room with an active signalr connection
                         //it's not allowed to pick this username
                         allowContinue = false;
                     }
                     else
                     {
+                        Console.WriteLine($"ConnectionToRoomMap DOES NOT contains the key: {firstConnectionId}. {string.Join(",", ConnectionToRoomMap.Keys.ToList())}");
+
                         //Apparently this player is not active in any room so we can take over the name and send a join request to the server
                         allowContinue = true;
                         ConnectionIdToPlayerNameMapping[firstConnectionId] = clientName;
