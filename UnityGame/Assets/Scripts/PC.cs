@@ -16,6 +16,8 @@ public class PC : MonoBehaviour
     public Sprite PlayerHappy;
     public Sprite PlayerMad;
 
+    public bool IsConnected { get; set; } = true;
+
     internal void ResetScore()
     {
         ScoreFromCurrentMinigame = 0;

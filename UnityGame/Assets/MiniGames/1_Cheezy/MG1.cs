@@ -35,22 +35,19 @@ public class MG1 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerCount = MinigameManager.Instance.SignalR.Players.Count;
+
+        NewRound();
     }
 
     public void StartGame()
     {
-        var mgm = MinigameManager.Instance;
-        var sig = mgm.SignalR;
-        playerCount = sig.Players.Count;
-
-        foreach (var player in sig.Players.Values)
+        foreach (var player in MinigameManager.Instance.SignalR.Players.Values)
         {
             player.OnButton0Press.AddListener(() => PlayerButtonPress(player.PlayerIndex, 0));
             player.OnButton1Press.AddListener(() => PlayerButtonPress(player.PlayerIndex, 1));
             player.OnButton2Press.AddListener(() => PlayerButtonPress(player.PlayerIndex, 2));
         }
-
-        NewRound();
     }
 
     // Update is called once per frame
@@ -90,7 +87,7 @@ public class MG1 : MonoBehaviour
         PlayerOnCooldown[player] = true;
 
         var cdUI = GameObject.Instantiate(CooldownUI);
-        cdUI.transform.localPosition = new Vector3(gimmePos.positions[player], cdUI.transform.localPosition.y, cdUI.transform.localPosition.z);
+        cdUI.transform.localPosition = new Vector3(gimmePos.positions[player], -2.5f, -gimmePos.scale - 0.01f);
         var meshRender = cdUI.GetComponentInChildren<MeshRenderer>();
 
         var madTexture = MinigameManager.Instance?.SignalR?.GetPlayerByNumber(player)?.PlayerMad?.texture;
@@ -139,7 +136,7 @@ public class MG1 : MonoBehaviour
                 {
                     //Player won
                     //Debug.Log("Player " + player + " won this round");
-                    MinigameManager.Instance.SignalR.GetPlayerByNumber(player).ChangeScore(3 - playersFinished);
+                    MinigameManager.Instance.SignalR.GetPlayerByNumber(player).ChangeScore(Mathf.Max(3 - playersFinished, 0));
                     playersFinished++;
                 }
             }

@@ -19,6 +19,8 @@ namespace UnityGameServer.Hubs
         public static readonly ConcurrentDictionary<string, Room> Rooms = new ConcurrentDictionary<string, Room>();
         private static readonly ConcurrentDictionary<string, string> ConnectionToRoomMap = new ConcurrentDictionary<string, string>();
 
+        public static object _clientNameDuplicationLockject = new object();
+
         public UltraHub()
         {
             Rooms.TryAdd("BLAH", new Room() { ConnectionIdServer = "BLAH" });
@@ -52,10 +54,10 @@ namespace UnityGameServer.Hubs
             {
                 if (Rooms.TryGetValue(roomName, out Room room))
                 {
-                    if (room.ConnectionIdsClients.TryRemove(connectionId, out string _))
+                    if (room.ConnectionIdsClients.TryRemove(connectionId, out string playerName))
                     {
                         Console.WriteLine($"Removed client {connectionId} from room {roomName}. Count in room: {room.ConnectionIdsClients.Count}");
-                        await Clients.Client(room.ConnectionIdServer).SendAsync("Server_ReceiveClientDisconnected", connectionId);
+                        await Clients.Client(room.ConnectionIdServer).SendAsync("Server_ReceiveClientDisconnected", playerName);
                     }
                     if (room.ConnectionIdServer == connectionId)
                     {
@@ -85,7 +87,25 @@ namespace UnityGameServer.Hubs
         public async Task Client_JoinRoom(string roomName, string clientName)
         {
             roomName = roomName.ToUpperInvariant();
-            ConnectionIdToPlayerNameMapping[Context.ConnectionId] = clientName;
+
+            bool grabbedNewName = false;
+            lock (_clientNameDuplicationLockject)
+            {
+                if (ConnectionIdToPlayerNameMapping.Any(t => t.Key != Context.ConnectionId && t.Value == clientName))
+                {
+                    grabbedNewName = false;
+                }
+                else
+                {
+                    ConnectionIdToPlayerNameMapping[Context.ConnectionId] = clientName;
+                    grabbedNewName = true;
+                }
+            }
+
+            if (!grabbedNewName)
+            {
+                await Clients.Caller.SendAsync("Client_JoinRoomResult", "false_ClientNameAlreadyInUse");
+            }
 
             Console.WriteLine($"Received join room {roomName} from {Context.ConnectionId} with client name: {clientName}");
             await LeaveRoomsForConnection(Context.ConnectionId);
@@ -102,7 +122,7 @@ namespace UnityGameServer.Hubs
             else
             {
                 Console.WriteLine($"Room {roomName} does not exist. Client {Context.ConnectionId} did not join");
-                await Clients.Caller.SendAsync("Client_JoinRoomResult", false);
+                await Clients.Caller.SendAsync("Client_JoinRoomResult", "false_RoomDoesNotExist");
             }
         }
 
@@ -119,7 +139,7 @@ namespace UnityGameServer.Hubs
                     {
                         playerName = obtainedPlayerName;
                     }
-                    await Clients.Client(room.ConnectionIdServer).SendAsync("Server_ReceiveButtonPress", button, pressed, playerName);
+                    await Clients.Client(room.ConnectionIdServer).SendAsync("Client_ReceiveButtonPress", button, pressed, playerName);
                 }
                 else
                 {

@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Core : MonoBehaviour
 {
@@ -61,17 +59,15 @@ public class Core : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("PlayerCount = " + players.transform.childCount);
-
         if (players.transform.childCount == 1)
         {
-            Debug.Log(players.transform.GetChild(0) + " is Victorious!!");
+            Debug.Log(players.transform.GetChild(0).name + " is Victorious!!");
 
             FindFirstObjectByType<GameFlow>().EndGame();
         }

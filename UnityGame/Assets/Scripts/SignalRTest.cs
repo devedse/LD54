@@ -1,13 +1,15 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SignalRTest : MonoBehaviour
 {
     public GameObject PlayerPrefab;
     public Dictionary<string, PC> Players = new Dictionary<string, PC>();
+
+    public List<PC> PlayersOrderedByScore => Players.Values.OrderByDescending(t => t.Score).ToList();
 
     public SignalR SignalR;
     public MainMenu MainMenu;
@@ -51,12 +53,6 @@ public class SignalRTest : MonoBehaviour
         SignalR.Init(DeveURL);
 
         // Handler callbacks
-        SignalR.On("Server_ReceiveButtonPress", (string button, string pressed, string playername) =>
-        {
-            // Deserialize payload A from JSON
-            Debug.Log($"Server_ReceiveButtonPress: {playername} {button} {pressed}");
-            Players[playername].OnPress(int.Parse(button), pressed == "true");
-        });
         SignalR.On("Server_ReceiveRoomName", (string payload) =>
         {
             // Deserialize payload B from JSON
@@ -70,8 +66,21 @@ public class SignalRTest : MonoBehaviour
             // Deserialize payload B from JSON
             //var json = JsonUtility.FromJson<JsonPayload>(payload);
             //Debug.Log($"Server_ReceiveRoomName: {json.message}");
-            AddClient(payload);
+            AddOrConnectClient(payload);
             Debug.Log($"Server_ReceiveJoinRoom: {payload}");
+        });
+        SignalR.On("Server_ReceiveClientDisconnected", (string playerName) =>
+        {
+            SetClientDisconnectedToRemoveLater(playerName);
+            Debug.Log($"Server_ReceiveClientDisconnected: {playerName}");
+        });
+
+
+        SignalR.On("Client_ReceiveButtonPress", (string button, string pressed, string playername) =>
+        {
+            // Deserialize payload A from JSON
+            Debug.Log($"Client_ReceiveButtonPress: {playername} {button} {pressed}");
+            Players[playername].OnPress(int.Parse(button), pressed == "true");
         });
         SignalR.On("Client_JoinRoomResult", (string payload) =>
         {
@@ -83,27 +92,74 @@ public class SignalRTest : MonoBehaviour
             {
                 MainMenu.ShowButtonScreen();
             }
+            else if (payload == "false_ClientNameAlreadyInUse")
+            {
+                //TODO show error popup
+                Debug.Log("ClientNameAlreadyInUse");
+            }
+            else if (payload == "false_RoomDoesNotExist")
+            {
+                //TODO show error popup
+                Debug.Log("RoomDoesNotExist");
+            }
+        });
+        SignalR.On("Client_ReceiveServerDisconnected", (string roomName) =>
+        {
+            // Log the disconnected ID
+            Debug.Log($"Client_ReceiveServerDisconnected from RoomName: {roomName}");
+
+            SceneManager.LoadScene("MainMenu");
         });
 
         SignalR.ConnectionClosed += (object sender, ConnectionEventArgs e) =>
         {
             // Log the disconnected ID
             Debug.Log($"Disconnected: {e.ConnectionId}");
+
+            SceneManager.LoadScene("MainMenu");
         };
     }
 
-    public PC AddClient(string name)
+    private void SetClientDisconnectedToRemoveLater(string playerName)
     {
-        var player = Instantiate(PlayerPrefab, transform);
-        var pc = player.GetComponent<PC>();
-        pc.PlayerName = name;
-        pc.PlayerIndex = Players.Count;
-        pc.PlayerColor = MinigameManager.Instance.GetPlayerColor(pc.PlayerIndex);
-        Players.Add(name, pc);
+        if (Players.TryGetValue(playerName, out var existingPc))
+        {
+            existingPc.IsConnected = false;
+        }
+    }
 
-        HostScreen.AddPlayer(pc);
+    public PC AddOrConnectClient(string name)
+    {
+        if (Players.TryGetValue(name, out var existingPc))
+        {
+            existingPc.IsConnected = true;
+            return existingPc;
+        }
+        else
+        {
+            var player = Instantiate(PlayerPrefab, transform);
+            var pc = player.GetComponent<PC>();
+            pc.PlayerName = name;
+            pc.PlayerIndex = Players.Count;
+            pc.PlayerColor = MinigameManager.Instance.GetPlayerColor(pc.PlayerIndex);
+            Players.Add(name, pc);
 
-        return pc;
+            HostScreen.AddPlayer(pc);
+
+            return pc;
+        }
+    }
+
+    public void HandleLeaveEvents()
+    {
+        var toRemove = Players.Values.Where(t => t.IsConnected == false).ToList();
+
+        foreach (var playerToRemove in toRemove)
+        {
+            Players.Remove(playerToRemove.PlayerName);
+            HostScreen.RemovePlayer(playerToRemove);
+            Destroy(playerToRemove.gameObject);
+        }
     }
 
     public void OnJoinLobby(string lobbyCode)

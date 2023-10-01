@@ -12,8 +12,6 @@ public class PlayerControls : MonoBehaviour
     public int CurrentHealth = 100;
     public RectTransform hud_Health;
 
-    public List<GameObject> SocketAttachments;
-
     public int Armor = 10;
     public int ShipSpeed = 10;
     public float MaxSpeed = 10;
@@ -22,9 +20,9 @@ public class PlayerControls : MonoBehaviour
     private float timer;
 
     private bool isFiring;
-    public bool hasArmorUpgrade, hasHealthUpgrade, hasSpeedUpgrade, hasFireRateUpgrade;
+    public bool hasArmorUpgrade, hasHealthUpgrade, hasSpeedUpgrade, hasFireRateUpgrade, hasWeapomUpgrade;
     // Weapon upgrades:
-    public bool hasChainSaw, hasRocketLauncher, hasBooster, hasShield;
+    public bool hasChainSaw, hasBooster, hasShield;
 
     public PC pcplayer;
 
@@ -50,7 +48,8 @@ public class PlayerControls : MonoBehaviour
                     break;
                 case ShipModuleType.Chainsaw:
                     hasChainSaw = true;
-                    var chain = this.GetComponentInChildren<ChainSawDingetje>();
+                    Armor += 5;
+                    //var chain = this.GetComponentInChildren<ChainSawDingetje>();
                     //chain.OnChainsawEnter += ;
 
                     break;
@@ -58,18 +57,22 @@ public class PlayerControls : MonoBehaviour
                     hasBooster = true;
                     hasFireRateUpgrade = true;
                     ShipSpeed += 5;
-                    FireRate -= 0.5f;
+                    FireRate -= 0.1f;
                     break;
                 case ShipModuleType.Parasolding:
                     ShipSpeed -= 3;
                     break;
                 case ShipModuleType.Turbine:
                     ShipSpeed += 4;
-                    Armor += 2;
                     break;
                 case ShipModuleType.Squid:
                     ShipSpeed -= 2;
                     FireRate += 0.2f;
+                    break;
+                case ShipModuleType.Adelaar:
+                    hasWeapomUpgrade = true;
+                    FireRate -= 0.4f;
+                    WeaponDamage += 15;
                     break;
             }
         }
@@ -82,9 +85,15 @@ public class PlayerControls : MonoBehaviour
         if (btn_1_pressed) { rb.AddForce(transform.forward * ShipSpeed, ForceMode.VelocityChange); }
         if (btn_2_pressed) { rb.AddTorque(new Vector3(0, ShipSpeed, 0), ForceMode.VelocityChange); }
 
+
+        DefaultGun();
+    }
+
+    public void DefaultGun()
+    {
         timer -= Time.deltaTime;
 
-        if (!hasChainSaw && !hasRocketLauncher)
+        if (!hasChainSaw)
         {
             if (timer <= 0)
             {
@@ -98,7 +107,6 @@ public class PlayerControls : MonoBehaviour
                 FireWeapon();
             }
         }
-        
     }
 
     public void Button0Pressed()
@@ -134,6 +142,11 @@ public class PlayerControls : MonoBehaviour
     void FireWeapon()
     {
         GameObject proj_Pellet = Instantiate(pellet);
+
+        Pellet myPellet = proj_Pellet.GetComponentInParent<Pellet>();
+        myPellet.damage = WeaponDamage;
+        myPellet.pelletOwner = pcplayer;
+
         proj_Pellet.transform.position = hp_Gun.transform.position;
         proj_Pellet.transform.rotation = hp_Gun.transform.rotation;
 
@@ -144,9 +157,12 @@ public class PlayerControls : MonoBehaviour
     {
         if (collision.gameObject.name.Contains("Pellet"))
         {
-            Destroy(collision.gameObject);
+            Pellet hitPellet = collision.gameObject.transform.GetComponentInParent<Pellet>();
 
-            GetHit(30);
+            MinigameManager.Instance.SignalR.GetPlayerByNumber(hitPellet.pelletOwner.PlayerIndex).ChangeScore(1);
+
+            GetHit(hitPellet.damage);
+            Destroy(collision.gameObject);
         }
     }
 
@@ -158,7 +174,8 @@ public class PlayerControls : MonoBehaviour
         }
         else
         {
-            Health -= damage + Armor;
+            Health = Health - Mathf.Max(damage - Armor, 5);
+
             hud_Health.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Health);
         }
     }

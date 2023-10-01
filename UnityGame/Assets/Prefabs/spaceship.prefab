@@ -267,11 +267,11 @@ Rigidbody:
     serializedVersion: 2
     m_Bits: 0
   m_ImplicitCom: 0
-  m_ImplicitTensor: 1
+  m_ImplicitTensor: 0
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 84
   m_CollisionDetection: 0
 --- !u!65 &9023796916142735478
 BoxCollider:
@@ -313,11 +313,6 @@ MonoBehaviour:
   Health: 100
   CurrentHealth: 100
   hud_Health: {fileID: 3700559675473057999}
-  SocketAttachments:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   Armor: 10
   ShipSpeed: 10
   MaxSpeed: 10
@@ -327,10 +322,11 @@ MonoBehaviour:
   hasHealthUpgrade: 0
   hasSpeedUpgrade: 0
   hasFireRateUpgrade: 0
+  hasWeapomUpgrade: 0
   hasChainSaw: 0
-  hasRocketLauncher: 0
   hasBooster: 0
   hasShield: 0
+  pcplayer: {fileID: 0}
 --- !u!1 &8740788920958752174
 GameObject:
   m_ObjectHideFlags: 0
