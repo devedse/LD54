@@ -98,6 +98,8 @@ public class MinigameManager : MonoBehaviour
 
     public void CompletelyRestartGameAndShit(string error)
     {
+        Debug.Log($"CompletelyRestartGameAndShit with error: {error}");
+
         MainMenu.ErrorToShow = error;
         SceneManager.LoadScene("MainMenu");
     }
