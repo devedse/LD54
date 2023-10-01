@@ -7,32 +7,97 @@ using TMPro;
 
 public class MainMenu : MonoBehaviour
 {
-    public GameObject MainMenuPanel;
-    public GameObject HostPanel;
-    public GameObject ButtonPanel;
-    public InputField RoomInput;
+    public static string ErrorToShow = "";
 
+    //Main
+    public GameObject MainMenuPanel;
+    public GameObject LoadingMenuPanel;
+
+    //Server
+    public GameObject HostMenuPanel;
+
+    //Client
+    public GameObject ClientNameMenuPanel;
+    public GameObject ClientRoomCodeMenuPanel;
+    public GameObject ButtonScreenPanel;
+    //ClientInputs
+    public InputField PlayerNameInput;
+    public InputField RoomCodeInput;
+
+    //Other
     public HostScreen HostScreen;
     public SignalRTest SignalR;
-
-    internal void ShowHostScreen(string name)
-    {
-        HideAll();
-        HostPanel.SetActive(true);
-        HostScreen.RoomText.text = $"Go to https://ld54.devedse.duckdns.org/ and join: {name}";
-    }
+    public TextMeshProUGUI ErrorText;
 
     private void HideAll()
     {
+        ErrorText.text = string.Empty;
         MainMenuPanel.SetActive(false);
-        HostPanel.SetActive(false);
-        ButtonPanel.SetActive(false);
+        LoadingMenuPanel.SetActive(false);
+
+        HostMenuPanel.SetActive(false);
+
+        ClientNameMenuPanel.SetActive(false);
+        ClientRoomCodeMenuPanel.SetActive(false);
+        ButtonScreenPanel.SetActive(false);
+    }
+
+    //Server stuff
+    public void OnHostClick()
+    {
+        GoTo_LoadingScreen();
+        SignalR.OnHostLobby();
+    }
+
+    public void GoTo_HostMenuPanel(string roomCode)
+    {
+        HideAll();
+        HostMenuPanel.SetActive(true);
+        HostScreen.RoomText.text = $"RoomCode: {roomCode}";
+    }
+
+
+
+
+    public void GoTo_ClientNameMenuPanel()
+    {
+        PlayerNameInput.text = string.Empty;
+        HideAll();
+        ClientNameMenuPanel.SetActive(true);
+    }
+
+    public void GoTo_ClientRoomCodeMenuPanel()
+    {
+        RoomCodeInput.text = string.Empty;
+        HideAll();
+        ClientRoomCodeMenuPanel.SetActive(true);
+    }
+
+    public void GoTo_LoadingScreen()
+    {
+        HideAll();
+        LoadingMenuPanel.SetActive(true);
     }
 
     public void OnJoinClick()
     {
-        string room = RoomInput.text;
-        SignalR.OnJoinLobby(room);
+        string playerName = PlayerNameInput.text;
+
+        if (string.IsNullOrWhiteSpace(playerName))
+        {
+            playerName = RandomNameGenerator.GeneratePlayerName();
+        }
+
+        string room = RoomCodeInput.text;
+        SignalR.OnJoinLobby(playerName, room);
+        GoTo_LoadingScreen();
+    }
+
+
+
+    public void OnClickToCompletelyRestartAndKillEverything()
+    {
+        MinigameManager.Instance.CompletelyRestartGameAndShit(string.Empty);
     }
 
     // Start is called before the first frame update
@@ -40,17 +105,23 @@ public class MainMenu : MonoBehaviour
     {
         HideAll();
         MainMenuPanel.SetActive(true);
+
+        if (!string.IsNullOrWhiteSpace(ErrorToShow))
+        {
+            ErrorText.text = ErrorToShow;
+            ErrorToShow = null;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     internal void ShowButtonScreen()
     {
         HideAll();
-        ButtonPanel.SetActive(true);
+        ButtonScreenPanel.SetActive(true);
     }
 }

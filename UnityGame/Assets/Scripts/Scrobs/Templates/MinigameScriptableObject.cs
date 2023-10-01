@@ -10,4 +10,6 @@ public class MinigameScriptableObject : ScriptableObject
 
     public int MinPlayers;
     public int MaxPlayers;
+
+    public ScoreScreenOptions ScoreScreenAlignment;
 }

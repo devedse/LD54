@@ -24,7 +24,7 @@ public class SignalRTest : MonoBehaviour
 
     public void ReceiveRoomName(string name)
     {
-        MainMenu.ShowHostScreen(name);
+        MainMenu.GoTo_HostMenuPanel(name);
     }
 
     public void OnHostLobby()
@@ -96,11 +96,15 @@ public class SignalRTest : MonoBehaviour
             {
                 //TODO show error popup
                 Debug.Log("ClientNameAlreadyInUse");
+
+                MinigameManager.Instance.CompletelyRestartGameAndShit("Client name already in use");
             }
             else if (payload == "false_RoomDoesNotExist")
             {
                 //TODO show error popup
                 Debug.Log("RoomDoesNotExist");
+
+                MinigameManager.Instance.CompletelyRestartGameAndShit("Room does not exist");
             }
         });
         SignalR.On("Client_ReceiveServerDisconnected", (string roomName) =>
@@ -108,7 +112,7 @@ public class SignalRTest : MonoBehaviour
             // Log the disconnected ID
             Debug.Log($"Client_ReceiveServerDisconnected from RoomName: {roomName}");
 
-            SceneManager.LoadScene("MainMenu");
+            MinigameManager.Instance.CompletelyRestartGameAndShit("Host Lobby disconnected");
         });
 
         SignalR.ConnectionClosed += (object sender, ConnectionEventArgs e) =>
@@ -116,7 +120,7 @@ public class SignalRTest : MonoBehaviour
             // Log the disconnected ID
             Debug.Log($"Disconnected: {e.ConnectionId}");
 
-            SceneManager.LoadScene("MainMenu");
+            MinigameManager.Instance.CompletelyRestartGameAndShit("Connection Disconnected");
         };
     }
 
@@ -162,7 +166,7 @@ public class SignalRTest : MonoBehaviour
         }
     }
 
-    public void OnJoinLobby(string lobbyCode)
+    public void OnJoinLobby(string playerName, string lobbyCode)
     {
         SetupSignalR();
         SignalR.ConnectionStarted += (object sender, ConnectionEventArgs e) =>
@@ -170,7 +174,7 @@ public class SignalRTest : MonoBehaviour
             // Log the connected ID
             Debug.Log($"Connected: {e.ConnectionId}");
 
-            JoinRoom(lobbyCode, Guid.NewGuid().ToString());
+            JoinRoom(lobbyCode, playerName);
         };
         Debug.Log("Connecting");
         SignalR.Connect();
