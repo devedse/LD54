@@ -4914,6 +4914,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6355f1a0072b6324d95054f825c7fd66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DisplayName: chainsaw
   ModuleType: 1
 --- !u!1 &6388766861233129982
 GameObject:

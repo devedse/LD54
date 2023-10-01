@@ -4887,6 +4887,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6355f1a0072b6324d95054f825c7fd66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DisplayName: squid
   ModuleType: 5
 --- !u!1001 &4432809494130742088
 PrefabInstance:
