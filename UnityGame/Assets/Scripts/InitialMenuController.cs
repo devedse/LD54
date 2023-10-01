@@ -6,7 +6,7 @@ public class InitialMenuController : MonoBehaviour
     public Image FromLeft;
     public Image FromRight;
 
-    public Button GameTxt;
+    public Image GameTitle;
 
     private float startTime;
 
@@ -25,14 +25,13 @@ public class InitialMenuController : MonoBehaviour
     {
         elapsedTime = Time.time - startTime;
 
-        var rectGame = (RectTransform)GameTxt.transform;
         if (elapsedTime < totalTimeButton)
         {
-            rectGame.anchoredPosition = Vector2.Lerp(Vector2.zero, new Vector2(0, -291.325f), Mathf.Min(elapsedTime / totalTimeButton, 1));
+            GameTitle.rectTransform.anchoredPosition = Vector2.Lerp(new Vector2(0, 400), new Vector2(0, -30), Mathf.Min(elapsedTime / totalTimeButton, 1));
         }
         else
         {
-            rectGame.anchoredPosition = new Vector2(0, -291.325f);
+            GameTitle.rectTransform.anchoredPosition = new Vector2(0, -30);
         }
 
         if (elapsedTime < totalTimeBounce)
