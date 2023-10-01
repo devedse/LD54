@@ -4889,6 +4889,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayName: squid
   ModuleType: 5
+  ModuleModifiers: {fileID: 11400000, guid: 1021a7fc8db378d4d813830247ba9a7f, type: 2}
 --- !u!1001 &4432809494130742088
 PrefabInstance:
   m_ObjectHideFlags: 0

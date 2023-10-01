@@ -47,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayName: bird shooter
   ModuleType: 6
+  ModuleModifiers: {fileID: 11400000, guid: 2daa75abcbd8f7b48a2a10cab87716f8, type: 2}
 --- !u!1001 &9166970284742278864
 PrefabInstance:
   m_ObjectHideFlags: 0

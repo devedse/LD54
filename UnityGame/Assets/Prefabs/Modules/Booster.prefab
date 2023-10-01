@@ -4877,6 +4877,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayName: booster
   ModuleType: 2
+  ModuleModifiers: {fileID: 11400000, guid: 441f863c85134d4449f30ecac79d6f47, type: 2}
 --- !u!1 &8970927261708727460
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,6 +8,8 @@ public class ModuleScriptableObject : ScriptableObject
 {
     public float RotationSpeedModifier;
     public float SpeedModifier;
+    public float DamageModifier;
     public float FireRateModifier;
-    public float HealthModifier;
+    public float BulletSpeedModifier;
+    public float ArmorModifier;
 }

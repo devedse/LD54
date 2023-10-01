@@ -4916,6 +4916,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayName: chainsaw
   ModuleType: 1
+  ModuleModifiers: {fileID: 11400000, guid: 6a474c0eb11dab34c9ae08d366d82198, type: 2}
 --- !u!1 &6388766861233129982
 GameObject:
   m_ObjectHideFlags: 0

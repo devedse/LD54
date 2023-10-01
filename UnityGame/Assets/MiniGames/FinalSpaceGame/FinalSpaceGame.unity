@@ -336,8 +336,18 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5165146769304598287, guid: aa218cfa86e7252448101129d0700ecf,
         type: 3}
+      propertyPath: StartGame.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5165146769304598287, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
       propertyPath: StartGame.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5165146769304598287, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
+      propertyPath: StartGame.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5165146769304598287, guid: aa218cfa86e7252448101129d0700ecf,
         type: 3}
@@ -346,13 +356,43 @@ PrefabInstance:
       objectReference: {fileID: 1849788392}
     - target: {fileID: 5165146769304598287, guid: aa218cfa86e7252448101129d0700ecf,
         type: 3}
+      propertyPath: StartGame.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1849788392}
+    - target: {fileID: 5165146769304598287, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
+      propertyPath: StartGame.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5165146769304598287, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
       propertyPath: StartGame.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: StartGame
       objectReference: {fileID: 0}
     - target: {fileID: 5165146769304598287, guid: aa218cfa86e7252448101129d0700ecf,
         type: 3}
+      propertyPath: StartGame.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: set_enabled
+      objectReference: {fileID: 0}
+    - target: {fileID: 5165146769304598287, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
       propertyPath: StartGame.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: Core, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5165146769304598287, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
+      propertyPath: StartGame.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: UnityEngine.Behaviour, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5165146769304598287, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
+      propertyPath: StartGame.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5165146769304598287, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
+      propertyPath: StartGame.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6439230126030169747, guid: aa218cfa86e7252448101129d0700ecf,
         type: 3}
@@ -576,7 +616,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1849788390}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 32b25f3a7463b6e4587a3448b3d85de5, type: 3}
   m_Name: 
@@ -584,7 +624,6 @@ MonoBehaviour:
   arena: {fileID: 6556768203843916279, guid: 14e566824e501494cb89d054f1c06254, type: 3}
   spaceship: {fileID: 8386107060268115217, guid: 962bedd77ffdc814f884348721a5e146,
     type: 3}
-  players: {fileID: 0}
   playerSpawns: []
 --- !u!1 &1946005955
 GameObject:
