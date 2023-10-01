@@ -6,7 +6,7 @@ public class Pellet : MonoBehaviour
     public int proj_Force = 25;
     public float timer, proj_LifeTime = 3;
 
-    public int damage;
+    public float damageModifier;
     public PC pelletOwner;
 
     // Start is called before the first frame update
@@ -15,6 +15,8 @@ public class Pellet : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         rb.AddForce(transform.forward * proj_Force, ForceMode.VelocityChange);
+
+        this.transform.localScale = Vector3.one * damageModifier;
     }
 
     // Update is called once per frame

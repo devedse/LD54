@@ -47,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayName: turbine
   ModuleType: 4
+  ModuleModifiers: {fileID: 11400000, guid: ecccfc18e0dddd646b6e40ec4ff7458a, type: 2}
 --- !u!1001 &7045297347932023687
 PrefabInstance:
   m_ObjectHideFlags: 0

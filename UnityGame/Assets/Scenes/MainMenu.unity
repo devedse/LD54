@@ -1456,6 +1456,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c55365c87a38ec04e9f5ca4949cbf7b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SpaceShipBackgroundDingetjes: {fileID: 1668270605}
   Background: {fileID: 2097763040}
   InitialMenuPanel: {fileID: 508132938}
   MainMenuPanel: {fileID: 1862655535}

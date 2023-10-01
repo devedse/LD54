@@ -71,6 +71,10 @@ namespace UnityGameServer.Hubs
                     }
                 }
             }
+            if (ConnectionIdToPlayerNameMapping.TryRemove(connectionId, out string _))
+            {
+                Console.WriteLine($"Removed client name for {connectionId}. Total clients: {ConnectionIdToPlayerNameMapping.Count}");
+            }   
         }
 
         public async Task Server_CreateRoom(dynamic a)
@@ -86,6 +90,7 @@ namespace UnityGameServer.Hubs
 
         public async Task Client_JoinRoom(string roomName, string clientName)
         {
+            Console.WriteLine($"Received join room {roomName} from {Context.ConnectionId} with client name: {clientName}");
             roomName = roomName.ToUpperInvariant();
 
             bool grabbedNewName = false;
@@ -104,6 +109,7 @@ namespace UnityGameServer.Hubs
 
             if (!grabbedNewName)
             {
+                Console.WriteLine($"ClientNameAlreadyInUse for join room {roomName} from {Context.ConnectionId} with client name: {clientName}");
                 await Clients.Caller.SendAsync("Client_JoinRoomResult", "false_ClientNameAlreadyInUse");
             }
 

@@ -1,5 +1,7 @@
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerControls : MonoBehaviour
@@ -8,89 +10,62 @@ public class PlayerControls : MonoBehaviour
     public Rigidbody rb;
     private bool btn_0_pressed, btn_1_pressed, btn_2_pressed;
 
-    public int Health = 100;
-    public int CurrentHealth = 100;
+    public float MaxHealth = 100;
+    public float CurrentHealth = 100;
     public RectTransform hud_Health;
 
-    public int Armor = 10;
-    public float RotatoSpeed = 1;
-    public float ShipSpeed = 10;
-    public float MaxSpeed = 10;
-    public int WeaponDamage = 30;
-    public float FireRate = 2;
-    private float timer;
-
-    private bool isFiring;
-    public bool hasArmorUpgrade, hasHealthUpgrade, hasSpeedUpgrade, hasFireRateUpgrade, hasWeapomUpgrade;
-    // Weapon upgrades:
-    public bool hasChainSaw, hasBooster, hasShield;
+    private float lastFireTime;
 
     public PC pcplayer;
+
+
+    public Module[] GetAllModules()
+    {
+        return GetComponentsInChildren<Module>();
+    }
+
+    public IEnumerable<float> SumField(Func<ModuleScriptableObject, float> selector)
+    {
+        return GetAllModules().Select(t => t.ModuleModifiers).Select(selector);
+    }
+
+    public float SpeedModifier => 1 + SumField(t => t.SpeedModifier).Sum().AtLeast(0.2f);
+    public float RotationSpeedModifier => 1 + SumField(t => t.RotationSpeedModifier).Sum().AtLeast(0.2f);
+    public float DamageModifier => 1 + SumField(t => t.DamageModifier).Sum().AtLeast(0);
+    public float FireRateModifier => 1 + SumField(t => t.FireRateModifier).Sum().AtLeast(0);
+    public float BulletSpeedModifier => 1 + SumField(t => t.BulletSpeedModifier).Sum().AtLeast(0);
+    public float ArmorModifier => 0 + SumField(t => t.ArmorModifier).Sum().AtLeast(0);
+
+    private const float DefaultDamage = 20f;
+
+
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.maxAngularVelocity = MaxSpeed;
-        rb.maxLinearVelocity = MaxSpeed;
-
-        timer = FireRate;
-
-        int childCount = transform.childCount;
-
-        for (int i = 0; i < 3; i++)
-        {
-            ShipModuleType shipModule = pcplayer.GetModuleForSlot(i);
-
-            switch (shipModule)
-            {
-                case ShipModuleType.None:
-                    break;
-                case ShipModuleType.Chainsaw:
-                    hasChainSaw = true;
-                    Armor += 5;
-                    RotatoSpeed += 0.5f;
-                    //var chain = this.GetComponentInChildren<ChainSawDingetje>();
-                    //chain.OnChainsawEnter += ;
-
-                    break;
-                case ShipModuleType.Booster:
-                    hasBooster = true;
-                    RotatoSpeed /= 2f;
-                    break;
-                case ShipModuleType.Parasolding:
-                    RotatoSpeed /= 3;
-                    break;
-                case ShipModuleType.Turbine:
-                    RotatoSpeed += 4;
-                    break;
-                case ShipModuleType.Squid:
-                    RotatoSpeed -= 2;
-                    ShipSpeed -= 3f;
-                    break;
-                case ShipModuleType.Adelaar:
-                    hasWeapomUpgrade = true;
-                    FireRate -= 0.4f;
-                    WeaponDamage += 15;
-                    break;
-            }
-        }
+        lastFireTime = Time.time;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        var rotatoOngeveer1PerSecond = Mathf.PI;
+        var rotatoNu = rotatoOngeveer1PerSecond * RotationSpeedModifier;
+
+        var baseSpeed = 10f;
+
         if (btn_0_pressed)
         {
-            rb.AddTorque(new Vector3(0, Mathf.PI, 0), ForceMode.VelocityChange);
+            rb.AddTorque(new Vector3(0, rotatoNu, 0), ForceMode.VelocityChange);
         }
         if (btn_1_pressed)
         {
-            rb.AddForce(transform.forward * ShipSpeed, ForceMode.VelocityChange);
+            rb.AddForce(transform.forward * (SpeedModifier * baseSpeed), ForceMode.VelocityChange);
         }
         if (btn_2_pressed)
         {
-            rb.AddTorque(new Vector3(0, -Mathf.PI, 0), ForceMode.VelocityChange);
+            rb.AddTorque(new Vector3(0, -rotatoNu, 0), ForceMode.VelocityChange);
         }
 
 
@@ -99,21 +74,13 @@ public class PlayerControls : MonoBehaviour
 
     public void DefaultGun()
     {
-        timer -= Time.deltaTime;
+        var timePerShot = 1 / FireRateModifier;
 
-        if (!hasChainSaw)
+        if (lastFireTime + timePerShot < Time.time)
         {
-            if (timer <= 0)
-            {
-                timer += FireRate;
+            lastFireTime = Time.time;
 
-                FireWeapon();
-            }
-
-            if (isFiring)
-            {
-                FireWeapon();
-            }
+            FireWeapon();
         }
     }
 
@@ -152,13 +119,11 @@ public class PlayerControls : MonoBehaviour
         GameObject proj_Pellet = Instantiate(pellet);
 
         Pellet myPellet = proj_Pellet.GetComponentInParent<Pellet>();
-        myPellet.damage = WeaponDamage;
+        myPellet.damageModifier = DamageModifier;
         myPellet.pelletOwner = pcplayer;
 
         proj_Pellet.transform.position = hp_Gun.transform.position;
         proj_Pellet.transform.rotation = hp_Gun.transform.rotation;
-
-        isFiring = false;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -169,22 +134,22 @@ public class PlayerControls : MonoBehaviour
 
             MinigameManager.Instance.SignalR.GetPlayerByNumber(hitPellet.pelletOwner.PlayerIndex).ChangeScore(1);
 
-            GetHit(hitPellet.damage);
+            GetHit(hitPellet.damageModifier);
             Destroy(collision.gameObject);
         }
     }
 
-    private void GetHit(int damage)
+    private void GetHit(float damageModifier)
     {
-        if (Health <= 0)
+        if (CurrentHealth <= 0)
         {
             Destroy(gameObject);
         }
         else
         {
-            Health = Health - Mathf.Max(damage - Armor, 5);
+            CurrentHealth -= Math.Max(2, (DefaultDamage * damageModifier) - (ArmorModifier * 5));
 
-            hud_Health.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Health);
+            hud_Health.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, CurrentHealth);
         }
     }
 }

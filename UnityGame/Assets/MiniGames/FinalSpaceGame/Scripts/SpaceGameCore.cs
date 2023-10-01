@@ -3,9 +3,8 @@ using UnityEngine;
 
 public class Core : MonoBehaviour
 {
-    public GameObject arena, spaceship, players;
-    public List<GameObject> playerSpawns;
-    private int playerCount;
+    public GameObject arena, spaceship;
+    private GameObject players;
 
     private Transform spawnpoints;
 
@@ -13,7 +12,6 @@ public class Core : MonoBehaviour
     {
         var mgm = MinigameManager.Instance;
         var sig = mgm.SignalR;
-        playerCount = sig.Players.Count;
 
         Instantiate(arena);
         players = Instantiate(new GameObject("Players"));
