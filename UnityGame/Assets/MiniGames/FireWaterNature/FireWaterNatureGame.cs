@@ -16,6 +16,8 @@ public class FireWaterNatureGame : MonoBehaviour
     public GameObject WaterWhirlwindPrefab;
     public GameObject NatureWhirlwindPrefab;
 
+    public GameObject HelperCanvas;
+
     public Transform Center;
     public Transform Edge;
 
@@ -113,6 +115,7 @@ public class FireWaterNatureGame : MonoBehaviour
 
     public IEnumerator ShowResult()
     {
+        HelperCanvas.SetActive(false);
         CountdownTimerText.gameObject.SetActive(false);
         ShowingResults = true;
 
@@ -202,6 +205,7 @@ public class FireWaterNatureGame : MonoBehaviour
 
     private void ResetGamestate()
     {
+        HelperCanvas.SetActive(true);
         Choices.Clear();
         TimerStarted = false;
         ShowingResults = false;
