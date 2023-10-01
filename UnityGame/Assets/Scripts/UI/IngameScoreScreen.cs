@@ -7,11 +7,33 @@ public class IngameScoreScreen : MonoBehaviour
 {
     public GameObject EntryPrefab;
 
+    public bool IsSplit;
+    public GameObject SplitOne;
+    public GameObject SplitTwo;
+
+    private bool ToSplitOne = true;
+
     public void Init()
     {
         foreach (var p in MinigameManager.Instance.SignalR.Players.Values.OrderBy(x => x.PlayerIndex))
         {
-            var i = Instantiate(EntryPrefab, transform);
+            GameObject i;
+            if (IsSplit)
+            {
+                if (ToSplitOne)
+                {
+                    i = Instantiate(EntryPrefab, SplitOne.transform);
+                }
+                else
+                {
+                    i = Instantiate(EntryPrefab, SplitTwo.transform);
+                }
+                ToSplitOne = !ToSplitOne;
+            }
+            else
+            {
+                i = Instantiate(EntryPrefab, transform);
+            }
             var scoreCard = i.GetComponent<IngameScoreScreenCard>();
             scoreCard.Init(p);
             p.Cards.Add(scoreCard);

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -9,7 +10,7 @@ public class MinigameManager : MonoBehaviour
 {
     private bool IsHakkermanEdition;
     public GameObject ScoreCanvas;
-    public IngameScoreScreen ScoreScreen;
+    public List<IngameScoreScreen> ScoreScreens = new List<IngameScoreScreen>();
 
     public PlayerToColorMappingScriptableObject PlayerColors;
     public ShipModuleScriptableObject AllModules;
@@ -79,9 +80,13 @@ public class MinigameManager : MonoBehaviour
                 var scoreCanvasPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.FindAssets("IngameScoreScreenPrefab").OrderBy(x => x).Select(x => AssetDatabase.GUIDToAssetPath(x)).Where(x => x.Contains("IngameScoreScreenPrefab.prefab")).ToList()[0]);
                 var scp = Instantiate(scoreCanvasPrefab, editorOnlyHackForInstanceWorkStuff.transform);
                 _instance.ScoreCanvas = scp;
-                _instance.ScoreScreen = scp.GetComponentInChildren<IngameScoreScreen>();
                 _instance.ScoreCanvas.SetActive(true);
-                _instance.ScoreScreen.Init();
+                foreach (var scscr in scp.GetComponentsInChildren<IngameScoreScreen>())
+                {
+                    _instance.ScoreScreens.Add(scscr);
+                    scscr.Init();
+                }
+                _instance.ScoreCanvas.GetComponent<ScoreScreenShower>().Show(_instance.Games.Minigames.First(x => x.SceneName == SceneManager.GetActiveScene().name).ScoreScreenAlignment);
                 _instance.NextModuleReward = _instance.AllModules.AllShipModules[Random.Range(0, _instance.AllModules.AllShipModules.Count)];
 
                 DontDestroyOnLoad(_instance.gameObject);
@@ -99,6 +104,7 @@ public class MinigameManager : MonoBehaviour
     internal static void ShowRewardScene()
     {
         SceneManager.LoadScene("ClaimRewardScene");
+        _instance.ScoreCanvas.GetComponent<ScoreScreenShower>().Show(ScoreScreenOptions.Top);
     }
 
     internal static void ShowPodiumBetweenGames()
@@ -127,7 +133,10 @@ public class MinigameManager : MonoBehaviour
     {
         ScoreCanvas.SetActive(true);
         DontDestroyOnLoad(ScoreCanvas);
-        ScoreScreen.Init();
+        foreach (var scr in ScoreScreens)
+        {
+            scr.Init();
+        }
         StartNextGame();
         ScoreCanvas.SetActive(false);
     }
@@ -159,6 +168,7 @@ public class MinigameManager : MonoBehaviour
             else
             {
                 SceneManager.LoadScene(Games.Minigames[GameIndex].SceneName);
+                ScoreCanvas.GetComponent<ScoreScreenShower>().Show(Games.Minigames[GameIndex].ScoreScreenAlignment);
             }
         }
     }

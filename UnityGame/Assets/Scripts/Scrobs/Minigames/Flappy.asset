@@ -15,3 +15,4 @@ MonoBehaviour:
   SceneName: 2_Flappy
   MinPlayers: 1
   MaxPlayers: 8
+  ScoreScreenAlignment: 4
