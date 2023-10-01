@@ -1109,7 +1109,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1595624815}
     m_Modifications:
     - target: {fileID: 2033266953517541117, guid: f3601ab8a0e885d49a2663314518bd8f,
         type: 3}
@@ -1224,6 +1224,12 @@ PrefabInstance:
 --- !u!1 &312820813 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2033266953517541117, guid: f3601ab8a0e885d49a2663314518bd8f,
+    type: 3}
+  m_PrefabInstance: {fileID: 312820812}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &312820818 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4136489262260725970, guid: f3601ab8a0e885d49a2663314518bd8f,
     type: 3}
   m_PrefabInstance: {fileID: 312820812}
   m_PrefabAsset: {fileID: 0}
@@ -4107,7 +4113,7 @@ GameObject:
   - component: {fileID: 1595624814}
   - component: {fileID: 1595624816}
   m_Layer: 0
-  m_Name: SignalRSyncerino
+  m_Name: SignalRSuperDontDestroyOnLoadMiniGameUltraParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4141,7 +4147,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 312820818}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1595624816
@@ -6017,6 +6024,5 @@ SceneRoots:
   - {fileID: 171753347}
   - {fileID: 1595624815}
   - {fileID: 1660370048}
-  - {fileID: 312820812}
   - {fileID: 1272037003}
   - {fileID: 987571507545028188}

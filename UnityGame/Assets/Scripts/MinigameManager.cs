@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.PackageManager;
 #endif
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -70,7 +71,7 @@ public class MinigameManager : MonoBehaviour
                     pc.PlayerColor = _instance.GetPlayerColor(i);
                     pc.PlayerMad = imgScrob.ImageSad;
                     pc.PlayerHappy = imgScrob.ImageWin;
-                    DontDestroyOnLoad(keyboardPlayerControllerGA);
+                    keyboardPlayerControllerGA.transform.SetParent(_instance.transform);
                     _instance.SignalR.Players.Add(i.ToString(), pc);
                 }
 
@@ -96,12 +97,39 @@ public class MinigameManager : MonoBehaviour
         }
     }
 
+    private bool _desireCompleteAndUtterlyDestroyEverythingAndRestart = false;
+
+    public void Start()
+    {
+        DontDestroyOnLoad(this.gameObject);
+
+        //if (_instance != null && !IsHakkermanEdition)
+        //{
+        //    //Kill it with fire
+        //    GameObject.Destroy(_instance.gameObject);
+        //}
+
+        _instance = this;
+    }
+
     public void CompletelyRestartGameAndShit(string error)
     {
-        Debug.Log($"CompletelyRestartGameAndShit with error: {error}");
-
         MainMenu.ErrorToShow = error;
-        SceneManager.LoadScene("MainMenu");
+        _desireCompleteAndUtterlyDestroyEverythingAndRestart = true;
+
+        Debug.Log($"CompletelyRestartGameAndShit with error: {error}");
+    }
+
+    private void Update()
+    {
+        if (_desireCompleteAndUtterlyDestroyEverythingAndRestart)
+        {
+            Debug.Log("Utterly loading main scene again now");
+            _instance.SignalR.SignalR.Stop();
+            GameObject.Destroy(_instance.gameObject);
+
+            SceneManager.LoadScene("MainMenu");
+        }
     }
 
     internal static void ShowRewardScene()
@@ -119,24 +147,13 @@ public class MinigameManager : MonoBehaviour
     public MinigamesScriptableObject Games;
     public int GameIndex = -1;
 
-    public void Start()
-    {
-        if (_instance != null && !IsHakkermanEdition)
-        {
-            //Kill it with fire
-            _instance.SignalR.SignalR.Stop();
-            GameObject.Destroy(_instance);
-        }
 
-        _instance = this;
-    }
 
     public void InitializeNewGame()
     {
         SignalR.LobbyHasStartedSoBlockNewPlayerJoins = true;
 
         ScoreCanvas.SetActive(true);
-        DontDestroyOnLoad(ScoreCanvas);
         foreach (var scscr in ScoreCanvas.GetComponentsInChildren<IngameScoreScreen>())
         {
             ScoreScreens.Add(scscr);

@@ -58,7 +58,7 @@ public class SignalR
         }
     }
 
-    public async void Connect()
+    public async void Connect(Action<string> onError)
     {
         try
         {
@@ -79,6 +79,7 @@ public class SignalR
         catch (Exception ex)
         {
             Debug.LogError(ex.Message);
+            onError(ex.Message);
         }
     }
 
