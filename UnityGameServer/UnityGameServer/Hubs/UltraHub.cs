@@ -65,16 +65,14 @@ namespace UnityGameServer.Hubs
                         foreach (var client in room.ConnectionIdsClients.Keys.ToList())
                         {
                             ConnectionToRoomMap.TryRemove(client, out string _);
+                            ConnectionIdToPlayerNameMapping.TryRemove(client, out string _);
                         }
+
                         Rooms.TryRemove(roomName, out Room _);
                         Console.WriteLine($"Removed server {connectionId} from room {roomName}. Room completely removed. Total rooms: {Rooms.Count}");
                     }
                 }
             }
-            if (ConnectionIdToPlayerNameMapping.TryRemove(connectionId, out string _))
-            {
-                Console.WriteLine($"Removed client name for {connectionId}. Total clients: {ConnectionIdToPlayerNameMapping.Count}");
-            }   
         }
 
         public async Task Server_CreateRoom(dynamic a)
@@ -93,28 +91,32 @@ namespace UnityGameServer.Hubs
             Console.WriteLine($"Received join room {roomName} from {Context.ConnectionId} with client name: {clientName}");
             roomName = roomName.ToUpperInvariant();
 
-            bool grabbedNewName = false;
+            bool takeOverExistingName = false;
             lock (_clientNameDuplicationLockject)
             {
-                if (ConnectionIdToPlayerNameMapping.Any(t => t.Key != Context.ConnectionId && t.Value == clientName))
+                if (ConnectionToRoomMap.ContainsKey(Context.ConnectionId))
                 {
-                    grabbedNewName = false;
+                    //This player is currently active in another room with an active signalr connection
+                    //else it should not have bene in this list
+                    takeOverExistingName = false;
                 }
                 else
                 {
+                    //Apparently this player is not active in any room so we can take over the name and send a join request to the server
+                    takeOverExistingName = true;
                     ConnectionIdToPlayerNameMapping[Context.ConnectionId] = clientName;
-                    grabbedNewName = true;
                 }
             }
 
-            if (!grabbedNewName)
+            if (!takeOverExistingName)
             {
                 Console.WriteLine($"ClientNameAlreadyInUse for join room {roomName} from {Context.ConnectionId} with client name: {clientName}");
                 await Clients.Caller.SendAsync("Client_JoinRoomResult", "false_ClientNameAlreadyInUse");
+                return;
             }
 
-            Console.WriteLine($"Received join room {roomName} from {Context.ConnectionId} with client name: {clientName}");
             await LeaveRoomsForConnection(Context.ConnectionId);
+
 
             if (Rooms.TryGetValue(roomName, out Room room))
             {
