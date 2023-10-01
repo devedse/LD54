@@ -26,6 +26,8 @@ public class PlayerControls : MonoBehaviour
     // Weapon upgrades:
     public bool hasChainSaw, hasRocketLauncher, hasBooster, hasShield;
 
+    public PC pcplayer;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -36,41 +38,41 @@ public class PlayerControls : MonoBehaviour
         timer = FireRate;
 
         int childCount = transform.childCount;
-        
-        for (int i = 0; i < transform.childCount; i++)
+
+        for (int i = 0; i < 3; i++)
         {
-            //Debug.Log("Found " + transform.GetChild(i).name);
+            ShipModuleType shipModule = pcplayer.GetModuleForSlot(i);
 
-            if (transform.GetChild(i).name.Equals("Hardpoints")) 
+            switch (shipModule)
             {
-                int subChild = transform.GetChild(i).childCount;
+                case ShipModuleType.None:
+                    ShipSpeed += 2;
+                    break;
+                case ShipModuleType.Chainsaw:
+                    hasChainSaw = true;
+                    var chain = this.GetComponentInChildren<ChainSawDingetje>();
+                    //chain.OnChainsawEnter += ;
 
-                for(int j = 0; j < subChild; j++)
-                {
-                    //Debug.Log("Found subchild " + transform.GetChild(i).GetChild(j).name);
-
-                    if (transform.GetChild(i).GetChild(j).name == "ChainSaw") {
-
-                        Transform parent = transform.GetChild(i).GetChild(j);
-                        parent.gameObject.SetActive(false);
-
-                        //foreach (Transform child in parent) { child.gameObject.SetActive(false); }
-                    }
-                    if (transform.GetChild(i).GetChild(j).name == "Booster") { 
-                        transform.GetChild(i).GetChild(j).gameObject.SetActive(false);
-                    }
-                    //if (transform.GetChild(i).GetChild(j).name == "Booster") { transform.GetChild(i).GetChild(j).gameObject.SetActive(false); }
-                }
-
-
-            }
-
-            if (transform.GetChild(i).name.Equals("HealthBar"))
-            {
-                //hud_Health = transform.GetChild(i).GetChild(0);
+                    break;
+                case ShipModuleType.Booster:
+                    hasBooster = true;
+                    hasFireRateUpgrade = true;
+                    ShipSpeed += 5;
+                    FireRate -= 0.5f;
+                    break;
+                case ShipModuleType.Parasolding:
+                    ShipSpeed -= 3;
+                    break;
+                case ShipModuleType.Turbine:
+                    ShipSpeed += 4;
+                    Armor += 2;
+                    break;
+                case ShipModuleType.Squid:
+                    ShipSpeed -= 2;
+                    FireRate += 0.2f;
+                    break;
             }
         }
-
     }
 
     // Update is called once per frame

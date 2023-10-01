@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -12,6 +9,8 @@ public class MinigameManager : MonoBehaviour
     public IngameScoreScreen ScoreScreen;
 
     public PlayerToColorMappingScriptableObject PlayerColors;
+    public ShipModuleScriptableObject AllModules;
+    public GameObject NextModuleReward;
 
     public Color GetPlayerColor(int playerIndex)
     {
@@ -28,10 +27,15 @@ public class MinigameManager : MonoBehaviour
             {
                 var editorOnlyHackForInstanceWorkStuff = new GameObject();
 
-
                 //So that shit works in Editor as well
                 _instance = editorOnlyHackForInstanceWorkStuff.AddComponent<MinigameManager>();
                 _instance.SignalR = editorOnlyHackForInstanceWorkStuff.AddComponent<SignalRTest>();
+
+                var colors = AssetDatabase.FindAssets("PlayerColors").OrderBy(x => x).Select(x => AssetDatabase.GUIDToAssetPath(x)).Where(x => x.Contains("PlayerColors.asset")).ToList();
+                _instance.PlayerColors = AssetDatabase.LoadAssetAtPath<PlayerToColorMappingScriptableObject>(colors[0]);
+
+                var shipModels = AssetDatabase.FindAssets("ShipModules").OrderBy(x => x).Select(x => AssetDatabase.GUIDToAssetPath(x)).Where(x => x.Contains("ShipModules.asset")).ToList();
+                _instance.AllModules = AssetDatabase.LoadAssetAtPath<ShipModuleScriptableObject>(shipModels[0]);
 
                 for (int i = 0; i < 10; i++)
                 {
@@ -57,6 +61,7 @@ public class MinigameManager : MonoBehaviour
                     var imgScrob = imgScrobs[UnityEngine.Random.Range(0, imgScrobs.Count)];
 
                     pc.PlayerImage = imgScrob.ImageIdle;
+                    pc.PlayerColor = _instance.GetPlayerColor(i);
                     pc.PlayerMad = imgScrob.ImageSad;
                     pc.PlayerHappy = imgScrob.ImageWin;
                     _instance.SignalR.Players.Add(i.ToString(), pc);
@@ -65,15 +70,13 @@ public class MinigameManager : MonoBehaviour
                 var miniGames = AssetDatabase.FindAssets("Minigames").OrderBy(x => x).Select(x => AssetDatabase.GUIDToAssetPath(x)).Where(x => x.Contains("Minigames.asset")).ToList();
                 _instance.Games = AssetDatabase.LoadAssetAtPath<MinigamesScriptableObject>(miniGames[0]);
 
-                var colors = AssetDatabase.FindAssets("PlayerColors").OrderBy(x => x).Select(x => AssetDatabase.GUIDToAssetPath(x)).Where(x => x.Contains("PlayerColors.asset")).ToList();
-                _instance.PlayerColors = AssetDatabase.LoadAssetAtPath<PlayerToColorMappingScriptableObject>(colors[0]);
-
                 var scoreCanvasPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.FindAssets("IngameScoreScreenPrefab").OrderBy(x => x).Select(x => AssetDatabase.GUIDToAssetPath(x)).Where(x => x.Contains("IngameScoreScreenPrefab.prefab")).ToList()[0]);
                 var scp = Instantiate(scoreCanvasPrefab);
                 _instance.ScoreCanvas = scp;
                 _instance.ScoreScreen = scp.GetComponentInChildren<IngameScoreScreen>();
                 _instance.ScoreCanvas.SetActive(true);
                 _instance.ScoreScreen.Init();
+                _instance.NextModuleReward = _instance.AllModules.AllShipModules[Random.Range(0, _instance.AllModules.AllShipModules.Count)];
             }
             return _instance;
         }
@@ -105,6 +108,7 @@ public class MinigameManager : MonoBehaviour
     public void StartNextGame()
     {
         GameIndex++;
+        NextModuleReward = AllModules.AllShipModules[Random.Range(0, AllModules.AllShipModules.Count)];
         if (GameIndex >= Games.Minigames.Count)
             GameIndex = 0;
         if (Games)
