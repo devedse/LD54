@@ -23,6 +23,7 @@ public class MinigameManager : MonoBehaviour
     {
         get
         {
+#if UNITY_EDITOR
             if (_instance == null)
             {
                 var editorOnlyHackForInstanceWorkStuff = new GameObject();
@@ -78,6 +79,7 @@ public class MinigameManager : MonoBehaviour
                 _instance.ScoreScreen.Init();
                 _instance.NextModuleReward = _instance.AllModules.AllShipModules[Random.Range(0, _instance.AllModules.AllShipModules.Count)];
             }
+#endif
             return _instance;
         }
     }
