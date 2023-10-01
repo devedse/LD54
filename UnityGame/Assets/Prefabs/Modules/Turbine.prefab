@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 223440728210289135}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.5037, y: 1.867, z: 0.858}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -145,6 +145,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: booster-goeie
       objectReference: {fileID: 0}
+    - target: {fileID: 7071182760956848314, guid: ae8a5698ea1827f4f9e2b3f663a524e8,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: b7750a970c47e2243b9e5a96f8f399f5, type: 2}
+    - target: {fileID: 7202271454713460447, guid: ae8a5698ea1827f4f9e2b3f663a524e8,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 20d49b504ee5d4043b5e7d305a76e7be, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -172,7 +182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 052df17feea65f04398ef37f882676d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RotatoSpeed: {x: 10, y: 0, z: 0}
+  RotatoSpeed: {x: 0, y: 900, z: 0}
 --- !u!4 &7372205540937567340 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ae8a5698ea1827f4f9e2b3f663a524e8,
