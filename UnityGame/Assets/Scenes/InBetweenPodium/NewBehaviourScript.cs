@@ -158,7 +158,7 @@ public class NewBehaviourScript : MonoBehaviour
                 spaceShip.transform.LookAt(new Vector3(100f, 1f, -1f));
 
                 float start = Time.time;
-                var totalDuration = 0.5f;
+                var totalDuration = 2f;
 
                 while (Time.time - start < totalDuration)
                 {
@@ -168,14 +168,14 @@ public class NewBehaviourScript : MonoBehaviour
                     yield return null;
                 }
 
-
+                start = Time.time;
                 totalDuration = 3f;
 
                 while (Time.time - start < totalDuration)
                 {
                     var diff = Time.time - start;
 
-                    var wonk = new Vector3(Mathf.Cos(diff * 5f) * 1f + 6f, Mathf.Sin(diff * 3f) * 2 + 2f, 5f);
+                    var wonk = new Vector3(Mathf.Cos(diff * 5f) * 2f + 15f, Mathf.Sin(diff * 3f) * 5 + 2f, 2f);
                     var dest = new Vector3(0, 1f, 0);
 
                     spaceShip.transform.localPosition = Vector3.Lerp(wonk, dest, diff / totalDuration);
