@@ -12,6 +12,7 @@ public class PC : MonoBehaviour
     public int PlayerIndex; // never higher than playercount - 1
     public string PlayerName;
     public Sprite PlayerImage;
+    public Color PlayerColor;
     public Sprite PlayerHappy;
     public Sprite PlayerMad;
 

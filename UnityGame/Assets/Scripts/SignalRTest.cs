@@ -90,7 +90,6 @@ public class SignalRTest : MonoBehaviour
             // Log the disconnected ID
             Debug.Log($"Disconnected: {e.ConnectionId}");
         };
-
     }
 
     public PC AddClient(string name)
@@ -99,6 +98,7 @@ public class SignalRTest : MonoBehaviour
         var pc = player.GetComponent<PC>();
         pc.PlayerName = name;
         pc.PlayerIndex = Players.Count;
+        pc.PlayerColor = MinigameManager.Instance.GetPlayerColor(pc.PlayerIndex);
         Players.Add(name, pc);
 
         HostScreen.AddPlayer(pc);

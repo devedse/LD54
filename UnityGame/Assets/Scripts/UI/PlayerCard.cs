@@ -14,6 +14,7 @@ public class PlayerCard : MonoBehaviour
     public PC PC;
     public PlayerImagesScriptableObject Images;
     public PlayerImageScriptableObject CurrentImage;
+    public Image NameBackgroundImage;
     public bool IsReady;
 
     public void SetPC(PC pc)
@@ -26,6 +27,7 @@ public class PlayerCard : MonoBehaviour
         pc.OnButton0Press.AddListener(() => { CycleImages(false); });
         pc.OnButton1Press.AddListener(() => { SetReady(!IsReady); });
         pc.OnButton2Press.AddListener(() => { CycleImages(true); });
+        NameBackgroundImage.color = pc.PlayerColor;
     }
 
     private void CycleImages(bool up)
