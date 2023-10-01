@@ -17,6 +17,8 @@ public class SignalRTest : MonoBehaviour
 
     private string DeveURL = "https://LD54_Server.Devedse.DuckDNS.org/UltraHub";
 
+    public bool LobbyHasStartedSoBlockNewPlayerJoins { get; set; } = false;
+
     public PC GetPlayerByNumber(int playerNumber)
     {
         return Players.Values.FirstOrDefault(t => t.PlayerIndex == playerNumber);
@@ -139,7 +141,7 @@ public class SignalRTest : MonoBehaviour
             existingPc.IsConnected = true;
             return existingPc;
         }
-        else
+        else if (!LobbyHasStartedSoBlockNewPlayerJoins)
         {
             var player = Instantiate(PlayerPrefab, transform);
             var pc = player.GetComponent<PC>();
@@ -151,6 +153,10 @@ public class SignalRTest : MonoBehaviour
             HostScreen.AddPlayer(pc);
 
             return pc;
+        }
+        else
+        {
+            return null;
         }
     }
 

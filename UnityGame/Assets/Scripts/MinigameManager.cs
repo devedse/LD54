@@ -134,11 +134,14 @@ public class MinigameManager : MonoBehaviour
 
     public void InitializeNewGame()
     {
+        SignalR.LobbyHasStartedSoBlockNewPlayerJoins = true;
+
         ScoreCanvas.SetActive(true);
         DontDestroyOnLoad(ScoreCanvas);
-        foreach (var scr in ScoreScreens)
+        foreach (var scscr in ScoreCanvas.GetComponentsInChildren<IngameScoreScreen>())
         {
-            scr.Init();
+            ScoreScreens.Add(scscr);
+            scscr.Init();
         }
         StartNextGame();
         ScoreCanvas.SetActive(false);
