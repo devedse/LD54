@@ -154,11 +154,11 @@ public class MG2 : MonoBehaviour
 
             if (LeftButtonPressed.ContainsKey(playerNumber) && LeftButtonPressed[playerNumber])
             {
-                flap.transform.localPosition = new Vector3(flap.transform.localPosition.x - (5f * Time.deltaTime), flap.transform.localPosition.y, flap.transform.localPosition.z);
+                flap.transform.localPosition = new Vector3(Mathf.Max(flap.transform.localPosition.x - (5f * Time.deltaTime), -10), flap.transform.localPosition.y, flap.transform.localPosition.z);
             }
             if (RightButtonPressed.ContainsKey(playerNumber) && RightButtonPressed[playerNumber])
             {
-                flap.transform.localPosition = new Vector3(flap.transform.localPosition.x + (5f * Time.deltaTime), flap.transform.localPosition.y, flap.transform.localPosition.z);
+                flap.transform.localPosition = new Vector3(Mathf.Min(flap.transform.localPosition.x + (5f * Time.deltaTime), 10), flap.transform.localPosition.y, flap.transform.localPosition.z);
             }
 
             if (flap.transform.localPosition.y < -3.5f)

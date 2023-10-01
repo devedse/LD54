@@ -139,7 +139,7 @@ public class MG1 : MonoBehaviour
                 {
                     //Player won
                     //Debug.Log("Player " + player + " won this round");
-                    MinigameManager.Instance.SignalR.GetPlayerByNumber(player).ChangeScore(3 - playersFinished);
+                    MinigameManager.Instance.SignalR.GetPlayerByNumber(player).ChangeScore(Mathf.Max(3 - playersFinished, 0));
                     playersFinished++;
                 }
             }
