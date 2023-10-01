@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SignalRTest : MonoBehaviour
 {
@@ -54,12 +55,6 @@ public class SignalRTest : MonoBehaviour
         SignalR.Init(DeveURL);
 
         // Handler callbacks
-        SignalR.On("Server_ReceiveButtonPress", (string button, string pressed, string playername) =>
-        {
-            // Deserialize payload A from JSON
-            Debug.Log($"Server_ReceiveButtonPress: {playername} {button} {pressed}");
-            Players[playername].OnPress(int.Parse(button), pressed == "true");
-        });
         SignalR.On("Server_ReceiveRoomName", (string payload) =>
         {
             // Deserialize payload B from JSON
@@ -82,6 +77,13 @@ public class SignalRTest : MonoBehaviour
             Debug.Log($"Server_ReceiveClientDisconnected: {playerName}");
         });
 
+
+        SignalR.On("Client_ReceiveButtonPress", (string button, string pressed, string playername) =>
+        {
+            // Deserialize payload A from JSON
+            Debug.Log($"Client_ReceiveButtonPress: {playername} {button} {pressed}");
+            Players[playername].OnPress(int.Parse(button), pressed == "true");
+        });
         SignalR.On("Client_JoinRoomResult", (string payload) =>
         {
             // Deserialize payload B from JSON
@@ -103,11 +105,20 @@ public class SignalRTest : MonoBehaviour
                 Debug.Log("RoomDoesNotExist");
             }
         });
+        SignalR.On("Client_ReceiveServerDisconnected", (string roomName) =>
+        {
+            // Log the disconnected ID
+            Debug.Log($"Client_ReceiveServerDisconnected from RoomName: {roomName}");
+
+            SceneManager.LoadScene("MainMenu");
+        });
 
         SignalR.ConnectionClosed += (object sender, ConnectionEventArgs e) =>
         {
             // Log the disconnected ID
             Debug.Log($"Disconnected: {e.ConnectionId}");
+
+            SceneManager.LoadScene("MainMenu");
         };
     }
 
