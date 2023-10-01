@@ -125,7 +125,6 @@ public class MinigameManager : MonoBehaviour
         {
             //Kill it with fire
             _instance.SignalR.SignalR.Stop();
-            GameObject.Destroy(_instance.SignalR.gameObject);
             GameObject.Destroy(_instance);
         }
 
@@ -134,6 +133,8 @@ public class MinigameManager : MonoBehaviour
 
     public void InitializeNewGame()
     {
+        SignalR.LobbyHasStartedSoBlockNewPlayerJoins = true;
+
         ScoreCanvas.SetActive(true);
         DontDestroyOnLoad(ScoreCanvas);
         foreach (var scscr in ScoreCanvas.GetComponentsInChildren<IngameScoreScreen>())
