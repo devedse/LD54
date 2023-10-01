@@ -186,5 +186,6 @@ public enum ShipModuleType
     Booster,
     Parasolding,
     Turbine,
-    Squid
+    Squid,
+    Adelaar,
 }
