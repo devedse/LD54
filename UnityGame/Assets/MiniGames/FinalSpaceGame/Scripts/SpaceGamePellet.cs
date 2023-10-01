@@ -6,6 +6,9 @@ public class Pellet : MonoBehaviour
     public int proj_Force = 25;
     public float timer, proj_LifeTime = 3;
 
+    public int damage;
+    public PC pelletOwner;
+
     // Start is called before the first frame update
     void Start()
     {
