@@ -6,6 +6,7 @@ using UnityEngine.Events;
 public class GameFlow : MonoBehaviour
 {
     public UnityEvent StartTutorial;
+    public UnityEvent SkipTutorial;
     public UnityEvent StartCountdown;
     public UnityEvent StartGame;
 
