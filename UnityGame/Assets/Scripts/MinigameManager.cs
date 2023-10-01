@@ -40,7 +40,7 @@ public class MinigameManager : MonoBehaviour
                 var shipModels = AssetDatabase.FindAssets("ShipModules").OrderBy(x => x).Select(x => AssetDatabase.GUIDToAssetPath(x)).Where(x => x.Contains("ShipModules.asset")).ToList();
                 _instance.AllModules = AssetDatabase.LoadAssetAtPath<ShipModuleScriptableObject>(shipModels[0]);
 
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < 2; i++)
                 {
                     var keyboardPlayerControllerGA = new GameObject();
                     keyboardPlayerControllerGA.name = $"KeboardPlayerController{i}";

@@ -32,6 +32,11 @@ public class GameFlow : MonoBehaviour
         StartGame.Invoke();
     }
 
+    public void SkipTut()
+    {
+        SkipTutorial.Invoke();
+    }
+
     public void EndGame()
     {
         if (MinigameManager.Instance.ScoreCanvas)
