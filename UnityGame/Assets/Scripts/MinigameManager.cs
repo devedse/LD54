@@ -96,8 +96,9 @@ public class MinigameManager : MonoBehaviour
         }
     }
 
-    public void CompletelyRestartGameAndShit()
+    public void CompletelyRestartGameAndShit(string error)
     {
+        MainMenu.ErrorToShow = error;
         SceneManager.LoadScene("MainMenu");
     }
 
