@@ -12,9 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a63d36972b796e549899d275645f2864, type: 3}
   m_Name: ShipModules
   m_EditorClassIdentifier: 
-  ShipModules:
+  AllShipModules:
   - {fileID: 7932633556626735857, guid: e71f43f373571e04da4720c272bdb4dd, type: 3}
   - {fileID: 3557235796608540274, guid: a1db6a519b560164eb4f78a41a2c4df2, type: 3}
   - {fileID: 2410442741241137607, guid: 3267e4f41bba3dc478e108cf291c4721, type: 3}
   - {fileID: 4952010288853641565, guid: 67f3a18d7526067478216e892ceb1610, type: 3}
   - {fileID: 223440728210289135, guid: 97154cae50cc2fd4bb5cc601ef2655fc, type: 3}
+  Positives:
+  - {fileID: 7932633556626735857, guid: e71f43f373571e04da4720c272bdb4dd, type: 3}
+  - {fileID: 3557235796608540274, guid: a1db6a519b560164eb4f78a41a2c4df2, type: 3}
+  - {fileID: 223440728210289135, guid: 97154cae50cc2fd4bb5cc601ef2655fc, type: 3}
+  Negatives:
+  - {fileID: 2410442741241137607, guid: 3267e4f41bba3dc478e108cf291c4721, type: 3}
+  - {fileID: 4952010288853641565, guid: 67f3a18d7526067478216e892ceb1610, type: 3}
