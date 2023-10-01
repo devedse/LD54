@@ -94,7 +94,7 @@ namespace UnityGameServer.Hubs
             bool grabbedNewName = false;
             lock (_clientNameDuplicationLockject)
             {
-                if (ConnectionIdToPlayerNameMapping.Any(t => t.Key != Context.ConnectionId && t.Value == clientName))
+                if (ConnectionIdToPlayerNameMapping.Any(t => t.Key != Context.ConnectionId && t.Value == clientName && !ConnectionToRoomMap.ContainsKey(Context.ConnectionId)))
                 {
                     grabbedNewName = false;
                 }
