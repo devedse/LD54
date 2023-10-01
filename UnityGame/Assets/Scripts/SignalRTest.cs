@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.SearchService;
 using UnityEngine;
 
 public class SignalRTest : MonoBehaviour
@@ -112,7 +113,7 @@ public class SignalRTest : MonoBehaviour
 
     private void SetClientDisconnectedToRemoveLater(string playerName)
     {
-        if (Players.TryGetValue(name, out var existingPc))
+        if (Players.TryGetValue(playerName, out var existingPc))
         {
             existingPc.IsConnected = false;
         }
@@ -140,16 +141,15 @@ public class SignalRTest : MonoBehaviour
         }
     }
 
-    public void HandleJoinAndLeaveEvents()
+    public void HandleLeaveEvents()
     {
-        foreach (var player in Players.Values)
+        var toRemove = Players.Values.Where(t => t.IsConnected == false).ToList();
+
+        foreach (var playerToRemove in toRemove)
         {
-            if (player.IsConnected == false)
-            {
-                Players.Remove(player.PlayerName);
-                HostScreen.RemovePlayer(player);
-                Destroy(player.gameObject);
-            }
+            Players.Remove(playerToRemove.PlayerName);
+            HostScreen.RemovePlayer(playerToRemove);
+            Destroy(playerToRemove.gameObject);
         }
     }
 

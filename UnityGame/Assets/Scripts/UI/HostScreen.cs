@@ -35,7 +35,7 @@ public class HostScreen : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        MinigameManager.Instance.SignalR.HandleJoinAndLeaveEvents();
+        MinigameManager.Instance.SignalR.HandleLeaveEvents();
 
         if ((Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.C)) && !MinigameManager.Instance.SignalR.Players.ContainsKey(PC.KeyboardZXCPlayerName))
         {
