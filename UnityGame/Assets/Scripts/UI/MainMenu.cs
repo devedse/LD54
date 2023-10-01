@@ -10,6 +10,8 @@ public class MainMenu : MonoBehaviour
     public static string ErrorToShow = "";
 
     //Main
+    public GameObject Background;
+    public GameObject InitialMenuPanel;
     public GameObject MainMenuPanel;
     public GameObject LoadingMenuPanel;
 
@@ -31,7 +33,9 @@ public class MainMenu : MonoBehaviour
 
     private void HideAll()
     {
+        Background.SetActive(true);
         ErrorText.text = string.Empty;
+        InitialMenuPanel.SetActive(false);
         MainMenuPanel.SetActive(false);
         LoadingMenuPanel.SetActive(false);
 
@@ -40,6 +44,25 @@ public class MainMenu : MonoBehaviour
         ClientNameMenuPanel.SetActive(false);
         ClientRoomCodeMenuPanel.SetActive(false);
         ButtonScreenPanel.SetActive(false);
+    }
+
+    public void GoTo_MainMenu()
+    {
+        HideAll();
+        MainMenuPanel.SetActive(true);
+
+        if (!string.IsNullOrWhiteSpace(ErrorToShow))
+        {
+            ErrorText.text = ErrorToShow;
+            ErrorToShow = null;
+        }
+    }
+
+    private void GoTo_InitialMenu()
+    {
+        HideAll();
+        Background.SetActive(false);
+        InitialMenuPanel.SetActive(true);
     }
 
     //Server stuff
@@ -103,15 +126,19 @@ public class MainMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        HideAll();
-        MainMenuPanel.SetActive(true);
-
-        if (!string.IsNullOrWhiteSpace(ErrorToShow))
+        if (FirstRun)
         {
-            ErrorText.text = ErrorToShow;
-            ErrorToShow = null;
+            GoTo_InitialMenu();
+            FirstRun = false;
         }
+        else
+        {
+            GoTo_MainMenu();
+        }
+
     }
+
+    public static bool FirstRun = true;
 
     // Update is called once per frame
     void Update()

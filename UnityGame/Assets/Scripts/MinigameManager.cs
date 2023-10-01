@@ -128,6 +128,13 @@ public class MinigameManager : MonoBehaviour
         }
 
         _instance = this;
+
+        if (!Screen.fullScreen)
+        {
+            Debug.Log("Alleee, d'n screen is nieee full schermeke");
+            Screen.fullScreen = true;
+        }
+
     }
 
     public void InitializeNewGame()
