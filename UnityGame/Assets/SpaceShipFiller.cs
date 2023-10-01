@@ -70,7 +70,7 @@ public class SpaceShipFiller : MonoBehaviour
             bool randomModules = true;
             if (randomModules)
             {
-                var totalModules = Enum.GetValues(typeof(ShipModuleType)).Length - 1;
+                var totalModules = Modules.AllShipModules.Count - 1;
                 SetModule(0, ((0 + player.PlayerIndex) % totalModules) + 1);
                 SetModule(1, ((1 + player.PlayerIndex) % totalModules) + 1);
                 SetModule(2, ((2 + player.PlayerIndex) % totalModules) + 1);
