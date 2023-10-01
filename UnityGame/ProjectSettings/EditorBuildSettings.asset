@@ -26,5 +26,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/InBetweenPodium.unity
     guid: 143da8d315aa9384789e6a69a456852b
+  - enabled: 1
+    path: Assets/Scenes/ClaimRewardScene.unity
+    guid: 1f316996a598bfd4c9d20ab35af526b1
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
