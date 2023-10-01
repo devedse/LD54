@@ -13,7 +13,8 @@ public class PlayerControls : MonoBehaviour
     public RectTransform hud_Health;
 
     public int Armor = 10;
-    public int ShipSpeed = 10;
+    public float RotatoSpeed = 1;
+    public float ShipSpeed = 10;
     public float MaxSpeed = 10;
     public int WeaponDamage = 30;
     public float FireRate = 2;
@@ -44,30 +45,28 @@ public class PlayerControls : MonoBehaviour
             switch (shipModule)
             {
                 case ShipModuleType.None:
-                    ShipSpeed += 2;
                     break;
                 case ShipModuleType.Chainsaw:
                     hasChainSaw = true;
                     Armor += 5;
+                    RotatoSpeed += 0.5f;
                     //var chain = this.GetComponentInChildren<ChainSawDingetje>();
                     //chain.OnChainsawEnter += ;
 
                     break;
                 case ShipModuleType.Booster:
                     hasBooster = true;
-                    hasFireRateUpgrade = true;
-                    ShipSpeed += 5;
-                    FireRate -= 0.1f;
+                    RotatoSpeed /= 2f;
                     break;
                 case ShipModuleType.Parasolding:
-                    ShipSpeed -= 3;
+                    RotatoSpeed /= 3;
                     break;
                 case ShipModuleType.Turbine:
-                    ShipSpeed += 4;
+                    RotatoSpeed += 4;
                     break;
                 case ShipModuleType.Squid:
-                    ShipSpeed -= 2;
-                    FireRate += 0.2f;
+                    RotatoSpeed -= 2;
+                    ShipSpeed -= 3f;
                     break;
                 case ShipModuleType.Adelaar:
                     hasWeapomUpgrade = true;
@@ -79,11 +78,20 @@ public class PlayerControls : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if (btn_0_pressed) { rb.AddTorque(new Vector3(0, -ShipSpeed, 0), ForceMode.VelocityChange); }
-        if (btn_1_pressed) { rb.AddForce(transform.forward * ShipSpeed, ForceMode.VelocityChange); }
-        if (btn_2_pressed) { rb.AddTorque(new Vector3(0, ShipSpeed, 0), ForceMode.VelocityChange); }
+        if (btn_0_pressed)
+        {
+            rb.AddTorque(new Vector3(0, Mathf.PI, 0), ForceMode.VelocityChange);
+        }
+        if (btn_1_pressed)
+        {
+            rb.AddForce(transform.forward * ShipSpeed, ForceMode.VelocityChange);
+        }
+        if (btn_2_pressed)
+        {
+            rb.AddTorque(new Vector3(0, -Mathf.PI, 0), ForceMode.VelocityChange);
+        }
 
 
         DefaultGun();
