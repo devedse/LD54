@@ -43,7 +43,7 @@ public class SpaceShipFiller : MonoBehaviour
         {
             return;
         }
-        var module = Modules.ShipModules[moduleNumber.Value];
+        var module = Modules.AllShipModules[moduleNumber.Value];
 
         var moduleInstantiated = GameObject.Instantiate(module, socket.transform);
         moduleInstantiated.transform.localPosition = Vector3.zero;
