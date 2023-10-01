@@ -91,21 +91,24 @@ namespace UnityGameServer.Hubs
             Console.WriteLine($"Received join room {roomName} from {Context.ConnectionId} with client name: {clientName}");
             roomName = roomName.ToUpperInvariant();
 
-            bool grabbedNewName = false;
+            bool takeOverExistingName = false;
             lock (_clientNameDuplicationLockject)
             {
-                if (ConnectionIdToPlayerNameMapping.Any(t => t.Key != Context.ConnectionId && t.Value == clientName && !ConnectionToRoomMap.ContainsKey(Context.ConnectionId)))
+                if (ConnectionToRoomMap.ContainsKey(Context.ConnectionId))
                 {
-                    grabbedNewName = false;
+                    //This player is currently active in another room with an active signalr connection
+                    //else it should not have bene in this list
+                    takeOverExistingName = false;
                 }
                 else
                 {
+                    //Apparently this player is not active in any room so we can take over the name and send a join request to the server
+                    takeOverExistingName = true;
                     ConnectionIdToPlayerNameMapping[Context.ConnectionId] = clientName;
-                    grabbedNewName = true;
                 }
             }
 
-            if (!grabbedNewName)
+            if (!takeOverExistingName)
             {
                 Console.WriteLine($"ClientNameAlreadyInUse for join room {roomName} from {Context.ConnectionId} with client name: {clientName}");
                 await Clients.Caller.SendAsync("Client_JoinRoomResult", "false_ClientNameAlreadyInUse");
