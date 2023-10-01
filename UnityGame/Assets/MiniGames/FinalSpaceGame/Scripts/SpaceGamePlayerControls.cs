@@ -50,7 +50,10 @@ public class PlayerControls : MonoBehaviour
                     break;
                 case ShipModuleType.Chainsaw:
                     hasChainSaw = true;
-                    var chain = this.GetComponentInChildren<ChainSawDingetje>();
+                    ShipSpeed -= 2;
+                    Armor += 5;
+                    WeaponDamage += 10;
+                    //var chain = this.GetComponentInChildren<ChainSawDingetje>();
                     //chain.OnChainsawEnter += ;
 
                     break;

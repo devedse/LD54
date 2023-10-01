@@ -331,6 +331,7 @@ MonoBehaviour:
   hasRocketLauncher: 0
   hasBooster: 0
   hasShield: 0
+  pcplayer: {fileID: 0}
 --- !u!1 &8740788920958752174
 GameObject:
   m_ObjectHideFlags: 0

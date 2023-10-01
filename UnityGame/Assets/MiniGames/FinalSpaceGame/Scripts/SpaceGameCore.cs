@@ -67,11 +67,9 @@ public class Core : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("PlayerCount = " + players.transform.childCount);
-
         if (players.transform.childCount == 1)
         {
-            Debug.Log(players.transform.GetChild(0) + " is Victorious!!");
+            Debug.Log(players.transform.GetChild(0).name + " is Victorious!!");
 
             FindFirstObjectByType<GameFlow>().EndGame();
         }
