@@ -86,6 +86,11 @@ public class MinigameManager : MonoBehaviour
         }
     }
 
+    public void CompletelyRestartGameAndShit()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
     internal static void ShowRewardScene()
     {
         SceneManager.LoadScene("ClaimRewardScene");
@@ -102,6 +107,14 @@ public class MinigameManager : MonoBehaviour
 
     public void Start()
     {
+        if (_instance != null)
+        {
+            //Kill it with fire
+            _instance.SignalR.SignalR.Stop();
+            GameObject.Destroy(_instance.SignalR.gameObject);
+            GameObject.Destroy(_instance);
+        }
+
         _instance = this;
     }
 

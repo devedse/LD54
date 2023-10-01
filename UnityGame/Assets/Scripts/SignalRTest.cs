@@ -108,7 +108,7 @@ public class SignalRTest : MonoBehaviour
             // Log the disconnected ID
             Debug.Log($"Client_ReceiveServerDisconnected from RoomName: {roomName}");
 
-            SceneManager.LoadScene("MainMenu");
+            MinigameManager.Instance.CompletelyRestartGameAndShit();
         });
 
         SignalR.ConnectionClosed += (object sender, ConnectionEventArgs e) =>
@@ -116,7 +116,7 @@ public class SignalRTest : MonoBehaviour
             // Log the disconnected ID
             Debug.Log($"Disconnected: {e.ConnectionId}");
 
-            SceneManager.LoadScene("MainMenu");
+            MinigameManager.Instance.CompletelyRestartGameAndShit();
         };
     }
 
