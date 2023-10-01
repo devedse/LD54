@@ -186,7 +186,7 @@ jobs:
         fi
     - name: Run Buildx
       run: |
-        docker buildx build -f UnityGameServer/UnityGameServer/Dockerfile --build-arg BUILD_VERSION=${{steps.tags.outputs.version}} --platform linux/arm64,linux/amd64 ${{steps.tags.outputs.tags}} ${{ (github.event_name != 'pull_request' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)) && '' || '' }} ./UnityGameServer
+        docker buildx build -f UnityGameServer/UnityGameServer/Dockerfile --build-arg BUILD_VERSION=${{steps.tags.outputs.version}} --platform linux/arm64,linux/amd64 ${{steps.tags.outputs.tags}} ${{ (github.event_name != 'pull_request' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)) && '--push' || '' }} ./UnityGameServer
 
 
   # build_windows_StandaloneWindows64:
