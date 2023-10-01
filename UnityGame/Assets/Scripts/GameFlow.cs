@@ -35,6 +35,11 @@ public class GameFlow : MonoBehaviour
         StartGame.Invoke();
     }
 
+    public void SkipTut()
+    {
+        SkipTutorial.Invoke();
+    }
+
     public void EndGame()
     {
         Debug.Log("GameFlow: EndGame");

@@ -40,7 +40,7 @@ public class MinigameManager : MonoBehaviour
                 var shipModels = AssetDatabase.FindAssets("ShipModules").OrderBy(x => x).Select(x => AssetDatabase.GUIDToAssetPath(x)).Where(x => x.Contains("ShipModules.asset")).ToList();
                 _instance.AllModules = AssetDatabase.LoadAssetAtPath<ShipModuleScriptableObject>(shipModels[0]);
 
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < 2; i++)
                 {
                     var keyboardPlayerControllerGA = new GameObject();
                     keyboardPlayerControllerGA.name = $"KeboardPlayerController{i}";
@@ -67,6 +67,7 @@ public class MinigameManager : MonoBehaviour
                     pc.PlayerColor = _instance.GetPlayerColor(i);
                     pc.PlayerMad = imgScrob.ImageSad;
                     pc.PlayerHappy = imgScrob.ImageWin;
+                    DontDestroyOnLoad(keyboardPlayerControllerGA);
                     _instance.SignalR.Players.Add(i.ToString(), pc);
                 }
 
@@ -74,12 +75,14 @@ public class MinigameManager : MonoBehaviour
                 _instance.Games = AssetDatabase.LoadAssetAtPath<MinigamesScriptableObject>(miniGames[0]);
 
                 var scoreCanvasPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.FindAssets("IngameScoreScreenPrefab").OrderBy(x => x).Select(x => AssetDatabase.GUIDToAssetPath(x)).Where(x => x.Contains("IngameScoreScreenPrefab.prefab")).ToList()[0]);
-                var scp = Instantiate(scoreCanvasPrefab);
+                var scp = Instantiate(scoreCanvasPrefab, editorOnlyHackForInstanceWorkStuff.transform);
                 _instance.ScoreCanvas = scp;
                 _instance.ScoreScreen = scp.GetComponentInChildren<IngameScoreScreen>();
                 _instance.ScoreCanvas.SetActive(true);
                 _instance.ScoreScreen.Init();
                 _instance.NextModuleReward = _instance.AllModules.AllShipModules[Random.Range(0, _instance.AllModules.AllShipModules.Count)];
+
+                DontDestroyOnLoad(_instance.gameObject);
             }
 #endif
             return _instance;

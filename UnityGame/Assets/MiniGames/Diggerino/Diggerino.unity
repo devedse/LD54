@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028653, g: 0.22571698, b: 0.30692574, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -249,7 +249,6 @@ GameObject:
   m_Component:
   - component: {fileID: 785887604}
   - component: {fileID: 785887603}
-  - component: {fileID: 785887605}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -284,6 +283,7 @@ MonoBehaviour:
     type: 3}
   totalDiamonds: 0
   GridSize: 16
+  Players: []
 --- !u!4 &785887604
 Transform:
   m_ObjectHideFlags: 0
@@ -299,63 +299,129 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &785887605
-MonoBehaviour:
+--- !u!1001 &1551225971
+PrefabInstance:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 785887602}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 315a702d89df8c649ac2415cb5bb6726, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  StartTutorial:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 785887605}
-        m_TargetAssemblyTypeName: GameFlow, Assembly-CSharp
-        m_MethodName: FinishTutorial
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  StartCountdown:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 785887605}
-        m_TargetAssemblyTypeName: GameFlow, Assembly-CSharp
-        m_MethodName: FinishCountdown
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  StartGame:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 785887603}
-        m_TargetAssemblyTypeName: DiggerinoGame, Assembly-CSharp
-        m_MethodName: BindPlayers
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5165146769304598287, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
+      propertyPath: StartCountdown.m_PersistentCalls.m_Calls.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5165146769304598287, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
+      propertyPath: StartGame.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5165146769304598287, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
+      propertyPath: StartGame.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 785887603}
+    - target: {fileID: 5165146769304598287, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
+      propertyPath: StartCountdown.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5165146769304598287, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
+      propertyPath: StartGame.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: BindPlayers
+      objectReference: {fileID: 0}
+    - target: {fileID: 5165146769304598287, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
+      propertyPath: StartCountdown.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 785887603}
+    - target: {fileID: 5165146769304598287, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
+      propertyPath: StartCountdown.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5165146769304598287, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
+      propertyPath: StartCountdown.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: PlacePlayers
+      objectReference: {fileID: 0}
+    - target: {fileID: 5165146769304598287, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
+      propertyPath: StartGame.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: DiggerinoGame, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5165146769304598287, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
+      propertyPath: StartCountdown.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: DiggerinoGame, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5165146769304598287, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
+      propertyPath: StartCountdown.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6439230126030169747, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6439230126030169747, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6439230126030169747, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6439230126030169747, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6439230126030169747, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6439230126030169747, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6439230126030169747, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6439230126030169747, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6439230126030169747, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6439230126030169747, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467140835607055006, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
+      propertyPath: m_Name
+      value: GameFlow
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: aa218cfa86e7252448101129d0700ecf, type: 3}
 --- !u!1 &2101086711
 GameObject:
   m_ObjectHideFlags: 0
@@ -500,3 +566,4 @@ SceneRoots:
   - {fileID: 2101086714}
   - {fileID: 239159652}
   - {fileID: 785887604}
+  - {fileID: 1551225971}
