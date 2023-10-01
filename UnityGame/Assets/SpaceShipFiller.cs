@@ -14,7 +14,7 @@ public class SpaceShipFiller : MonoBehaviour
     public GameObject SideSocket;
     public GameObject RearSocket;
 
-    public List<GameObject> Modules;
+    public ShipModuleScriptableObject Modules;
 
     // Start is called before the first frame update
     void Start()
@@ -43,7 +43,7 @@ public class SpaceShipFiller : MonoBehaviour
         {
             return;
         }
-        var module = Modules[moduleNumber.Value];
+        var module = Modules.ShipModules[moduleNumber.Value];
 
         var moduleInstantiated = GameObject.Instantiate(module, socket.transform);
         moduleInstantiated.transform.localPosition = Vector3.zero;
