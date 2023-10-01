@@ -5,5 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ShipModuleScriptableObject", menuName = "ScriptableObject/Ship modules")]
 public class ShipModuleScriptableObject : ScriptableObject
 {
-    public List<GameObject> ShipModules;
+    public List<GameObject> AllShipModules;
+    public List<GameObject> Positives;
+    public List<GameObject> Negatives;
 }

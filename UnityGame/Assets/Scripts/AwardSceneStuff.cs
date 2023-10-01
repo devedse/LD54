@@ -25,8 +25,10 @@ public class AwardSceneStuff : MonoBehaviour
         ssf = ShipInstance.GetComponent<SpaceShipFiller>();
         ssf.SetProps(MinigameManager.Instance.SignalR.Players.Values.OrderByDescending(x => x.Score).First(), FaceType.Normal);
 
+        RewardPrefab = MinigameManager.Instance.NextModuleReward;
         RewardInstance = Instantiate(RewardPrefab);
         RewardInstance.transform.position = ModuleSpawnPoint.position;
+        RewardInstance.AddComponent<RotatorScript>().RotatoSpeed = new Vector3(0, 30, 0);
     }
 
     // Update is called once per frame

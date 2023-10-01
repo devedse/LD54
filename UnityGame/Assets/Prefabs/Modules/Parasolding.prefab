@@ -211,11 +211,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4833142317816923240, guid: 77c36438aae5dfd4a83ec56b3f39bb4a,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 062e8b568993a56439517564bc927a41, type: 2}
     - target: {fileID: 919132149155446097, guid: 77c36438aae5dfd4a83ec56b3f39bb4a,
         type: 3}
       propertyPath: m_Name
       value: parasolding
       objectReference: {fileID: 0}
+    - target: {fileID: 2642977222308835731, guid: 77c36438aae5dfd4a83ec56b3f39bb4a,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 062e8b568993a56439517564bc927a41, type: 2}
+    - target: {fileID: 3009364297637180885, guid: 77c36438aae5dfd4a83ec56b3f39bb4a,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 062e8b568993a56439517564bc927a41, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
