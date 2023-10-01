@@ -52,10 +52,10 @@ namespace UnityGameServer.Hubs
             {
                 if (Rooms.TryGetValue(roomName, out Room room))
                 {
-                    if (room.ConnectionIdsClients.TryRemove(connectionId, out string _))
+                    if (room.ConnectionIdsClients.TryRemove(connectionId, out string playerName))
                     {
                         Console.WriteLine($"Removed client {connectionId} from room {roomName}. Count in room: {room.ConnectionIdsClients.Count}");
-                        await Clients.Client(room.ConnectionIdServer).SendAsync("Server_ReceiveClientDisconnected", connectionId);
+                        await Clients.Client(room.ConnectionIdServer).SendAsync("Server_ReceiveClientDisconnected", playerName);
                     }
                     if (room.ConnectionIdServer == connectionId)
                     {
@@ -85,6 +85,12 @@ namespace UnityGameServer.Hubs
         public async Task Client_JoinRoom(string roomName, string clientName)
         {
             roomName = roomName.ToUpperInvariant();
+
+            if (ConnectionIdToPlayerNameMapping.Any(t => t.Key != Context.ConnectionId && t.Value == clientName))
+            {
+                await Clients.Caller.SendAsync("Client_JoinRoomResult", "false_ClientNameAlreadyInUse");
+            }
+
             ConnectionIdToPlayerNameMapping[Context.ConnectionId] = clientName;
 
             Console.WriteLine($"Received join room {roomName} from {Context.ConnectionId} with client name: {clientName}");
@@ -102,7 +108,7 @@ namespace UnityGameServer.Hubs
             else
             {
                 Console.WriteLine($"Room {roomName} does not exist. Client {Context.ConnectionId} did not join");
-                await Clients.Caller.SendAsync("Client_JoinRoomResult", false);
+                await Clients.Caller.SendAsync("Client_JoinRoomResult", "false_RoomDoesNotExist");
             }
         }
 
