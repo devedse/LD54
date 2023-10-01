@@ -65,16 +65,14 @@ namespace UnityGameServer.Hubs
                         foreach (var client in room.ConnectionIdsClients.Keys.ToList())
                         {
                             ConnectionToRoomMap.TryRemove(client, out string _);
+                            ConnectionIdToPlayerNameMapping.TryRemove(client, out string _);
                         }
+
                         Rooms.TryRemove(roomName, out Room _);
                         Console.WriteLine($"Removed server {connectionId} from room {roomName}. Room completely removed. Total rooms: {Rooms.Count}");
                     }
                 }
             }
-            if (ConnectionIdToPlayerNameMapping.TryRemove(connectionId, out string _))
-            {
-                Console.WriteLine($"Removed client name for {connectionId}. Total clients: {ConnectionIdToPlayerNameMapping.Count}");
-            }   
         }
 
         public async Task Server_CreateRoom(dynamic a)
@@ -111,10 +109,11 @@ namespace UnityGameServer.Hubs
             {
                 Console.WriteLine($"ClientNameAlreadyInUse for join room {roomName} from {Context.ConnectionId} with client name: {clientName}");
                 await Clients.Caller.SendAsync("Client_JoinRoomResult", "false_ClientNameAlreadyInUse");
+                return;
             }
 
-            Console.WriteLine($"Received join room {roomName} from {Context.ConnectionId} with client name: {clientName}");
             await LeaveRoomsForConnection(Context.ConnectionId);
+
 
             if (Rooms.TryGetValue(roomName, out Room room))
             {
