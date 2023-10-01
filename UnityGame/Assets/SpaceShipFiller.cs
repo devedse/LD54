@@ -55,12 +55,10 @@ public class SpaceShipFiller : MonoBehaviour
         };
     }
 
-    public void SetProps(PC player, FaceType faceType = FaceType.Normal)
+    public void SetProps(PC player, FaceType faceType = FaceType.Normal, bool randomModules = false)
     {
         if (player?.PlayerImage?.texture != null)
         {
-            var desiredColor = MinigameManager.Instance.GetPlayerColor(player.PlayerIndex);
-
             var texture = faceType switch
             {
                 FaceType.Normal => player.PlayerImage.texture,
@@ -71,8 +69,7 @@ public class SpaceShipFiller : MonoBehaviour
 
             FaceL.material.mainTexture = texture;
             FaceR.material.mainTexture = texture;
-
-            bool randomModules = false;
+                
             if (randomModules)
             {
                 var totalModules = Modules.AllShipModules.Count - 1;
@@ -96,7 +93,7 @@ public class SpaceShipFiller : MonoBehaviour
                 }
             }
 
-            ShipRenderer.material.color = desiredColor;
+            ShipRenderer.material.color = player.PlayerColor;
         }
     }
 }
