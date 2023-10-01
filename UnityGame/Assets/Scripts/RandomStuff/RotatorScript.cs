@@ -15,7 +15,6 @@ public class RotatorScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.
-        transform.localRotation = Quaternion.Euler(transform.localEulerAngles + RotatoSpeed * Time.deltaTime);
+        transform.Rotate(RotatoSpeed * Time.deltaTime, Space.Self);
     }
 }
