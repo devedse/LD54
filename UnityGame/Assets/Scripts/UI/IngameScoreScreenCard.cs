@@ -10,6 +10,7 @@ public class IngameScoreScreenCard : MonoBehaviour
     public TextMeshProUGUI ScoreTxt;
     public TextMeshProUGUI NameTxt;
     public Image PlayerImage;
+    public Image NameBackgroundImage;
     public PC pc;
     private float LastTimeChanged;
     private bool notNeutral;
@@ -26,6 +27,7 @@ public class IngameScoreScreenCard : MonoBehaviour
         NameTxt.text = pc.PlayerName;
         ScoreTxt.text = "0";
         PlayerImage.sprite = pc.PlayerImage;
+        NameBackgroundImage.color = pc.PlayerColor;
     }
 
     // Update is called once per frame
