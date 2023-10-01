@@ -125,7 +125,6 @@ public class MinigameManager : MonoBehaviour
         {
             //Kill it with fire
             _instance.SignalR.SignalR.Stop();
-            GameObject.Destroy(_instance.SignalR.gameObject);
             GameObject.Destroy(_instance);
         }
 
