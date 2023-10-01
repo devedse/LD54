@@ -45,8 +45,6 @@ public class Core : MonoBehaviour
 
                     newPlayer.GetComponentInChildren<SpaceShipFiller>().SetProps(player);
 
-                    
-
                     newPlayer.transform.position = transformChild.transform.position;
                     newPlayer.transform.rotation = transformChild.transform.rotation;
 
