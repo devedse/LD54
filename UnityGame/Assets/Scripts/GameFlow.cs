@@ -40,6 +40,13 @@ public class GameFlow : MonoBehaviour
         //NextGame(); // todo victory etc
     }
 
+    public void ClaimReward()
+    {
+        if (MinigameManager.Instance.ScoreCanvas)
+            MinigameManager.Instance.ScoreCanvas.SetActive(true);
+        MinigameManager.ShowRewardScene();
+    }
+
     public void NextGame()
     {
         MinigameManager.Instance.StartNextGame();

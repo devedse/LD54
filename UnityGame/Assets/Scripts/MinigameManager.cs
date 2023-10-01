@@ -82,6 +82,11 @@ public class MinigameManager : MonoBehaviour
         }
     }
 
+    internal static void ShowRewardScene()
+    {
+        SceneManager.LoadScene("ClaimRewardScene");
+    }
+
     internal static void ShowPodiumBetweenGames()
     {
         SceneManager.LoadScene("InBetweenPodium");

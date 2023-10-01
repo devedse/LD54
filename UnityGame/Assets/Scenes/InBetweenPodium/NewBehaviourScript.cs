@@ -185,8 +185,8 @@ public class NewBehaviourScript : MonoBehaviour
             }
         }
 
-        yield return new WaitForSeconds(200f);
+        yield return new WaitForSeconds(2f);
 
-        FindFirstObjectByType<GameFlow>().NextGame();
+        FindFirstObjectByType<GameFlow>().ClaimReward();
     }
 }
