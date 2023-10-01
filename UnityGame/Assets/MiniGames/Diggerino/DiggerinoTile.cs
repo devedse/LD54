@@ -9,6 +9,7 @@ public class DiggerinoTile : MonoBehaviour
     public bool Diamond;
     public bool Lava;
     public MeshRenderer Mesh;
+    public MeshRenderer MeshOnTop;
 
     // Start is called before the first frame update
     void Start()
@@ -22,8 +23,17 @@ public class DiggerinoTile : MonoBehaviour
         
     }
 
-    internal void UpdateColor(Color color)
+    internal void UpdateMeshOnTop(Material mat, Color color)
     {
-        Mesh.material.color = color;
+        if (mat)
+        {
+            MeshOnTop.gameObject.SetActive(true);
+            MeshOnTop.material = mat;
+            MeshOnTop.material.color = color;
+        }
+        else
+        {
+            MeshOnTop.gameObject.SetActive(false);
+        }
     }
 }
