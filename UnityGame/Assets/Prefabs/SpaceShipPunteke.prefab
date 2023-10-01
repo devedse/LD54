@@ -333,10 +333,7 @@ MonoBehaviour:
   FrontSocket: {fileID: 5730299844246708983}
   SideSocket: {fileID: 3794268297063867408}
   RearSocket: {fileID: 126395866319490130}
-  Modules:
-  - {fileID: 7932633556626735857, guid: e71f43f373571e04da4720c272bdb4dd, type: 3}
-  - {fileID: 3557235796608540274, guid: a1db6a519b560164eb4f78a41a2c4df2, type: 3}
-  - {fileID: 2410442741241137607, guid: 3267e4f41bba3dc478e108cf291c4721, type: 3}
+  Modules: {fileID: 11400000, guid: d84441201f129b948830c709d2b71d39, type: 2}
 --- !u!1 &7922937547903702300
 GameObject:
   m_ObjectHideFlags: 0

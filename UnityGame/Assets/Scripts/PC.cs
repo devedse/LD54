@@ -32,6 +32,7 @@ public class PC : MonoBehaviour
     public bool ListenToKeyboardArrowKeys = false;
 
     private int ScoreFromCurrentMinigame;
+    public int Score { get { return ScoreFromCurrentMinigame; } }
     public List<IngameScoreScreenCard> Cards = new List<IngameScoreScreenCard>();
 
 
