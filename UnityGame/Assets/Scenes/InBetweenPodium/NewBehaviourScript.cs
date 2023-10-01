@@ -41,7 +41,7 @@ public class NewBehaviourScript : MonoBehaviour
     }
 
 
-    IEnumerator GoGetOtherPlayers()
+    IEnumerator GoGetOtherPlayers(List<PC> playersOrderedByScore)
     {
         var totalPlayersRemaining = MinigameManager.Instance.SignalR.Players.Count - 3;
         float rangeLeft = -2f;
@@ -49,16 +49,19 @@ public class NewBehaviourScript : MonoBehaviour
 
         float xPos = -2f;
 
-        for (int i = MinigameManager.Instance.SignalR.Players.Count - 1; i >= 3; i--)
+
+        for (int i = 3; i < playersOrderedByScore.Count; i++)
         {
-            float inBetween = (rangeRight - rangeLeft) / (totalPlayersRemaining); // Subtract by 1 to consider start and end points
+            var playerIndex = playersOrderedByScore[i].PlayerIndex;
+
+            float inBetween = (rangeRight - rangeLeft) / totalPlayersRemaining; // Subtract by 1 to consider start and end points
 
             var to = new Vector3(rangeLeft + (inBetween * (i - 3)), 0, xPos);
             var from = to + new Vector3(0, 0, -3f);
 
-            var spaceShip = InstantiateSpaceShipForPlayer(i, FaceType.Normal);
-            var scaleForViewers = 0.35f;
-            spaceShip.transform.localScale = new Vector3(scaleForViewers, scaleForViewers, scaleForViewers);
+            var spaceShip = InstantiateSpaceShipForPlayer(playerIndex, FaceType.Normal);
+            var scaleForNoobsNotOnPodium = 0.35f;
+            spaceShip.transform.localScale = Vector3.one * scaleForNoobsNotOnPodium;
 
 
             StartCoroutine(GoLerpViewer(spaceShip, from, to, 2f));
@@ -103,13 +106,16 @@ public class NewBehaviourScript : MonoBehaviour
             m.transform.localPosition = originalPositions[m];
         }
 
-        StartCoroutine(GoGetOtherPlayers());
+        var playersOrderedByScore = MinigameManager.Instance.SignalR.PlayersOrderedByScore;
 
+        StartCoroutine(GoGetOtherPlayers(playersOrderedByScore));
 
-        var playerCount = math.min(3, MinigameManager.Instance.SignalR.Players.Count);
+        var playerCount = math.min(3, playersOrderedByScore.Count);
         for (int i = playerCount - 1; i >= 0; i--)
         {
-            var spaceShip = InstantiateSpaceShipForPlayer(i, FaceType.Happy);
+            var player = playersOrderedByScore[i];
+
+            var spaceShip = InstantiateSpaceShipForPlayer(player.PlayerIndex, FaceType.Happy);
 
             if (i == 2)
             {

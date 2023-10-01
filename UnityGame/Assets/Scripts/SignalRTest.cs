@@ -9,6 +9,8 @@ public class SignalRTest : MonoBehaviour
     public GameObject PlayerPrefab;
     public Dictionary<string, PC> Players = new Dictionary<string, PC>();
 
+    public List<PC> PlayersOrderedByScore => Players.Values.OrderByDescending(t => t.Score).ToList();
+
     public SignalR SignalR;
     public MainMenu MainMenu;
     public HostScreen HostScreen;
