@@ -2268,6 +2268,8 @@ MonoBehaviour:
   ScoreCanvas: {fileID: 312820813}
   ScoreScreen: {fileID: 312820814}
   PlayerColors: {fileID: 11400000, guid: 5482207a01491234893771505d4b799e, type: 2}
+  AllModules: {fileID: 11400000, guid: d84441201f129b948830c709d2b71d39, type: 2}
+  NextModuleReward: {fileID: 0}
   SignalR: {fileID: 1595624814}
   Games: {fileID: 11400000, guid: d23a8f37d71b5e54bbfcfec848ba3417, type: 2}
   GameIndex: -1

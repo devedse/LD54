@@ -9,7 +9,7 @@ public class MG2 : MonoBehaviour
     public GameObject Flap;
     public GameObject Building;
 
-    private List<GameObject> Flappers = new List<GameObject>();
+    private Dictionary<int, GameObject> Flappers = new Dictionary<int, GameObject>();
     private List<GameObject> Buildings = new List<GameObject>();
 
     private int playerCount = 2;
@@ -65,7 +65,7 @@ public class MG2 : MonoBehaviour
 
             //meshRenderer.material.color = PlayerColors[i];
 
-            Flappers.Add(playerFlap);
+            Flappers.Add(i, playerFlap);
         }
 
         //StartCoroutine(FakeButtons());
@@ -73,19 +73,22 @@ public class MG2 : MonoBehaviour
 
     public bool PlayerButtonPress(int player, int button, bool pressed)
     {
-        var curFlap = Flappers[player];
-        var rigidBody = curFlap.GetComponent<Rigidbody>();
-        if (button == 1 && pressed)
+        if (Flappers.ContainsKey(player))
         {
-            rigidBody.velocity = new Vector3(0, 15, 0);
-        }
-        else if (button == 0)
-        {
-            LeftButtonPressed[player] = pressed;
-        }
-        else if (button == 2)
-        {
-            RightButtonPressed[player] = pressed;
+            var curFlap = Flappers[player];
+            var rigidBody = curFlap.GetComponent<Rigidbody>();
+            if (button == 1 && pressed)
+            {
+                rigidBody.velocity = new Vector3(0, 15, 0);
+            }
+            else if (button == 0)
+            {
+                LeftButtonPressed[player] = pressed;
+            }
+            else if (button == 2)
+            {
+                RightButtonPressed[player] = pressed;
+            }
         }
         return false;
     }
@@ -134,7 +137,7 @@ public class MG2 : MonoBehaviour
             GameObject.Destroy(toRem);
         }
 
-        var playersToRemove = new List<GameObject>();
+        var playersToRemove = new List<KeyValuePair<int, GameObject>>();
 
         bool shouldGiveScore = false;
 
@@ -144,9 +147,10 @@ public class MG2 : MonoBehaviour
             LastScoreTime = Time.timeSinceLevelLoad;
         }
 
-        foreach (var flap in Flappers)
+        foreach (var flapKVP in Flappers)
         {
-            var playerNumber = int.Parse(flap.name);
+            var flap = flapKVP.Value;
+            var playerNumber = flapKVP.Key;
 
             if (LeftButtonPressed.ContainsKey(playerNumber) && LeftButtonPressed[playerNumber])
             {
@@ -178,7 +182,7 @@ public class MG2 : MonoBehaviour
                 {
                     MinigameManager.Instance.SignalR.GetPlayerByNumber(playerNumber).ChangeScore(0);
 
-                    playersToRemove.Add(flap);
+                    playersToRemove.Add(flapKVP);
                     dead = true;
                 }
             }
@@ -191,8 +195,8 @@ public class MG2 : MonoBehaviour
 
         foreach (var flap in playersToRemove)
         {
-            GameObject.Destroy(flap);
-            Flappers.Remove(flap);
+            GameObject.Destroy(flap.Value);
+            Flappers.Remove(flap.Key);
         }
 
         if (Flappers.Count == 0)
