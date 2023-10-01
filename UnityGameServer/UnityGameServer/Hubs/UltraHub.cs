@@ -129,7 +129,6 @@ namespace UnityGameServer.Hubs
 
                         //Apparently this player is not active in any room so we can take over the name and send a join request to the server
                         allowContinue = true;
-                        ConnectionIdToPlayerNameMapping[firstConnectionId] = clientName;
                     }
                 }
             }
@@ -140,6 +139,9 @@ namespace UnityGameServer.Hubs
                 await Clients.Caller.SendAsync("Client_JoinRoomResult", "false_ClientNameAlreadyInUse");
                 return;
             }
+
+
+            ConnectionIdToPlayerNameMapping[Context.ConnectionId] = clientName;
 
             await LeaveRoomsForConnection(Context.ConnectionId);
 
