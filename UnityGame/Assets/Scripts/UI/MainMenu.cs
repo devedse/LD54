@@ -10,6 +10,8 @@ public class MainMenu : MonoBehaviour
     public static string ErrorToShow = "";
 
     //Main
+    public GameObject SpaceShipBackgroundDingetjes;
+
     public GameObject Background;
     public GameObject InitialMenuPanel;
     public GameObject MainMenuPanel;
@@ -33,6 +35,8 @@ public class MainMenu : MonoBehaviour
 
     private void HideAll()
     {
+        SpaceShipBackgroundDingetjes.SetActive(false);
+
         Background.SetActive(true);
         ErrorText.text = string.Empty;
         InitialMenuPanel.SetActive(false);
@@ -63,6 +67,7 @@ public class MainMenu : MonoBehaviour
         HideAll();
         Background.SetActive(false);
         InitialMenuPanel.SetActive(true);
+        SpaceShipBackgroundDingetjes.SetActive(true);
     }
 
     //Server stuff
