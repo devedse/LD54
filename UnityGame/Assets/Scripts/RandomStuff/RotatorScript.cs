@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class RotatorScript : MonoBehaviour
 {
+    public Vector3 RotatoSpeed;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -13,6 +15,7 @@ public class RotatorScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.localRotation = Quaternion.Euler(transform.localEulerAngles + new Vector3(0.2f, 0.1f, 1));
+        transform.
+        transform.localRotation = Quaternion.Euler(transform.localEulerAngles + RotatoSpeed * Time.deltaTime);
     }
 }

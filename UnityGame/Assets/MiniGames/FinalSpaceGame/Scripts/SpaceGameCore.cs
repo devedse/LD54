@@ -28,10 +28,12 @@ public class Core : MonoBehaviour
             {
                 if (spawnpoints.GetChild(j).name.Contains((player.PlayerIndex + 1).ToString()))
                 {
+                    // Create ships for all players.
                     Transform transformChild = spawnpoints.GetChild(j).transform;
 
                     GameObject newPlayer = Instantiate(spaceship);
                     var playerControls = newPlayer.GetComponent<PlayerControls>();
+                    playerControls.pcplayer = player;
 
                     player.OnButton0Press.AddListener(() => playerControls.Button0Pressed());
                     player.OnButton1Press.AddListener(() => playerControls.Button1Pressed());
@@ -41,7 +43,9 @@ public class Core : MonoBehaviour
                     player.OnButton1Release.AddListener(() => playerControls.Button1Released());
                     player.OnButton2Release.AddListener(() => playerControls.Button2Released());
 
-                    player.GetComponentInChildren<SpaceShipFiller>().SetProps(player);
+                    newPlayer.GetComponentInChildren<SpaceShipFiller>().SetProps(player);
+
+                    
 
                     newPlayer.transform.position = transformChild.transform.position;
                     newPlayer.transform.rotation = transformChild.transform.rotation;

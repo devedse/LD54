@@ -35,6 +35,36 @@ public class PC : MonoBehaviour
     public int Score { get { return ScoreFromCurrentMinigame; } }
     public List<IngameScoreScreenCard> Cards = new List<IngameScoreScreenCard>();
 
+
+    public Dictionary<int, ShipModuleType> SlotsAndModules = new Dictionary<int, ShipModuleType>();
+
+    public ShipModuleType GetModuleForSlot(int slot)
+    {
+        if (slot < 0 || slot > 2)
+        {
+            throw new Exception("Slot must be between 0 and 2");
+        }
+
+        if (SlotsAndModules.ContainsKey(slot))
+        {
+            return SlotsAndModules[slot];
+        }
+        else
+        {
+            return ShipModuleType.None;
+        }
+    }
+
+    public void SetModuleForSlot(int slot, ShipModuleType module)
+    {
+        if (slot < 0 || slot > 2)
+        {
+            throw new Exception("Slot must be between 0 and 2");
+        }
+
+        SlotsAndModules[slot] = module;
+    }
+
     public void ChangeScore(int amount)
     {
         ScoreFromCurrentMinigame += amount;
@@ -81,7 +111,7 @@ public class PC : MonoBehaviour
         OnButton2Release.RemoveAllListeners();
     }
 
-    
+
 
     private void Update()
     {
@@ -147,4 +177,14 @@ public class PC : MonoBehaviour
             }
         }
     }
+}
+
+public enum ShipModuleType
+{
+    None,
+    Chainsaw,
+    Booster,
+    Parasolding,
+    Turbine,
+    Squid
 }
