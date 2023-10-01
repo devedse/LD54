@@ -57,6 +57,7 @@ public class MinigameManager : MonoBehaviour
                     var imgScrob = imgScrobs[UnityEngine.Random.Range(0, imgScrobs.Count)];
 
                     pc.PlayerImage = imgScrob.ImageIdle;
+                    pc.PlayerColor = _instance.GetPlayerColor(i);
                     pc.PlayerMad = imgScrob.ImageSad;
                     pc.PlayerHappy = imgScrob.ImageWin;
                     _instance.SignalR.Players.Add(i.ToString(), pc);

@@ -171,6 +171,7 @@ MonoBehaviour:
   ScoreTxt: {fileID: 8736056976878741016}
   NameTxt: {fileID: 9219646779809563538}
   PlayerImage: {fileID: 745143927212431737}
+  NameBackgroundImage: {fileID: 6365589818736467722}
   pc: {fileID: 0}
 --- !u!1 &1112102514417410971
 GameObject:
@@ -388,7 +389,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 58a8a40897c6f06458acbbcdd79fc240, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b29014dabadbb7c49887c37e8a50f0f4, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -472,8 +473,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
