@@ -90,7 +90,7 @@ public class MG1 : MonoBehaviour
         PlayerOnCooldown[player] = true;
 
         var cdUI = GameObject.Instantiate(CooldownUI);
-        cdUI.transform.localPosition = new Vector3(gimmePos.positions[player], cdUI.transform.localPosition.y, cdUI.transform.localPosition.z);
+        cdUI.transform.localPosition = new Vector3(gimmePos.positions[player], -2.5f, -gimmePos.scale - 0.01f);
         var meshRender = cdUI.GetComponentInChildren<MeshRenderer>();
 
         var madTexture = MinigameManager.Instance?.SignalR?.GetPlayerByNumber(player)?.PlayerMad?.texture;

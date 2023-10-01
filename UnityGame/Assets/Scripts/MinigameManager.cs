@@ -1,5 +1,7 @@
 using System.Linq;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -23,6 +25,7 @@ public class MinigameManager : MonoBehaviour
     {
         get
         {
+#if UNITY_EDITOR
             if (_instance == null)
             {
                 var editorOnlyHackForInstanceWorkStuff = new GameObject();
@@ -78,8 +81,14 @@ public class MinigameManager : MonoBehaviour
                 _instance.ScoreScreen.Init();
                 _instance.NextModuleReward = _instance.AllModules.AllShipModules[Random.Range(0, _instance.AllModules.AllShipModules.Count)];
             }
+#endif
             return _instance;
         }
+    }
+
+    internal static void ShowRewardScene()
+    {
+        SceneManager.LoadScene("ClaimRewardScene");
     }
 
     internal static void ShowPodiumBetweenGames()
@@ -108,6 +117,10 @@ public class MinigameManager : MonoBehaviour
     public void StartNextGame()
     {
         GameIndex++;
+        foreach (var p in SignalR.Players)
+        {
+            p.Value.ResetScore();
+        }
         NextModuleReward = AllModules.AllShipModules[Random.Range(0, AllModules.AllShipModules.Count)];
         if (GameIndex >= Games.Minigames.Count)
             GameIndex = 0;

@@ -15,7 +15,6 @@ public class GameFlow : MonoBehaviour
         foreach (var p in MinigameManager.Instance.SignalR.Players.Values)
         {
             p.ResetButtonBindings();
-            p.ResetScore();
         }
         StartTutorial.Invoke();
     }
@@ -38,6 +37,13 @@ public class GameFlow : MonoBehaviour
             MinigameManager.Instance.ScoreCanvas.SetActive(false);
         MinigameManager.ShowPodiumBetweenGames();
         //NextGame(); // todo victory etc
+    }
+
+    public void ClaimReward()
+    {
+        if (MinigameManager.Instance.ScoreCanvas)
+            MinigameManager.Instance.ScoreCanvas.SetActive(true);
+        MinigameManager.ShowRewardScene();
     }
 
     public void NextGame()
