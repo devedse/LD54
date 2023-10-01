@@ -30,13 +30,7 @@ public class SpaceShipFiller : MonoBehaviour
 
     public void SetModule(int socketNumber, int? moduleNumber)
     {
-        var socket = socketNumber switch
-        {
-            0 => FrontSocket,
-            1 => SideSocket,
-            2 => RearSocket,
-            _ => throw new System.Exception("Invalid socket number")
-        }; ;
+        GameObject socket = GetSocket(socketNumber);
         socket.RemoveAllChildObjects();
 
         if (moduleNumber == null)
@@ -48,6 +42,17 @@ public class SpaceShipFiller : MonoBehaviour
         var moduleInstantiated = GameObject.Instantiate(module, socket.transform);
         moduleInstantiated.transform.localPosition = Vector3.zero;
         moduleInstantiated.transform.localRotation = Quaternion.identity;
+    }
+
+    public GameObject GetSocket(int socketNumber)
+    {
+        return socketNumber switch
+        {
+            0 => FrontSocket,
+            1 => SideSocket,
+            2 => RearSocket,
+            _ => throw new System.Exception("Invalid socket number")
+        };
     }
 
     public void SetProps(PC player, FaceType faceType = FaceType.Normal)
@@ -67,10 +72,10 @@ public class SpaceShipFiller : MonoBehaviour
             FaceL.material.mainTexture = texture;
             FaceR.material.mainTexture = texture;
 
-            bool randomModules = true;
+            bool randomModules = false;
             if (randomModules)
             {
-                var totalModules = Enum.GetValues(typeof(ShipModuleType)).Length - 1;
+                var totalModules = Modules.AllShipModules.Count - 1;
                 SetModule(0, ((0 + player.PlayerIndex) % totalModules) + 1);
                 SetModule(1, ((1 + player.PlayerIndex) % totalModules) + 1);
                 SetModule(2, ((2 + player.PlayerIndex) % totalModules) + 1);
@@ -86,7 +91,7 @@ public class SpaceShipFiller : MonoBehaviour
                     }
                     else
                     {
-                        SetModule(i, null);
+                        SetModule(i, (int)module - 1);
                     }
                 }
             }
