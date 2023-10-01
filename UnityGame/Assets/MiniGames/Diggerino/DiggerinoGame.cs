@@ -16,6 +16,7 @@ public class DiggerinoGame : MonoBehaviour
     public int totalDiamonds;
 
     public int GridSize = 16;
+    public List<DiggerinoPlayer> Players = new List<DiggerinoPlayer>();
 
     // Start is called before the first frame update
     void Start()
@@ -71,7 +72,7 @@ public class DiggerinoGame : MonoBehaviour
         }
     }
 
-    public void BindPlayers()
+    public void PlacePlayers()
     {
         var playerCount = MinigameManager.Instance.SignalR.Players.Values.Count;
         int spawnX = (GridSize / playerCount) / 2;
@@ -88,13 +89,20 @@ public class DiggerinoGame : MonoBehaviour
             dp.DirectionZ = 1;
             if (signalRPlayer.PlayerImage)
                 dp.SetPlayerImage(signalRPlayer.PlayerImage.texture);
-            signalRPlayer.OnButton0Press.AddListener(() => dp.TurnLeft());
-            signalRPlayer.OnButton1Press.AddListener(() => dp.MoveForward());
-            signalRPlayer.OnButton2Press.AddListener(() => dp.TurnRight());
             dp.UpdatePos();
+            Players.Add(dp);
             spawnX += GridSize / playerCount;
             if (spawnX >= GridSize)
                 spawnX -= GridSize;
+        }
+    }
+    public void BindPlayers()
+    {
+        foreach (var dp in Players)
+        {
+            dp.PC.OnButton0Press.AddListener(() => dp.TurnLeft());
+            dp.PC.OnButton1Press.AddListener(() => dp.MoveForward());
+            dp.PC.OnButton2Press.AddListener(() => dp.TurnRight());
         }
     }
 
