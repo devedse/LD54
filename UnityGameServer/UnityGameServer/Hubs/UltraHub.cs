@@ -19,6 +19,8 @@ namespace UnityGameServer.Hubs
         public static readonly ConcurrentDictionary<string, Room> Rooms = new ConcurrentDictionary<string, Room>();
         private static readonly ConcurrentDictionary<string, string> ConnectionToRoomMap = new ConcurrentDictionary<string, string>();
 
+        public static object _clientNameDuplicationLockject = new object();
+
         public UltraHub()
         {
             Rooms.TryAdd("BLAH", new Room() { ConnectionIdServer = "BLAH" });
@@ -86,12 +88,24 @@ namespace UnityGameServer.Hubs
         {
             roomName = roomName.ToUpperInvariant();
 
-            if (ConnectionIdToPlayerNameMapping.Any(t => t.Key != Context.ConnectionId && t.Value == clientName))
+            bool grabbedNewName = false;
+            lock (_clientNameDuplicationLockject)
+            {
+                if (ConnectionIdToPlayerNameMapping.Any(t => t.Key != Context.ConnectionId && t.Value == clientName))
+                {
+                    grabbedNewName = false;
+                }
+                else
+                {
+                    ConnectionIdToPlayerNameMapping[Context.ConnectionId] = clientName;
+                    grabbedNewName = true;
+                }
+            }
+
+            if (!grabbedNewName)
             {
                 await Clients.Caller.SendAsync("Client_JoinRoomResult", "false_ClientNameAlreadyInUse");
             }
-
-            ConnectionIdToPlayerNameMapping[Context.ConnectionId] = clientName;
 
             Console.WriteLine($"Received join room {roomName} from {Context.ConnectionId} with client name: {clientName}");
             await LeaveRoomsForConnection(Context.ConnectionId);
