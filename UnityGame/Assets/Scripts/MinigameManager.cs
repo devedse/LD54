@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 
 public class MinigameManager : MonoBehaviour
 {
-    private bool IsHakkermanEdition;
+    //private bool IsHakkermanEdition;
     public GameObject ScoreCanvas;
     public List<IngameScoreScreen> ScoreScreens = new List<IngameScoreScreen>();
 
@@ -36,7 +36,7 @@ public class MinigameManager : MonoBehaviour
                 //So that shit works in Editor as well
                 _instance = editorOnlyHackForInstanceWorkStuff.AddComponent<MinigameManager>();
                 _instance.SignalR = editorOnlyHackForInstanceWorkStuff.AddComponent<SignalRTest>();
-                _instance.IsHakkermanEdition = true;
+                //_instance.IsHakkermanEdition = true;
 
                 var colors = AssetDatabase.FindAssets("PlayerColors").OrderBy(x => x).Select(x => AssetDatabase.GUIDToAssetPath(x)).Where(x => x.Contains("PlayerColors.asset")).ToList();
                 _instance.PlayerColors = AssetDatabase.LoadAssetAtPath<PlayerToColorMappingScriptableObject>(colors[0]);
