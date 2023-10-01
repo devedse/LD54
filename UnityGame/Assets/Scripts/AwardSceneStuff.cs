@@ -90,9 +90,9 @@ public class AwardSceneStuff : MonoBehaviour
 
     private IEnumerator SwapAndEnd(int slot)
     {
-        LeftButton.gameObject.SetActive(false);
-        MidButton.gameObject.SetActive(false);
-        RightButton.gameObject.SetActive(false);
+        LeftButton.transform.parent.gameObject.SetActive(false);
+        MidButton.transform.parent.gameObject.SetActive(false);
+        RightButton.transform.parent.gameObject.SetActive(false);
         HelpText.gameObject.SetActive(false);
 
         var targetSocket = ssf.GetSocket(slot).transform;
