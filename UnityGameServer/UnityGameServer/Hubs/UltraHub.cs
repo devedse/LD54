@@ -91,21 +91,43 @@ namespace UnityGameServer.Hubs
             Console.WriteLine($"Received join room {roomName} from {Context.ConnectionId} with client name: {clientName}");
             roomName = roomName.ToUpperInvariant();
 
-            bool grabbedNewName = false;
+            bool allowContinue = false;
             lock (_clientNameDuplicationLockject)
             {
-                if (ConnectionIdToPlayerNameMapping.Any(t => t.Key != Context.ConnectionId && t.Value == clientName && !ConnectionToRoomMap.ContainsKey(Context.ConnectionId)))
+                var whatConnectionIdsBelongToThisPlayer = ConnectionIdToPlayerNameMapping.Where(x => x.Value == clientName).Select(x => x.Key).ToList();
+
+                if (whatConnectionIdsBelongToThisPlayer.Count > 1)
                 {
-                    grabbedNewName = false;
+                    Console.WriteLine($"SHOULD NEVER HAPPEN: ClientNameAlreadyInUse for join room {roomName} from {Context.ConnectionId} with client name: {clientName}");
+                }
+
+                if (whatConnectionIdsBelongToThisPlayer.Count == 0)
+                {
+                    //No player with the name clientName exists yet, so we just make a new one.
+                    allowContinue = true;                    
                 }
                 else
                 {
-                    ConnectionIdToPlayerNameMapping[Context.ConnectionId] = clientName;
-                    grabbedNewName = true;
+                    //Count == 1
+                    var firstConnectionId = whatConnectionIdsBelongToThisPlayer.First();
+
+                    //Check if this connectionId is active in a room
+                    if (ConnectionToRoomMap.ContainsKey(firstConnectionId))
+                    {
+                        //This player is currently active in another room with an active signalr connection
+                        //it's not allowed to pick this username
+                        allowContinue = false;
+                    }
+                    else
+                    {
+                        //Apparently this player is not active in any room so we can take over the name and send a join request to the server
+                        allowContinue = true;
+                        ConnectionIdToPlayerNameMapping[firstConnectionId] = clientName;
+                    }
                 }
             }
 
-            if (!grabbedNewName)
+            if (!allowContinue)
             {
                 Console.WriteLine($"ClientNameAlreadyInUse for join room {roomName} from {Context.ConnectionId} with client name: {clientName}");
                 await Clients.Caller.SendAsync("Client_JoinRoomResult", "false_ClientNameAlreadyInUse");
