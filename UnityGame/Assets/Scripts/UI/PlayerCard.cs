@@ -56,6 +56,15 @@ public class PlayerCard : MonoBehaviour
         PC.PlayerMad = CurrentImage.ImageSad;
         PC.Template = imageSO;
         PlayerImage.sprite = CurrentImage.ImageIdle;
+
+        StopAllCoroutines();
+        StartCoroutine(asdf());
+    }
+
+    private IEnumerator asdf()
+    {
+        yield return new WaitForSeconds(.5f);
+        SoundManager.PlaySound(PC.Template.SoundNeutral);
     }
 
     public void SetReady(bool isReady)
