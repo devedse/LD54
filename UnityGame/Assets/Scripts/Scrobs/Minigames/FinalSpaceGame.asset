@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: FinalSpaceGame
   m_EditorClassIdentifier: 
   SceneName: FinalSpaceGame
-  MinPlayers: 1
+  MinPlayers: 2
   MaxPlayers: 8
   PlaySoundOnPlayerHappy: 0
   PlaySoundOnPlayerSad: 0
