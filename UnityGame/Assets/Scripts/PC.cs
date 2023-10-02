@@ -15,6 +15,8 @@ public class PC : MonoBehaviour
     public Color PlayerColor;
     public Sprite PlayerHappy;
     public Sprite PlayerMad;
+    public PlayerImageScriptableObject Template;
+    public PlayerImageScriptableObject PlayerImages;
 
     public PlayerStats Stats = new PlayerStats();
 

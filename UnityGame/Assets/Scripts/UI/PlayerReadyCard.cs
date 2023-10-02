@@ -42,5 +42,10 @@ public class PlayerReadyCard : MonoBehaviour
         ReadyDiamond.SetActive(!IsReady);
         PlayerImage.SetActive(IsReady);
         Screen.RefreshReadyCheck();
+
+        if (IsReady)
+        {
+            SoundManager.PlaySound(SoundManager.Instance.Sounds.CheesePlayerFinishedStack);
+        }
     }
 }

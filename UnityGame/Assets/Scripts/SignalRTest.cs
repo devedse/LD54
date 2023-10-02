@@ -151,7 +151,7 @@ public class SignalRTest : MonoBehaviour
             Players.Add(name, pc);
 
             HostScreen.AddPlayer(pc);
-
+            SoundManager.PlaySound(SoundManager.Instance.Sounds.JoinedLobby);
             return pc;
         }
         else

@@ -44,6 +44,16 @@ public class MinigameManager : MonoBehaviour
                 var shipModels = AssetDatabase.FindAssets("ShipModules").OrderBy(x => x).Select(x => AssetDatabase.GUIDToAssetPath(x)).Where(x => x.Contains("ShipModules.asset")).ToList();
                 _instance.AllModules = AssetDatabase.LoadAssetAtPath<ShipModuleScriptableObject>(shipModels[0]);
 
+                AudioListener.volume = S.GlobalVolume;
+                var sm = editorOnlyHackForInstanceWorkStuff.AddComponent<SoundManager>();
+                var au = editorOnlyHackForInstanceWorkStuff.AddComponent<AudioSource>();
+                au.playOnAwake = false;
+                au.volume = S.IngameVolume;
+                sm.SoundSource = au;
+
+                var sounds = AssetDatabase.FindAssets("Sounds").OrderBy(x => x).Select(x => AssetDatabase.GUIDToAssetPath(x)).Where(x => x.Contains("Sounds.asset")).ToList();
+                sm.Sounds = AssetDatabase.LoadAssetAtPath<SoundsScriptableObject>(sounds[0]);
+
                 for (int i = 0; i < 2; i++)
                 {
                     var keyboardPlayerControllerGA = new GameObject();
@@ -71,6 +81,7 @@ public class MinigameManager : MonoBehaviour
                     pc.PlayerColor = _instance.GetPlayerColor(i);
                     pc.PlayerMad = imgScrob.ImageSad;
                     pc.PlayerHappy = imgScrob.ImageWin;
+                    pc.Template = imgScrob;
                     keyboardPlayerControllerGA.transform.SetParent(_instance.transform);
                     _instance.SignalR.Players.Add(i.ToString(), pc);
 
@@ -190,6 +201,9 @@ public class MinigameManager : MonoBehaviour
 
     public void InitializeNewGame()
     {
+        if (SignalR.Players.Count == 0)
+            return;
+
         SignalR.LobbyHasStartedSoBlockNewPlayerJoins = true;
 
         ScoreCanvas.SetActive(true);
@@ -238,6 +252,7 @@ public class MinigameManager : MonoBehaviour
             {
                 SceneManager.LoadScene(Games.Minigames[GameIndex].SceneName);
                 ScoreCanvas.GetComponent<ScoreScreenShower>().Show(Games.Minigames[GameIndex].ScoreScreenAlignment);
+                SoundManager.PlaySound(SoundManager.Instance.Sounds.NextGameLoaded);
             }
         }
     }

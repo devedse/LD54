@@ -48,6 +48,12 @@ public class MainMenu : MonoBehaviour
         ClientNameMenuPanel.SetActive(false);
         ClientRoomCodeMenuPanel.SetActive(false);
         ButtonScreenPanel.SetActive(false);
+
+        try
+        {
+            SoundManager.PlaySound(SoundManager.Instance.Sounds.ButtonClick);
+        }
+        catch { }
     }
 
     public void GoTo_MainMenu()
