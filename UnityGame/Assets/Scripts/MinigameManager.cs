@@ -127,18 +127,21 @@ public class MinigameManager : MonoBehaviour
 
     public void CompletelyRestartGameAndShit(string error)
     {
-        MainMenu.ErrorToShow = error;
-        _desireCompleteAndUtterlyDestroyEverythingAndRestart = true;
+        if (_desireCompleteAndUtterlyDestroyEverythingAndRestart == false)
+        {
+            MainMenu.ErrorToShow = error;
+            _desireCompleteAndUtterlyDestroyEverythingAndRestart = true;
+        }
 
-        Debug.Log($"CompletelyRestartGameAndShit with error: {error}");
+        Debug.Log($"Received request to completely restart: {error}");
     }
 
     private void Update()
     {
         if (_desireCompleteAndUtterlyDestroyEverythingAndRestart)
         {
-            Debug.Log("Utterly loading main scene again now");
-            _instance.SignalR.SignalR.Stop();
+            Debug.Log("Update: Loading main scene again now");
+            _instance.SignalR.SignalR?.Stop();
             GameObject.Destroy(_instance.gameObject);
 
             SceneManager.LoadScene("MainMenu");
