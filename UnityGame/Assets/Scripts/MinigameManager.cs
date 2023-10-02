@@ -84,6 +84,28 @@ public class MinigameManager : MonoBehaviour
                     pc.Template = imgScrob;
                     keyboardPlayerControllerGA.transform.SetParent(_instance.transform);
                     _instance.SignalR.Players.Add(i.ToString(), pc);
+
+                    var randomModules = true;
+                    if (randomModules)
+                    {
+                        for (int slot = 0; slot < 3; slot++)
+                        {
+                            var totalModules = System.Enum.GetValues(typeof(ShipModuleType)).Length - 1;
+
+                            pc.SetModuleForSlot(slot, (ShipModuleType)((pc.PlayerIndex * 3 + slot) % totalModules) + 1);
+
+                        }
+
+                        //if (pc.PlayerIndex == 1)
+                        //{
+                        //    pc.SetModuleForSlot(1, ShipModuleType.Adelaar);
+                        //}
+
+                        //if (pc.PlayerIndex == 0)
+                        //{
+                        //    pc.SetModuleForSlot(0, ShipModuleType.Chainsaw);
+                        //}
+                    }
                 }
 
                 var miniGames = AssetDatabase.FindAssets("Minigames").OrderBy(x => x).Select(x => AssetDatabase.GUIDToAssetPath(x)).Where(x => x.Contains("Minigames.asset")).ToList();

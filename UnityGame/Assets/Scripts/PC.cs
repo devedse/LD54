@@ -71,6 +71,15 @@ public class PC : MonoBehaviour
         SlotsAndModules[slot] = module;
     }
 
+    public void ForceScore(int amount, int happynessfakey)
+    {
+        ScoreFromCurrentMinigame = amount;
+        foreach (var card in Cards)
+        {
+            card.UpdateScore(ScoreFromCurrentMinigame, happynessfakey);
+        }
+    }
+
     public void ChangeScore(int amount)
     {
         ScoreFromCurrentMinigame += amount;
