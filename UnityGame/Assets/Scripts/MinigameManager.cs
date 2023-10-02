@@ -87,7 +87,15 @@ public class MinigameManager : MonoBehaviour
                     _instance.ScoreScreens.Add(scscr);
                     scscr.Init();
                 }
-                _instance.ScoreCanvas.GetComponent<ScoreScreenShower>().Show(_instance.Games.AllMinigames.FirstOrDefault(x => x.SceneName == SceneManager.GetActiveScene().name).ScoreScreenAlignment);
+                var currentScene = _instance.Games.AllMinigames.FirstOrDefault(x => x.SceneName == SceneManager.GetActiveScene().name);
+                if (currentScene)
+                {
+                    _instance.ScoreCanvas.GetComponent<ScoreScreenShower>().Show(currentScene.ScoreScreenAlignment);
+                }
+                else
+                {
+                    _instance.ScoreCanvas.GetComponent<ScoreScreenShower>().HideAll();
+                }
                 _instance.NextModuleReward = _instance.AllModules.AllShipModules[Random.Range(0, _instance.AllModules.AllShipModules.Count)];
 
                 DontDestroyOnLoad(_instance.gameObject);
