@@ -1,7 +1,17 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public static class GameObjectExtensions
 {
+    static public IEnumerable<Transform> GetChildren(this Transform ga)
+    {
+        foreach (Transform child in ga.transform)
+        {
+            yield return child;
+        }
+    }
+
     static public GameObject GetChildGameObjectByName(this GameObject fromGameObject, string name)
     {
         foreach (Transform child in fromGameObject.transform)
