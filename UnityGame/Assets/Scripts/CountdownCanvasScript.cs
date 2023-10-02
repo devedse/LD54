@@ -24,8 +24,10 @@ public class CountdownCanvasScript : MonoBehaviour
         var rewardInstance = Instantiate(MinigameManager.Instance.NextModuleReward, RewardParent);
         rewardInstance.transform.localPosition = Vector3.zero;
         Reward = rewardInstance.GetComponent<Module>();
-        rewardInstance.AddComponent<RotatorScript>().RotatoSpeed = new Vector3(0, 90, 0);
-        RewardParent.position = Camera.main.transform.position + (Camera.main.transform.forward * 1.5f);
+        rewardInstance.SetActive(false);
+
+        //rewardInstance.AddComponent<RotatorScript>().RotatoSpeed = new Vector3(0, 90, 0);
+        //RewardParent.position = Camera.main.transform.position + (Camera.main.transform.forward * 1.5f) + (Camera.main.transform.up * -.4f);
         startTime = Time.time;
         gameObject.SetActive(true);
     }
@@ -38,7 +40,7 @@ public class CountdownCanvasScript : MonoBehaviour
             startTime += timePerSecond;
             countdownTime--;
         }
-        text.text = countdownTime <= 0 ? "GOO!!!" : countdownTime > 3 ? $"\n\n\n\nReward: {Reward.DisplayName}" : countdownTime.ToString();
+        text.text = countdownTime <= 0 ? "GOO!!!" : countdownTime > 3 ? $"Reward:\n{Reward.ToStatsString(true)}" : countdownTime.ToString();
 
         if (countdownTime == 0)
         {
