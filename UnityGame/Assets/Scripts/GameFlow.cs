@@ -51,6 +51,26 @@ public class GameFlow : MonoBehaviour
         var winners = MinigameManager.Instance.SignalR.Players.Values.Where(x => x.Score == highScore).ToList();
         if (winners.Count == 1)
         {
+
+            winners.First().Stats.MinigameWins++;
+            var ordered = MinigameManager.Instance.SignalR.PlayersOrderedByScore;
+            var top3 = ordered.Take(3).ToList();
+            var lastPodiumScore = top3.Last().Score;
+            foreach (var p in ordered.Where(x => x.Score >= lastPodiumScore))
+                p.Stats.AmountOfTimesOnPodium++;
+            var last = ordered.Last().Score;
+            foreach (var p in ordered.Where(x => x.Score <= last))
+                p.Stats.LastPaces++;
+
+            var currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+            if (MinigameManager.Instance.Games.TiebreakerMinigames.Any(x => x.SceneName == currentScene.name))
+                ordered[0].Stats.TiebreakerWins++;
+            if (currentScene.name == "FinalSpaceGame")
+            {
+                ordered[0].Stats.BigfiteWins++;
+                MinigameManager.Instance.GoToStatsNext = true;
+            }
+
             MinigameManager.ShowPodiumBetweenGames();
         }
         else
@@ -62,6 +82,12 @@ public class GameFlow : MonoBehaviour
 
     public void ClaimReward()
     {
+        if (MinigameManager.Instance.GoToStatsNext)
+        {
+            MinigameManager.ShowStatsScene();
+            return;
+        }
+
         Debug.Log("GameFlow: ClaimReward");
         if (MinigameManager.Instance.ScoreCanvas)
             MinigameManager.Instance.ScoreCanvas.SetActive(true);

@@ -97,6 +97,11 @@ public class MinigameManager : MonoBehaviour
         }
     }
 
+    internal static void ShowStatsScene()
+    {
+        SceneManager.LoadScene("StatsScene");
+    }
+
     private bool _desireCompleteAndUtterlyDestroyEverythingAndRestart = false;
 
     public void Start()
@@ -146,8 +151,7 @@ public class MinigameManager : MonoBehaviour
     public SignalRTest SignalR;
     public MinigamesScriptableObject Games;
     public int GameIndex = -1;
-
-
+    public bool GoToStatsNext;
 
     public void InitializeNewGame()
     {
