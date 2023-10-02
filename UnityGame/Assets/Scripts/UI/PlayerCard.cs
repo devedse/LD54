@@ -28,6 +28,9 @@ public class PlayerCard : MonoBehaviour
         pc.OnButton1Press.AddListener(() => { SetReady(!IsReady); });
         pc.OnButton2Press.AddListener(() => { CycleImages(true); });
         NameBackgroundImage.color = pc.PlayerColor;
+        GetComponent<Image>().color = pc.PlayerColor * new Color(1, 1, 1, .7f);
+        PlayerName.color = pc.PlayerColor * new Color(.5f, .5f, .5f);
+        ReadyText.color = pc.PlayerColor * new Color(.5f, .5f, .5f);
     }
 
     private void CycleImages(bool up)

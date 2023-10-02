@@ -25,6 +25,7 @@ public class AwardSceneStuff : MonoBehaviour
     public TextMeshProUGUI MidButton;
     public TextMeshProUGUI RightButton;
     public TextMeshProUGUI HelpText;
+    public TextMeshProUGUI StatsText;
 
     // Start is called before the first frame update
     void Start()
@@ -50,6 +51,7 @@ public class AwardSceneStuff : MonoBehaviour
 
         MidButton.text = $"Add {RewardInstance.GetComponent<Module>().DisplayName} to the ship of {Player.PlayerName}";
         HelpText.text = $"Congratulations, {Player.PlayerName}! You have won the right to place module {RewardInstance.GetComponent<Module>().DisplayName} on a ship of your choice! This module is {(MinigameManager.Instance.AllModules.Positives.Any(x => x.GetComponent<Module>().ModuleType == RewardInstance.GetComponent<Module>().ModuleType) ? "helpful" : "harmful")} to a ship!";
+        StatsText.text = RewardInstance.GetComponent<Module>().ToStatsString(true);
     }
 
     private void ChooseCurrentShip()
