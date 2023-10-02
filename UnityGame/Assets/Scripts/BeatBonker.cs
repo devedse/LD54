@@ -13,7 +13,8 @@ public class BeatBonker : MonoBehaviour
 
     public float chanceToTrigger = 1;
 
-    private Vector3 initialScale;
+    public bool RotateOnBeat = false;
+    public bool BonkOnBeat = true;
 
     private void Start()
     {
@@ -23,7 +24,6 @@ public class BeatBonker : MonoBehaviour
     public void StartBonking()
     {
         StopAllCoroutines();
-        initialScale = transform.localScale;
 
         InvokeRepeating("TriggerBeat", initialDelay, 60f / bpm);
     }
@@ -34,7 +34,25 @@ public class BeatBonker : MonoBehaviour
         {
             if (Random.Range(0.0f, 1.0f) <= chanceToTrigger)
             {
-                StartCoroutine(ScaleOnBeat());
+                if (RotateOnBeat && BonkOnBeat)
+                {
+                    if (Random.Range(0.0f, 1f) <= 0.5f)
+                    {
+                        StartCoroutine(RotOnBeat());
+                    }
+                    else
+                    {
+                        StartCoroutine(ScaleOnBeat());
+                    }
+                }
+                else if (RotateOnBeat)
+                {
+                    StartCoroutine(RotOnBeat());
+                }
+                else if (BonkOnBeat)
+                {
+                    StartCoroutine(ScaleOnBeat());
+                }
             }
         }
     }
@@ -42,6 +60,8 @@ public class BeatBonker : MonoBehaviour
     IEnumerator ScaleOnBeat()
     {
         float elapsed = 0f;
+
+        var initialScale = transform.localScale;
 
         while (elapsed < duration)
         {
@@ -53,5 +73,25 @@ public class BeatBonker : MonoBehaviour
         }
 
         transform.localScale = initialScale;
+    }
+
+    IEnumerator RotOnBeat()
+    {
+        float elapsed = 0f;
+
+        var fromScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        var targetScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+
+        while (elapsed < duration)
+        {
+            transform.localScale = Vector3.Lerp(fromScale, targetScale, elapsed / duration);
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+
+
+        transform.localScale = targetScale;
     }
 }
