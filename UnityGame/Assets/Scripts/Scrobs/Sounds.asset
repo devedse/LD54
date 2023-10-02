@@ -37,3 +37,6 @@ MonoBehaviour:
     type: 3}
   DiggerinoUncoveredGrass: {fileID: 8300000, guid: dfe8ce0b67256c0439f9d3b9f1586d51,
     type: 3}
+  Three: {fileID: 8300000, guid: 264f4fe4fa20029419a0879156d580d2, type: 3}
+  Two: {fileID: 8300000, guid: d079ec300ba9a8943995f3edfbac0f76, type: 3}
+  One: {fileID: 8300000, guid: 5ba4b8ebbfb7ebe44b419debb1987103, type: 3}
