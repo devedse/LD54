@@ -46,6 +46,8 @@ public class PlayerControls : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        pcplayer.ChangeScore(100);
+
         _originalPositionY = rb.position.y;
 
         rb = GetComponent<Rigidbody>();
@@ -143,7 +145,7 @@ public class PlayerControls : MonoBehaviour
             Pellet hitPellet = collision.gameObject.transform.GetComponentInParent<Pellet>();
             if (hitPellet.pelletOwner != pcplayer)
             {
-                MinigameManager.Instance.SignalR.GetPlayerByNumber(hitPellet.pelletOwner.PlayerIndex).ChangeScore(1);
+
 
                 GetHit(hitPellet.damageModifier);
                 Destroy(collision.gameObject);
@@ -155,6 +157,9 @@ public class PlayerControls : MonoBehaviour
     private void GetHit(float damageModifier)
     {
         CurrentHealth -= Math.Max(2, (DefaultDamage * damageModifier) - (ArmorModifier * 5));
+
+        pcplayer.ForceScore(Math.Max(0, (int)CurrentHealth), -1);
+
 
         hud_Health.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, CurrentHealth);
 
