@@ -16,7 +16,8 @@ public class SignalRTest : MonoBehaviour
     public MainMenu MainMenu;
     public HostScreen HostScreen;
 
-    private string DeveURL = "https://LD54_Server.Devedse.DuckDNS.org/UltraHub";
+    //private string DeveURL = "https://LD54_Server.Devedse.DuckDNS.org/UltraHub";
+    private string DeveURL = "https://bimbiscosmoparty.azurewebsites.net/UltraHub";
 
     public bool LobbyHasStartedSoBlockNewPlayerJoins { get; set; } = false;
 

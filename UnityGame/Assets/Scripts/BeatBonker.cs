@@ -24,9 +24,12 @@ public class BeatBonker : MonoBehaviour
 
     void TriggerBeat()
     {
-        if (Random.Range(0.0f, 1.0f) <= chanceToTrigger)
+        if (gameObject.activeInHierarchy)
         {
-            StartCoroutine(ScaleOnBeat());
+            if (Random.Range(0.0f, 1.0f) <= chanceToTrigger)
+            {
+                StartCoroutine(ScaleOnBeat());
+            }
         }
     }
 
