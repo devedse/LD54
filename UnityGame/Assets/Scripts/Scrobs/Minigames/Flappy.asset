@@ -15,4 +15,6 @@ MonoBehaviour:
   SceneName: 2_Flappy
   MinPlayers: 1
   MaxPlayers: 8
+  PlaySoundOnPlayerHappy: 0
+  PlaySoundOnPlayerSad: 1
   ScoreScreenAlignment: 4

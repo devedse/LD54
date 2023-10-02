@@ -11,5 +11,7 @@ public class MinigameScriptableObject : ScriptableObject
     public int MinPlayers;
     public int MaxPlayers;
 
+    public bool PlaySoundOnPlayerHappy;
+    public bool PlaySoundOnPlayerSad;
     public ScoreScreenOptions ScoreScreenAlignment;
 }
