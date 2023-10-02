@@ -25,6 +25,9 @@ public class SoundsScriptableObject : ScriptableObject
     public AudioClip CountdownNumberChanged;
     public AudioClip DiggerinoUncoveredLava;
     public AudioClip DiggerinoUncoveredGrass;
+    public AudioClip Three;
+    public AudioClip Two;
+    public AudioClip One;
 
     public AudioClip FinishTutorial { get; internal set; }
 }

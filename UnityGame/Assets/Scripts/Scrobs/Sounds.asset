@@ -15,10 +15,10 @@ MonoBehaviour:
   ButtonClick: {fileID: 8300000, guid: dfe8ce0b67256c0439f9d3b9f1586d51, type: 3}
   JoinedLobby: {fileID: 8300000, guid: f5ef60d6fbf18b84390a63409aecc150, type: 3}
   NextGameLoaded: {fileID: 8300000, guid: 5ac3ac75528fcfb45b1baa30c167d66e, type: 3}
-  FinishCountdown: {fileID: 0}
-  FinishGame: {fileID: 0}
+  FinishCountdown: {fileID: 8300000, guid: 4f012d61a20d3344dac066704165a0d8, type: 3}
+  FinishGame: {fileID: 8300000, guid: 073afdab08ac19f4abd1dcee53622c04, type: 3}
   ShowClaimReward: {fileID: 0}
-  ShowStats: {fileID: 0}
+  ShowStats: {fileID: 8300000, guid: 92272f63d97d8ce4fb0c7c9d88ad5104, type: 3}
   CheesePlayerFinishedStack: {fileID: 8300000, guid: bb2ef5fb1982bbe4fbc74be65c630980,
     type: 3}
   CheesePlayerRemovedBlock: {fileID: 8300000, guid: b3764c3f54fd5694e86fe30736590968,
@@ -27,13 +27,16 @@ MonoBehaviour:
   FWNSpray: {fileID: 8300000, guid: 1a14632fbf519dd41a270bd8ceb30bc6, type: 3}
   FWNWhirlwind: {fileID: 8300000, guid: 05c5024b89647b44d995b633d99443d7, type: 3}
   FWNDeath: {fileID: 8300000, guid: d8b893702d43d0f488782bb3869c2026, type: 3}
-  AwardChooseShip: {fileID: 0}
-  AwardChooseSlot: {fileID: 0}
-  AwardChosenAndDone: {fileID: 0}
-  ShowTrophiesScene: {fileID: 0}
+  AwardChooseShip: {fileID: 8300000, guid: df4052ca2c0850b4a82a34d1a41de173, type: 3}
+  AwardChooseSlot: {fileID: 8300000, guid: de26ea27c6cebdb41a9e5d43599f7f30, type: 3}
+  AwardChosenAndDone: {fileID: 8300000, guid: fbe51aaed1d8eec418f3952658087b8f, type: 3}
+  ShowTrophiesScene: {fileID: 8300000, guid: e7899d195c463874aa2b37b2b216165c, type: 3}
   CountdownNumberChanged: {fileID: 8300000, guid: 5ac3ac75528fcfb45b1baa30c167d66e,
     type: 3}
   DiggerinoUncoveredLava: {fileID: 8300000, guid: d8b893702d43d0f488782bb3869c2026,
     type: 3}
   DiggerinoUncoveredGrass: {fileID: 8300000, guid: dfe8ce0b67256c0439f9d3b9f1586d51,
     type: 3}
+  Three: {fileID: 8300000, guid: 264f4fe4fa20029419a0879156d580d2, type: 3}
+  Two: {fileID: 8300000, guid: d079ec300ba9a8943995f3edfbac0f76, type: 3}
+  One: {fileID: 8300000, guid: 5ba4b8ebbfb7ebe44b419debb1987103, type: 3}

@@ -83,6 +83,20 @@ public class PC : MonoBehaviour
     public void ChangeScore(int amount)
     {
         ScoreFromCurrentMinigame += amount;
+
+        var mg = MinigameManager.Instance.CurrentMinigame;
+        if (mg)
+        {
+            if (mg.PlaySoundOnPlayerHappy && amount > 0)
+            {
+                SoundManager.PlaySound(Template.SoundHappy);
+            }
+            if (mg.PlaySoundOnPlayerSad && amount <= 0)
+            {
+                SoundManager.PlaySound(Template.SoundAngry);
+            }
+        }
+
         foreach (var card in Cards)
         {
             card.UpdateScore(ScoreFromCurrentMinigame, amount);
