@@ -87,7 +87,15 @@ public class MinigameManager : MonoBehaviour
                     _instance.ScoreScreens.Add(scscr);
                     scscr.Init();
                 }
-                _instance.ScoreCanvas.GetComponent<ScoreScreenShower>().Show(_instance.Games.Minigames.First(x => x.SceneName == SceneManager.GetActiveScene().name).ScoreScreenAlignment);
+                var currentScene = _instance.Games.AllMinigames.FirstOrDefault(x => x.SceneName == SceneManager.GetActiveScene().name);
+                if (currentScene)
+                {
+                    _instance.ScoreCanvas.GetComponent<ScoreScreenShower>().Show(currentScene.ScoreScreenAlignment);
+                }
+                else
+                {
+                    _instance.ScoreCanvas.GetComponent<ScoreScreenShower>().HideAll();
+                }
                 _instance.NextModuleReward = _instance.AllModules.AllShipModules[Random.Range(0, _instance.AllModules.AllShipModules.Count)];
 
                 DontDestroyOnLoad(_instance.gameObject);
@@ -95,6 +103,11 @@ public class MinigameManager : MonoBehaviour
 #endif
             return _instance;
         }
+    }
+
+    internal static void ShowStatsScene()
+    {
+        SceneManager.LoadScene("StatsScene");
     }
 
     private bool _desireCompleteAndUtterlyDestroyEverythingAndRestart = false;
@@ -114,18 +127,21 @@ public class MinigameManager : MonoBehaviour
 
     public void CompletelyRestartGameAndShit(string error)
     {
-        MainMenu.ErrorToShow = error;
-        _desireCompleteAndUtterlyDestroyEverythingAndRestart = true;
+        if (_desireCompleteAndUtterlyDestroyEverythingAndRestart == false)
+        {
+            MainMenu.ErrorToShow = error;
+            _desireCompleteAndUtterlyDestroyEverythingAndRestart = true;
+        }
 
-        Debug.Log($"CompletelyRestartGameAndShit with error: {error}");
+        Debug.Log($"Received request to completely restart: {error}");
     }
 
     private void Update()
     {
         if (_desireCompleteAndUtterlyDestroyEverythingAndRestart)
         {
-            Debug.Log("Utterly loading main scene again now");
-            _instance.SignalR.SignalR.Stop();
+            Debug.Log("Update: Loading main scene again now");
+            _instance.SignalR.SignalR?.Stop();
             GameObject.Destroy(_instance.gameObject);
 
             SceneManager.LoadScene("MainMenu");
@@ -146,8 +162,7 @@ public class MinigameManager : MonoBehaviour
     public SignalRTest SignalR;
     public MinigamesScriptableObject Games;
     public int GameIndex = -1;
-
-
+    public bool GoToStatsNext;
 
     public void InitializeNewGame()
     {
@@ -161,6 +176,11 @@ public class MinigameManager : MonoBehaviour
         }
         StartNextGame();
         ScoreCanvas.SetActive(false);
+    }
+    internal void DoTiebreaker()
+    {
+        SceneManager.LoadScene(Games.TiebreakerMinigames[Random.Range(0, Games.TiebreakerMinigames.Count)].SceneName);
+        ScoreCanvas.GetComponent<ScoreScreenShower>().Show(ScoreScreenOptions.Left);
     }
 
     public void StartNextGame()

@@ -6,8 +6,9 @@ public class DiggerinoGame : MonoBehaviour
 {
     public List<Color> ColorsPerStrength;
 
-    public Color LavaColor;
-    public Color DiamondColor;
+    public Material Lava;
+    public Material Rock;
+    public Material Diamantietje;
 
     public GameObject DiggerinoTilePrefab;
     public GameObject DiggerinoPlayerPrefab;
@@ -163,15 +164,15 @@ public class DiggerinoGame : MonoBehaviour
     private void UpdateTileColor(DiggerinoTile targetTile)
     {
         if (targetTile.Diamond)
-            targetTile.UpdateColor(DiamondColor);
+            targetTile.UpdateMeshOnTop(Diamantietje, Color.white);
         else
         {
             if (targetTile.Strength > 0)
-                targetTile.UpdateColor(ColorsPerStrength[targetTile.Strength]);
+                targetTile.UpdateMeshOnTop(Rock, ColorsPerStrength[targetTile.Strength]);
             else if (targetTile.Lava)
-                targetTile.UpdateColor(LavaColor);
+                targetTile.UpdateMeshOnTop(Lava, Color.white);
             else
-                targetTile.UpdateColor(ColorsPerStrength[0]);
+                targetTile.UpdateMeshOnTop(null, ColorsPerStrength[0]);
         }
     }
 

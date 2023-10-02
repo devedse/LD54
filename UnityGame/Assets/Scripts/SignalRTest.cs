@@ -11,6 +11,7 @@ public class SignalRTest : MonoBehaviour
 
     public List<PC> PlayersOrderedByScore => Players.Values.OrderByDescending(t => t.Score).ToList();
 
+    public MinigameManager MinigameManagerInstance;
     public SignalR SignalR;
     public MainMenu MainMenu;
     public HostScreen HostScreen;
@@ -41,14 +42,14 @@ public class SignalRTest : MonoBehaviour
             var message = "Hallo Devedse ik ben een scherm :)))";
             SignalR.Invoke("Server_CreateRoom", message);
         };
-        SignalR.Connect(error => MinigameManager.Instance.CompletelyRestartGameAndShit(error));
+        SignalR.Connect(error => MinigameManagerInstance.CompletelyRestartGameAndShit(error));
     }
 
     public void SetupSignalR()
     {
         SignalR = new SignalR();
 #if UNITY_EDITOR
-        //        DeveURL = "http://10.88.10.1:5281/UltraHub";
+        //DeveURL = "http://10.88.10.1:5281/UltraHub";
 #endif
         SignalR.Init(DeveURL);
 
@@ -97,14 +98,14 @@ public class SignalRTest : MonoBehaviour
                 //TODO show error popup
                 Debug.Log("ClientNameAlreadyInUse");
 
-                MinigameManager.Instance.CompletelyRestartGameAndShit("Client name already in use");
+                MinigameManagerInstance.CompletelyRestartGameAndShit("Client name already in use");
             }
             else if (payload == "false_RoomDoesNotExist")
             {
                 //TODO show error popup
                 Debug.Log("RoomDoesNotExist");
 
-                MinigameManager.Instance.CompletelyRestartGameAndShit("Room does not exist");
+                MinigameManagerInstance.CompletelyRestartGameAndShit("Room does not exist");
             }
         });
         SignalR.On("Client_ReceiveServerDisconnected", (string roomName) =>
@@ -112,7 +113,7 @@ public class SignalRTest : MonoBehaviour
             // Log the disconnected ID
             Debug.Log($"Client_ReceiveServerDisconnected from RoomName: {roomName}");
 
-            MinigameManager.Instance.CompletelyRestartGameAndShit("Host Lobby disconnected");
+            MinigameManagerInstance.CompletelyRestartGameAndShit("Host Lobby disconnected");
         });
 
         SignalR.ConnectionClosed += (object sender, ConnectionEventArgs e) =>
@@ -120,7 +121,7 @@ public class SignalRTest : MonoBehaviour
             // Log the disconnected ID
             Debug.Log($"Disconnected: {e.ConnectionId}");
 
-            MinigameManager.Instance.CompletelyRestartGameAndShit("Connection Disconnected");
+            MinigameManagerInstance.CompletelyRestartGameAndShit($"Connection Disconnected: {e.ConnectionId}");
         };
     }
 
@@ -145,7 +146,7 @@ public class SignalRTest : MonoBehaviour
             var pc = player.GetComponent<PC>();
             pc.PlayerName = name;
             pc.PlayerIndex = Players.Count;
-            pc.PlayerColor = MinigameManager.Instance.GetPlayerColor(pc.PlayerIndex);
+            pc.PlayerColor = MinigameManagerInstance.GetPlayerColor(pc.PlayerIndex);
             Players.Add(name, pc);
 
             HostScreen.AddPlayer(pc);
@@ -181,7 +182,7 @@ public class SignalRTest : MonoBehaviour
             JoinRoom(lobbyCode, playerName);
         };
         Debug.Log("Connecting");
-        SignalR.Connect(error => MinigameManager.Instance.CompletelyRestartGameAndShit(error));
+        SignalR.Connect(error => MinigameManagerInstance.CompletelyRestartGameAndShit(error));
     }
 
     void Start()

@@ -275,8 +275,9 @@ MonoBehaviour:
   - {r: 0.6603774, g: 0.6603774, b: 0.6603774, a: 1}
   - {r: 0.8490566, g: 0.8490566, b: 0.8490566, a: 1}
   - {r: 0.9245283, g: 0.9245283, b: 0.9245283, a: 1}
-  LavaColor: {r: 1, g: 0, b: 0, a: 1}
-  DiamondColor: {r: 0, g: 0.47240782, b: 1, a: 1}
+  Lava: {fileID: 2100000, guid: 94ac3c7b8724f5b48b762c75ef993e9a, type: 2}
+  Rock: {fileID: 2100000, guid: bd280b01b326fe14bb8d2c6e314fbbab, type: 2}
+  Diamantietje: {fileID: 2100000, guid: 4c9c9b9ac07d7dd4488362ea20f1ae03, type: 2}
   DiggerinoTilePrefab: {fileID: 8853054878568361354, guid: b70fe87ee3c46454e8f54ccc85ef2c0e,
     type: 3}
   DiggerinoPlayerPrefab: {fileID: 4361432324544342038, guid: c2a02b013bcc6cc47bb41be9a59108ef,
@@ -483,7 +484,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3af54b9484841f641969f7e1999825c7, type: 2}
+  - {fileID: 2100000, guid: 123113f4a44df6941a56d1c6e7263bc1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

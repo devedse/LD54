@@ -16,6 +16,8 @@ public class PC : MonoBehaviour
     public Sprite PlayerHappy;
     public Sprite PlayerMad;
 
+    public PlayerStats Stats = new PlayerStats();
+
     public bool IsConnected { get; set; } = true;
 
     internal void ResetScore()
