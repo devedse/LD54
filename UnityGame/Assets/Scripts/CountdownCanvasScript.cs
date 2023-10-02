@@ -44,7 +44,21 @@ public class CountdownCanvasScript : MonoBehaviour
             countdownTime--;
         }
         if (prevCountdown != countdownTime && countdownTime <= 3 && countdownTime > 0)
-            SoundManager.PlaySound(SoundManager.Instance.Sounds.CountdownNumberChanged);
+        {
+            switch (countdownTime)
+            {
+                case 3:
+                    SoundManager.PlaySound(SoundManager.Instance.Sounds.Three); break;
+                case 2:
+                    SoundManager.PlaySound(SoundManager.Instance.Sounds.Two); break;
+                case 1:
+                    SoundManager.PlaySound(SoundManager.Instance.Sounds.One); break;
+                default:
+                    break;
+            }
+            //SoundManager.PlaySound(SoundManager.Instance.Sounds.CountdownNumberChanged);
+
+        }
 
         if (!string.IsNullOrWhiteSpace(OverrideText))
         {

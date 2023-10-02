@@ -15,3 +15,6 @@ MonoBehaviour:
   ImageIdle: {fileID: 21300000, guid: 09d9beba3098bc64abf7a2e280cbd39a, type: 3}
   ImageSad: {fileID: 21300000, guid: dd1a4f026ed688744a5e9abac139e609, type: 3}
   ImageWin: {fileID: 21300000, guid: dd0dc89016bea74429f3e8a261cecb85, type: 3}
+  SoundHappy: {fileID: 8300000, guid: cf6d12318e221f2408acab969608da3e, type: 3}
+  SoundAngry: {fileID: 8300000, guid: 67ad6c7b76953e0478527bd125d5932c, type: 3}
+  SoundNeutral: {fileID: 8300000, guid: b5cca2cbe9efa5f419207a5740523fc2, type: 3}
