@@ -11,7 +11,7 @@ public class Module : MonoBehaviour
     public string ToStatsString(bool richText)
     {
         var sb = new StringBuilder();
-        sb.AppendLine(DisplayName);
+        sb.AppendLine(DisplayName.ToUpper());
         sb.Append(AddModifierLine("Speed", ModuleModifiers.SpeedModifier, richText));
         sb.Append(AddModifierLine("Rotation speed", ModuleModifiers.RotationSpeedModifier, richText));
         sb.Append(AddModifierLine("Armor", ModuleModifiers.ArmorModifier, richText));
@@ -28,15 +28,15 @@ public class Module : MonoBehaviour
             return "";
 
         if (!richText)
-            return $"{name.ToUpper()}: {value.ToString("0.##")}\n";
+            return $"{name}: {value.ToString("0.##")}\n";
 
         if (value > 0)
         {
-            return $"{name.ToUpper()}: <color=green>{value.ToString("0.##")}</color>\n";
+            return $"{name}: <color=green>{value.ToString("0.##")}</color>\n";
         }
         else
         {
-            return $"{name.ToUpper()}: <color=red>{value.ToString("0.##")}</color>\n";
+            return $"{name}: <color=red>{value.ToString("0.##")}</color>\n";
         }
     }
 }

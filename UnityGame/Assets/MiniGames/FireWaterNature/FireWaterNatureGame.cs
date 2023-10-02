@@ -147,7 +147,7 @@ public class FireWaterNatureGame : MonoBehaviour
         var highest = Mathf.Max(countFire, countWater, countNature);
         var matches = 0;
         if (countFire > countWater && countFire >= countNature) { matches++; spawnFire = true; }
-        if (countWater > countNature && countWater >= countFire) { matches++; spawnWater = true;  }
+        if (countWater > countNature && countWater >= countFire) { matches++; spawnWater = true; }
         if (countNature > countFire && countNature >= countWater) { matches++; spawnNature = true; }
 
         List<PC> losers = new List<PC>();
@@ -160,22 +160,25 @@ public class FireWaterNatureGame : MonoBehaviour
             {
                 SpawnWhirlwind(FireWhirlwindPrefab);
                 losers.AddRange(Choices.Where(x => x.Value == FireWaterNature.Nature).Select(x => x.Key));
-                foreach (var winner in Choices.Where(x => x.Value == FireWaterNature.Fire))
-                    winner.Key.ChangeScore(1);
+                if (losers.Any())
+                    foreach (var winner in Choices.Where(x => x.Value == FireWaterNature.Fire))
+                        winner.Key.ChangeScore(1);
             }
             if (countWater == highest && spawnWater)
             {
                 SpawnWhirlwind(WaterWhirlwindPrefab);
                 losers.AddRange(Choices.Where(x => x.Value == FireWaterNature.Fire).Select(x => x.Key));
-                foreach (var winner in Choices.Where(x => x.Value == FireWaterNature.Water))
-                    winner.Key.ChangeScore(1);
+                if (losers.Any())
+                    foreach (var winner in Choices.Where(x => x.Value == FireWaterNature.Water))
+                        winner.Key.ChangeScore(1);
             }
             if (countNature == highest && spawnNature)
             {
                 SpawnWhirlwind(NatureWhirlwindPrefab);
                 losers.AddRange(Choices.Where(x => x.Value == FireWaterNature.Water).Select(x => x.Key));
-                foreach (var winner in Choices.Where(x => x.Value == FireWaterNature.Nature))
-                    winner.Key.ChangeScore(1);
+                if (losers.Any())
+                    foreach (var winner in Choices.Where(x => x.Value == FireWaterNature.Nature))
+                        winner.Key.ChangeScore(1);
             }
         }
         losers.AddRange(Ships.Keys.Except(Choices.Keys));
@@ -239,6 +242,7 @@ public class FireWaterNatureGame : MonoBehaviour
             ssf.Key.OnButton1Press.AddListener(() => Choose(ssf.Key, ssf.Value, FireWaterNature.Nature));
             ssf.Key.OnButton2Press.AddListener(() => Choose(ssf.Key, ssf.Value, FireWaterNature.Fire));
         }
+        HelperCanvas.SetActive(true);
     }
 
     public void EndGame()
