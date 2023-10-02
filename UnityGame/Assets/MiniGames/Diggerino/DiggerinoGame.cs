@@ -19,6 +19,8 @@ public class DiggerinoGame : MonoBehaviour
     public int GridSize = 16;
     public List<DiggerinoPlayer> Players = new List<DiggerinoPlayer>();
 
+    public bool IsReady = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -71,6 +73,8 @@ public class DiggerinoGame : MonoBehaviour
                 UpdateTileColor(Map[x][z]);
             }
         }
+
+        IsReady = true;
     }
 
     public void PlacePlayers()
@@ -170,9 +174,17 @@ public class DiggerinoGame : MonoBehaviour
             if (targetTile.Strength > 0)
                 targetTile.UpdateMeshOnTop(Rock, ColorsPerStrength[targetTile.Strength]);
             else if (targetTile.Lava)
+            {
                 targetTile.UpdateMeshOnTop(Lava, Color.white);
+                if (IsReady)
+                    SoundManager.PlaySound(SoundManager.Instance.Sounds.DiggerinoUncoveredLava);
+            }
             else
+            {
                 targetTile.UpdateMeshOnTop(null, ColorsPerStrength[0]);
+                if (IsReady)
+                    SoundManager.PlaySound(SoundManager.Instance.Sounds.DiggerinoUncoveredGrass);
+            }
         }
     }
 

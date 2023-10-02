@@ -40,6 +40,7 @@ public class CosmoPartyBackgroundShipStuffScript : MonoBehaviour
             fakePC.PlayerImage = thisCharacter.ImageIdle;
             fakePC.PlayerMad = thisCharacter.ImageSad;
             fakePC.PlayerHappy = thisCharacter.ImageWin;
+            fakePC.Template = thisCharacter;
 
             var shipFiller = ga.GetComponent<SpaceShipFiller>();
             shipFiller.SetProps(fakePC, FaceType.Happy, true);

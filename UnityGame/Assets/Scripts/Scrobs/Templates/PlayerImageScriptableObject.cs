@@ -8,4 +8,8 @@ public class PlayerImageScriptableObject : ScriptableObject
     public Sprite ImageIdle;
     public Sprite ImageSad;
     public Sprite ImageWin;
+
+    public AudioClip SoundHappy;
+    public AudioClip SoundAngry;
+    public AudioClip SoundNeutral;
 }
