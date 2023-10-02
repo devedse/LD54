@@ -22,6 +22,7 @@ public class MinigameManager : MonoBehaviour
         return PlayerColors.Colors[playerIndex % PlayerColors.Colors.Count];
     }
 
+    public MinigameScriptableObject CurrentMinigame;
     private static MinigameManager _instance;
 
     public static MinigameManager Instance
@@ -250,6 +251,7 @@ public class MinigameManager : MonoBehaviour
             }
             else
             {
+                CurrentMinigame = Games.Minigames[GameIndex];
                 SceneManager.LoadScene(Games.Minigames[GameIndex].SceneName);
                 ScoreCanvas.GetComponent<ScoreScreenShower>().Show(Games.Minigames[GameIndex].ScoreScreenAlignment);
                 SoundManager.PlaySound(SoundManager.Instance.Sounds.NextGameLoaded);
