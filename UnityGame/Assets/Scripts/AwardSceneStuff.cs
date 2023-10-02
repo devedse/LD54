@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AwardSceneStuff : MonoBehaviour
 {
@@ -20,6 +21,14 @@ public class AwardSceneStuff : MonoBehaviour
 
     public int CurrentShipOwnerIndex;
 
+
+    public Image LeftButtonImage;
+    public Image MidButtonImage;
+    public Image RightButtonImage;
+
+    public Sprite NewLeft;
+    public Sprite NewMid;
+    public Sprite NewRight;
 
     public TextMeshProUGUI LeftButton;
     public TextMeshProUGUI MidButton;
@@ -70,20 +79,23 @@ public class AwardSceneStuff : MonoBehaviour
         var midMod = ssf.FrontSocket.GetComponent<Module>();
         var rightMod = ssf.FrontSocket.GetComponent<Module>();
 
-        if (leftMod)
-            LeftButton.text = $"Replace {leftMod.DisplayName}";
-        else
-            LeftButton.text = $"Place on front";
+        LeftButtonImage.sprite = NewLeft;
+        MidButtonImage.sprite = NewMid;
+        RightButtonImage.sprite = NewRight;
+        //if (leftMod)
+        //    LeftButton.text = $"Replace {leftMod.DisplayName}";
+        //else
+        //    LeftButton.text = $"Place on front";
 
-        if (midMod)
-            MidButton.text = $"Replace {midMod.DisplayName}";
-        else
-            MidButton.text = $"Place in middle";
+        //if (midMod)
+        //    MidButton.text = $"Replace {midMod.DisplayName}";
+        //else
+        //    MidButton.text = $"Place in middle";
 
-        if (rightMod)
-            RightButton.text = $"Replace {rightMod.DisplayName}";
-        else
-            RightButton.text = $"Place on rear";
+        //if (rightMod)
+        //    RightButton.text = $"Replace {rightMod.DisplayName}";
+        //else
+        //    RightButton.text = $"Place on rear";
     }
 
     private IEnumerator DelayPlayerino(FaceType state)

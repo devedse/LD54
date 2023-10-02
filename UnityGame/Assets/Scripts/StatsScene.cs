@@ -56,4 +56,9 @@ public class StatsScene : MonoBehaviour
         var max = players.Max(selector);
         return players.Where(x => selector(x) == max);
     }
+
+    public void ContinueGame()
+    {
+        MinigameManager.Instance.StartNextGame();
+    }
 }

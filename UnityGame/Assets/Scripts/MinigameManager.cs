@@ -192,7 +192,8 @@ public class MinigameManager : MonoBehaviour
     {
         SceneManager.LoadScene("InBetweenPodium");
         var mm = FindFirstObjectByType<MusicManager>();
-        mm.PlayMusic(mm.TrophyMusic);
+        if (mm)
+            mm.PlayMusic(mm.TrophyMusic);
     }
 
     public SignalRTest SignalR;
@@ -226,7 +227,8 @@ public class MinigameManager : MonoBehaviour
     public void StartNextGame()
     {
         var mm = FindFirstObjectByType<MusicManager>();
-        mm.PlayMusic(mm.BattleMusic);
+        if (mm)
+            mm.PlayMusic(mm.BattleMusic);
         GameIndex++;
         foreach (var p in SignalR.Players)
         {
