@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -45,7 +46,17 @@ public class GameFlow : MonoBehaviour
         Debug.Log("GameFlow: EndGame");
         if (MinigameManager.Instance.ScoreCanvas)
             MinigameManager.Instance.ScoreCanvas.SetActive(false);
-        MinigameManager.ShowPodiumBetweenGames();
+
+        var highScore = MinigameManager.Instance.SignalR.Players.Values.Select(x => x.Score).Max();
+        var winners = MinigameManager.Instance.SignalR.Players.Values.Where(x => x.Score == highScore).ToList();
+        if (winners.Count == 1)
+        {
+            MinigameManager.ShowPodiumBetweenGames();
+        }
+        else
+        {
+            MinigameManager.Instance.DoTiebreaker();
+        }
         //NextGame(); // todo victory etc
     }
 

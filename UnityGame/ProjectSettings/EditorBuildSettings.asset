@@ -32,5 +32,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/MiniGames/FireWaterNature/FireWaterNatureGame.unity
     guid: 9f324a9b072fefe4280cfa9279093981
+  - enabled: 1
+    path: Assets/MiniGames/Tiebreaker/TiebreakerRace.unity
+    guid: 5bb06402d993cda4e9bdbaa94f3e1bb0
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

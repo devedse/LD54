@@ -14,6 +14,8 @@ public class CountdownCanvasScript : MonoBehaviour
     public Transform RewardParent;
     public Module Reward;
 
+    public string OverrideText;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,7 +42,15 @@ public class CountdownCanvasScript : MonoBehaviour
             startTime += timePerSecond;
             countdownTime--;
         }
-        text.text = countdownTime <= 0 ? "GOO!!!" : countdownTime > 3 ? $"Reward:\n{Reward.ToStatsString(true)}" : countdownTime.ToString();
+
+        if (!string.IsNullOrWhiteSpace(OverrideText))
+        {
+            text.text = OverrideText;
+        }
+        else
+        {
+            text.text = countdownTime <= 0 ? "GOO!!!" : countdownTime > 3 ? $"Reward:\n{Reward.ToStatsString(true)}" : countdownTime.ToString();
+        }
 
         if (countdownTime == 0)
         {

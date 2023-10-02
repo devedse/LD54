@@ -87,7 +87,7 @@ public class MinigameManager : MonoBehaviour
                     _instance.ScoreScreens.Add(scscr);
                     scscr.Init();
                 }
-                _instance.ScoreCanvas.GetComponent<ScoreScreenShower>().Show(_instance.Games.Minigames.First(x => x.SceneName == SceneManager.GetActiveScene().name).ScoreScreenAlignment);
+                _instance.ScoreCanvas.GetComponent<ScoreScreenShower>().Show(_instance.Games.AllMinigames.FirstOrDefault(x => x.SceneName == SceneManager.GetActiveScene().name).ScoreScreenAlignment);
                 _instance.NextModuleReward = _instance.AllModules.AllShipModules[Random.Range(0, _instance.AllModules.AllShipModules.Count)];
 
                 DontDestroyOnLoad(_instance.gameObject);
@@ -161,6 +161,11 @@ public class MinigameManager : MonoBehaviour
         }
         StartNextGame();
         ScoreCanvas.SetActive(false);
+    }
+    internal void DoTiebreaker()
+    {
+        SceneManager.LoadScene(Games.TiebreakerMinigames[Random.Range(0, Games.TiebreakerMinigames.Count)].SceneName);
+        ScoreCanvas.GetComponent<ScoreScreenShower>().Show(ScoreScreenOptions.Left);
     }
 
     public void StartNextGame()
