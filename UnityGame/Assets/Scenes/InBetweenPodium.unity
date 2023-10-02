@@ -1388,7 +1388,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.489, z: 0}
-  m_LocalScale: {x: 0.623, y: 0.991, z: 1}
+  m_LocalScale: {x: -0.623, y: 0.991, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1893144365}
@@ -2354,7 +2354,7 @@ GameObject:
   - component: {fileID: 1142490955}
   - component: {fileID: 1142490954}
   m_Layer: 0
-  m_Name: Quad
+  m_Name: PlasWater
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

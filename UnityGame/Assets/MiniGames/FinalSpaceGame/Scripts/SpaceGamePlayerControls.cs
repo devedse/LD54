@@ -64,7 +64,7 @@ public class PlayerControls : MonoBehaviour
 
         if (btn_0_pressed)
         {
-            rb.AddTorque(new Vector3(0, rotatoNu, 0), ForceMode.VelocityChange);
+            rb.AddTorque(new Vector3(0, -rotatoNu, 0), ForceMode.VelocityChange);
         }
         if (btn_1_pressed)
         {
@@ -72,7 +72,7 @@ public class PlayerControls : MonoBehaviour
         }
         if (btn_2_pressed)
         {
-            rb.AddTorque(new Vector3(0, -rotatoNu, 0), ForceMode.VelocityChange);
+            rb.AddTorque(new Vector3(0, rotatoNu, 0), ForceMode.VelocityChange);
         }
 
         //Fix always upright ofzo
