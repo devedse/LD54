@@ -30,6 +30,8 @@ public class CosmoPartyBackgroundShipStuffScript : MonoBehaviour
             var ga = Instantiate(shipPrefab, transform);
             ga.transform.localPosition = GetRandomPositionOutsideArea();
             var fakePC = ga.AddComponent<PC>();
+            var bb = ga.AddComponent<BeatBonker>();
+            bb.chanceToTrigger = 0.2f;
 
             fakePC.PlayerIndex = i;
 
