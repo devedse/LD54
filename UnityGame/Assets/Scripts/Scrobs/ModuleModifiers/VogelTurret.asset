@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 585b2f70c2b96204aa35c60d6b129e87, type: 3}
   m_Name: VogelTurret
   m_EditorClassIdentifier: 
-  RotationSpeedModifier: 0
+  RotationSpeedModifier: -0.5
   SpeedModifier: 0
-  DamageModifier: 0.2
-  FireRateModifier: 10
-  HealthModifier: 0
-  BulletSpeedModifier: 4
+  DamageModifier: -0.8
+  FireRateModifier: 20
+  BulletSpeedModifier: 2
+  ArmorModifier: 0
+  BulletRangeModifier: 0

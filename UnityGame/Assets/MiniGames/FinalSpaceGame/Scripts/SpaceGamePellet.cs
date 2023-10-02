@@ -2,9 +2,11 @@ using UnityEngine;
 
 public class Pellet : MonoBehaviour
 {
-    public Rigidbody rb;
+    private Rigidbody rb;
     public int proj_Force = 25;
-    public float timer, proj_LifeTime = 3;
+    private float timer;
+    public float proj_LifeTime = 3;
+    public float bulledSpeedModifier = 1;
 
     public float damageModifier;
     public PC pelletOwner;
@@ -12,11 +14,12 @@ public class Pellet : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        name = "Pellet";
         rb = GetComponent<Rigidbody>();
 
-        rb.AddForce(transform.forward * proj_Force, ForceMode.VelocityChange);
+        rb.AddForce(transform.forward * (proj_Force * bulledSpeedModifier), ForceMode.VelocityChange);
 
-        this.transform.localScale = Vector3.one * damageModifier;
+        this.transform.localScale = Vector3.one * Mathf.Clamp(damageModifier, 0.5f, 1.5f);
     }
 
     // Update is called once per frame
@@ -32,7 +35,7 @@ public class Pellet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!collision.gameObject.name.Contains("Player"))
+        if (!collision.gameObject.name.Contains("Player") && !collision.gameObject.name.Contains("Pellet"))
         {
             Destroy(gameObject);
         }
