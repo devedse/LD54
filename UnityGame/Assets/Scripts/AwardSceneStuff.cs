@@ -64,8 +64,6 @@ public class AwardSceneStuff : MonoBehaviour
 
         SoundManager.PlaySound(SoundManager.Instance.Sounds.AwardChooseSlot);
 
-        var state = CurrentShipOwnerIndex == Player.PlayerIndex ? FaceType.Happy : FaceType.Mad;
-        SoundManager.PlaySound(state == FaceType.Happy ? Player.Template.SoundHappy : Player.Template.SoundAngry);
 
         HelpText.text = $"Please choose a slot to place the {RewardInstance.GetComponent<Module>().DisplayName} on!";
         var leftMod = ssf.FrontSocket.GetComponent<Module>();
@@ -88,6 +86,12 @@ public class AwardSceneStuff : MonoBehaviour
             RightButton.text = $"Place on rear";
     }
 
+    private IEnumerator DelayPlayerino(FaceType state)
+    {
+        yield return new WaitForSeconds(2.5f);
+        SoundManager.PlaySound(state == FaceType.Happy ? Player.Template.SoundHappy : Player.Template.SoundAngry);
+    }
+
     public void ApplyToSlot(int slot)
     {
         var current = MinigameManager.Instance.SignalR.GetPlayerByNumber(CurrentShipOwnerIndex);
@@ -95,6 +99,8 @@ public class AwardSceneStuff : MonoBehaviour
         Player.ResetButtonBindings();
         StartCoroutine(SwapAndEnd(slot));
         SoundManager.PlaySound(SoundManager.Instance.Sounds.AwardChosenAndDone);
+        var state = CurrentShipOwnerIndex == Player.PlayerIndex ? FaceType.Happy : FaceType.Mad;
+        StartCoroutine(DelayPlayerino(state));
     }
 
     private IEnumerator SwapAndEnd(int slot)

@@ -20,6 +20,7 @@ public class NewBehaviourScript : MonoBehaviour
             allChildren.Add(child.gameObject);
         }
         StartCoroutine(GoMoveObjects(allChildren));
+        SoundManager.PlaySound(SoundManager.Instance.Sounds.ShowTrophiesScene);
     }
 
     // Update is called once per frame
