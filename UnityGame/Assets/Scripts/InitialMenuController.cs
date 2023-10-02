@@ -5,14 +5,16 @@ public class InitialMenuController : MonoBehaviour
 {
     public Image FromLeft;
     public Image FromRight;
+    public Image Bimbi;
 
     public Image GameTitle;
 
     private float startTime;
 
     private float elapsedTime = 0f;
-    private const float totalTimeBounce = 2f;
+    private const float totalTimeBounce = 3f;
     private const float totalTimeButton = 2f;
+    private const float totalTimeBimbi = 3f;
     private float initialBounceMagnitude;
 
     void Start()
@@ -27,11 +29,13 @@ public class InitialMenuController : MonoBehaviour
 
         if (elapsedTime < totalTimeButton)
         {
-            GameTitle.rectTransform.anchoredPosition = Vector2.Lerp(new Vector2(0, 400), new Vector2(0, -30), Mathf.Min(elapsedTime / totalTimeButton, 1));
+            GameTitle.rectTransform.anchoredPosition = Vector2.Lerp(new Vector2(0, 400), new Vector2(0, -15), Mathf.Min(elapsedTime / totalTimeButton, 1));
+            Bimbi.rectTransform.anchoredPosition = Vector2.Lerp(new Vector2(0, -500), new Vector2(0, -90), Mathf.Min(elapsedTime / totalTimeButton, 1));
         }
         else
         {
-            GameTitle.rectTransform.anchoredPosition = new Vector2(0, -30);
+            GameTitle.rectTransform.anchoredPosition = new Vector2(0, -15);
+            Bimbi.rectTransform.anchoredPosition = new Vector2(0, -90);
         }
 
         if (elapsedTime < totalTimeBounce)
@@ -41,15 +45,15 @@ public class InitialMenuController : MonoBehaviour
             float bounceOffset = bounceMagnitude * Mathf.Abs(Mathf.Cos(elapsedTime * Mathf.PI));
 
 
-            FromLeft.rectTransform.anchoredPosition = new Vector2(-bounceOffset, FromLeft.rectTransform.anchoredPosition.y);
-            FromRight.rectTransform.anchoredPosition = new Vector2(bounceOffset, FromRight.rectTransform.anchoredPosition.y);
+            FromLeft.rectTransform.anchoredPosition = new Vector2(-bounceOffset - 60, FromLeft.rectTransform.anchoredPosition.y);
+            FromRight.rectTransform.anchoredPosition = new Vector2(bounceOffset + 60, FromRight.rectTransform.anchoredPosition.y);
 
         }
         else
         {
             // After 3 seconds, ensure images are exactly at target position
-            FromLeft.rectTransform.anchoredPosition = new Vector2(0, FromLeft.rectTransform.anchoredPosition.y);
-            FromRight.rectTransform.anchoredPosition = new Vector2(0, FromRight.rectTransform.anchoredPosition.y);
+            FromLeft.rectTransform.anchoredPosition = new Vector2(-60, FromLeft.rectTransform.anchoredPosition.y);
+            FromRight.rectTransform.anchoredPosition = new Vector2(60, FromRight.rectTransform.anchoredPosition.y);
             this.enabled = false;  // Disable the script
         }
     }
