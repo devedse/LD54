@@ -644,8 +644,14 @@ PrefabInstance:
     - target: {fileID: 2510609710808850875, guid: aa218cfa86e7252448101129d0700ecf,
         type: 3}
       propertyPath: duration
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 3771529780342604794, guid: aa218cfa86e7252448101129d0700ecf,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a604bb0f154747a4a81aac3fb0192dae,
+        type: 3}
     - target: {fileID: 5165146769304598287, guid: aa218cfa86e7252448101129d0700ecf,
         type: 3}
       propertyPath: StartGame.m_PersistentCalls.m_Calls.Array.size
