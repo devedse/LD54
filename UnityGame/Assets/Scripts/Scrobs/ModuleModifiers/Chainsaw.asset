@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Chainsaw
   m_EditorClassIdentifier: 
   RotationSpeedModifier: 1
-  SpeedModifier: 0
+  SpeedModifier: 0.5
   DamageModifier: 0
-  FireRateModifier: 0
-  HealthModifier: 400
+  FireRateModifier: 10
   BulletSpeedModifier: 0
+  ArmorModifier: 5
+  BulletRangeModifier: -10

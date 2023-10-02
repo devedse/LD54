@@ -18,6 +18,8 @@ public class PlayerControls : MonoBehaviour
 
     public PC pcplayer;
 
+    private float _originalPositionY = 0;
+
 
     public Module[] GetAllModules()
     {
@@ -29,12 +31,13 @@ public class PlayerControls : MonoBehaviour
         return GetAllModules().Select(t => t.ModuleModifiers).Select(selector);
     }
 
-    public float SpeedModifier => 1 + SumField(t => t.SpeedModifier).Sum().AtLeast(0.2f);
-    public float RotationSpeedModifier => 1 + SumField(t => t.RotationSpeedModifier).Sum().AtLeast(0.2f);
-    public float DamageModifier => 1 + SumField(t => t.DamageModifier).Sum().AtLeast(0);
-    public float FireRateModifier => 1 + SumField(t => t.FireRateModifier).Sum().AtLeast(0);
-    public float BulletSpeedModifier => 1 + SumField(t => t.BulletSpeedModifier).Sum().AtLeast(0);
+    public float SpeedModifier => (1 + SumField(t => t.SpeedModifier).Sum()).AtLeast(0.2f);
+    public float RotationSpeedModifier => (1 + SumField(t => t.RotationSpeedModifier).Sum()).AtLeast(0.2f);
+    public float DamageModifier => (1 + SumField(t => t.DamageModifier).Sum()).AtLeast(0);
+    public float FireRateModifier => (1 + SumField(t => t.FireRateModifier).Sum()).AtLeast(0);
+    public float BulletSpeedModifier => (1 + SumField(t => t.BulletSpeedModifier).Sum()).AtLeast(0);
     public float ArmorModifier => 0 + SumField(t => t.ArmorModifier).Sum().AtLeast(0);
+    public float BulletRangeModifier => (1 + SumField(t => t.BulletRangeModifier).Sum()).AtLeast(0.1f);
 
     private const float DefaultDamage = 20f;
 
@@ -43,6 +46,8 @@ public class PlayerControls : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _originalPositionY = rb.position.y;
+
         rb = GetComponent<Rigidbody>();
         lastFireTime = Time.time;
     }
@@ -68,6 +73,9 @@ public class PlayerControls : MonoBehaviour
             rb.AddTorque(new Vector3(0, -rotatoNu, 0), ForceMode.VelocityChange);
         }
 
+        //Fix always upright ofzo
+        rb.MoveRotation(Quaternion.Euler(0, rb.rotation.eulerAngles.y, 0));
+        rb.MovePosition(new Vector3(rb.position.x, _originalPositionY, rb.position.z));
 
         DefaultGun();
     }
@@ -121,6 +129,8 @@ public class PlayerControls : MonoBehaviour
         Pellet myPellet = proj_Pellet.GetComponentInParent<Pellet>();
         myPellet.damageModifier = DamageModifier;
         myPellet.pelletOwner = pcplayer;
+        myPellet.proj_LifeTime = BulletRangeModifier;
+        myPellet.bulledSpeedModifier = BulletSpeedModifier;
 
         proj_Pellet.transform.position = hp_Gun.transform.position;
         proj_Pellet.transform.rotation = hp_Gun.transform.rotation;
@@ -131,11 +141,14 @@ public class PlayerControls : MonoBehaviour
         if (collision.gameObject.name.Contains("Pellet"))
         {
             Pellet hitPellet = collision.gameObject.transform.GetComponentInParent<Pellet>();
+            if (hitPellet.pelletOwner != pcplayer)
+            {
+                MinigameManager.Instance.SignalR.GetPlayerByNumber(hitPellet.pelletOwner.PlayerIndex).ChangeScore(1);
 
-            MinigameManager.Instance.SignalR.GetPlayerByNumber(hitPellet.pelletOwner.PlayerIndex).ChangeScore(1);
+                GetHit(hitPellet.damageModifier);
+                Destroy(collision.gameObject);
+            }
 
-            GetHit(hitPellet.damageModifier);
-            Destroy(collision.gameObject);
         }
     }
 

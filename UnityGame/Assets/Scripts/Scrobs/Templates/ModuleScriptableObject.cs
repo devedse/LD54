@@ -9,4 +9,5 @@ public class ModuleScriptableObject : ScriptableObject
     public float FireRateModifier;
     public float BulletSpeedModifier;
     public float ArmorModifier;
+    public float BulletRangeModifier;
 }
