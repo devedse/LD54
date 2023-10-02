@@ -208,7 +208,6 @@ public class FireWaterNatureGame : MonoBehaviour
 
     private void ResetGamestate()
     {
-        HelperCanvas.SetActive(true);
         Choices.Clear();
         TimerStarted = false;
         ShowingResults = false;
@@ -217,6 +216,10 @@ public class FireWaterNatureGame : MonoBehaviour
         if (Ships.Count == 1)
         {
             EndGame();
+        }
+        else
+        {
+            HelperCanvas.SetActive(true);
         }
     }
 
