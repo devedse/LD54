@@ -24,8 +24,16 @@ public class PlayerReadyScreen : MonoBehaviour
             card.PlayerImageI.sprite = p.Value.PlayerImage;
             card.PlayerMaskI.sprite = p.Value.PlayerImage;
             Cards.Add(card);
-            p.Value.OnButton1Press.AddListener(() => card.ToggleReady());
+            StartCoroutine(DelayBinding(p.Value, card));
         }
+    }
+
+    public IEnumerator DelayBinding(PC p, PlayerReadyCard card)
+    {
+        yield return new WaitForSeconds(1);
+        if (gameObject && card && card.gameObject)
+            p.OnButton1Press.AddListener(() => card.ToggleReady());
+
     }
 
     public void UnaliveMyself()

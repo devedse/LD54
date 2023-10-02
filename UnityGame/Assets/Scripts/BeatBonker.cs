@@ -17,6 +17,12 @@ public class BeatBonker : MonoBehaviour
 
     private void Start()
     {
+        StartBonking();
+    }
+
+    public void StartBonking()
+    {
+        StopAllCoroutines();
         initialScale = transform.localScale;
 
         InvokeRepeating("TriggerBeat", initialDelay, 60f / bpm);

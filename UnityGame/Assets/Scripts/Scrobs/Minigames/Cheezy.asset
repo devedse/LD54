@@ -15,4 +15,6 @@ MonoBehaviour:
   SceneName: 1_Cheezy
   MinPlayers: 1
   MaxPlayers: 16
+  PlaySoundOnPlayerHappy: 1
+  PlaySoundOnPlayerSad: 1
   ScoreScreenAlignment: 1

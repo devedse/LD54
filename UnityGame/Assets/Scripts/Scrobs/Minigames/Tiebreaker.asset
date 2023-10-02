@@ -15,4 +15,6 @@ MonoBehaviour:
   SceneName: TiebreakerRace
   MinPlayers: 1
   MaxPlayers: 99
+  PlaySoundOnPlayerHappy: 1
+  PlaySoundOnPlayerSad: 0
   ScoreScreenAlignment: 3

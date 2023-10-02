@@ -15,4 +15,6 @@ MonoBehaviour:
   SceneName: FinalSpaceGame
   MinPlayers: 1
   MaxPlayers: 8
+  PlaySoundOnPlayerHappy: 0
+  PlaySoundOnPlayerSad: 0
   ScoreScreenAlignment: 5
