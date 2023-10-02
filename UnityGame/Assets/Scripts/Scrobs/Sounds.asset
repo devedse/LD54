@@ -33,3 +33,7 @@ MonoBehaviour:
   ShowTrophiesScene: {fileID: 0}
   CountdownNumberChanged: {fileID: 8300000, guid: 5ac3ac75528fcfb45b1baa30c167d66e,
     type: 3}
+  DiggerinoUncoveredLava: {fileID: 8300000, guid: d8b893702d43d0f488782bb3869c2026,
+    type: 3}
+  DiggerinoUncoveredGrass: {fileID: 8300000, guid: dfe8ce0b67256c0439f9d3b9f1586d51,
+    type: 3}

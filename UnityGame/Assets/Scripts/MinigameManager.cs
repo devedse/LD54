@@ -201,6 +201,9 @@ public class MinigameManager : MonoBehaviour
 
     public void InitializeNewGame()
     {
+        if (SignalR.Players.Count == 0)
+            return;
+
         SignalR.LobbyHasStartedSoBlockNewPlayerJoins = true;
 
         ScoreCanvas.SetActive(true);
