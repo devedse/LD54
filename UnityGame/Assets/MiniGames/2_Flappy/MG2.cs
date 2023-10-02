@@ -77,7 +77,7 @@ public class MG2 : MonoBehaviour
         {
             var curFlap = Flappers[player];
             var rigidBody = curFlap.GetComponent<Rigidbody>();
-            if (button == 1 && pressed)
+            if (button == 1 && pressed && rigidBody.transform.localPosition.y < 7)
             {
                 rigidBody.velocity = new Vector3(0, 15, 0);
                 SoundManager.PlaySound(SoundManager.Instance.Sounds.FlappyFlap);
