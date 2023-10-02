@@ -175,6 +175,9 @@ public class SignalR
 
     public void Init(string url)
     {
+        types.Clear();
+        handlers.Clear();
+
         InitJs(url);
     }
     #endregion
@@ -205,8 +208,9 @@ public class SignalR
         OnConnectionClosed(connectionId);
     }
 
-    public void Connect()
+    public void Connect(Action<string> onError)
     {
+        //Don't do anything with onError, rather call the DiconnectedCallback from JS which then calls OnClosed which then also resets
         ConnectJs(ConnectedCallback, DisconnectedCallback);
     }
     #endregion

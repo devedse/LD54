@@ -48,7 +48,7 @@ public class SignalRTest : MonoBehaviour
     {
         SignalR = new SignalR();
 #if UNITY_EDITOR
-        //        DeveURL = "http://10.88.10.1:5281/UltraHub";
+        //DeveURL = "http://10.88.10.1:5281/UltraHub";
 #endif
         SignalR.Init(DeveURL);
 
@@ -120,7 +120,7 @@ public class SignalRTest : MonoBehaviour
             // Log the disconnected ID
             Debug.Log($"Disconnected: {e.ConnectionId}");
 
-            MinigameManager.Instance.CompletelyRestartGameAndShit("Connection Disconnected");
+            MinigameManager.Instance.CompletelyRestartGameAndShit($"Connection Disconnected: {e.ConnectionId}");
         };
     }
 

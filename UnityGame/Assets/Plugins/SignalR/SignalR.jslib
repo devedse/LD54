@@ -64,6 +64,7 @@ var SignalRLib = {
                 });
                 vars.invokeCallback([vars.lastConnectionId], vars.connectedCallback);
             }).catch(function (err) {
+                vars.invokeCallback([err], vars.disconnectedCallback);
                 return console.error(err.toString());
             });
     },
