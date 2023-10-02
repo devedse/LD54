@@ -33,6 +33,12 @@ public class MainMenu : MonoBehaviour
     public SignalRTest SignalR;
     public TextMeshProUGUI ErrorText;
 
+    public void SetVolume(float value)
+    {
+        S.GlobalVolume = value;
+        AudioListener.volume = value;
+    }
+
     private void HideAll()
     {
         SpaceShipBackgroundDingetjes.SetActive(false);
