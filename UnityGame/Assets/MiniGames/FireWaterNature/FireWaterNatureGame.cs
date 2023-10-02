@@ -136,7 +136,7 @@ public class FireWaterNatureGame : MonoBehaviour
                 spawned.transform.LookAt(Center);
             }
         }
-
+        SoundManager.PlaySound(SoundManager.Instance.Sounds.FWNSpray);
         yield return new WaitForSeconds(1);
 
         var countFire = Choices.Values.Count(x => x == FireWaterNature.Fire);
@@ -184,10 +184,14 @@ public class FireWaterNatureGame : MonoBehaviour
         losers.AddRange(Ships.Keys.Except(Choices.Keys));
         yield return new WaitForSeconds(1);
 
+        bool destroyedAlready = false;
         foreach (var loser in losers)
         {
+            if (!destroyedAlready)
+                SoundManager.PlaySound(SoundManager.Instance.Sounds.FWNDeath);
             Destroy(Ships[loser].gameObject);
             Ships.Remove(loser);
+            destroyedAlready = true;
         }
         yield return new WaitForSeconds(1);
 
@@ -204,6 +208,7 @@ public class FireWaterNatureGame : MonoBehaviour
     {
         var go = Instantiate(whirlwind);
         go.transform.position = Center.transform.position;
+        SoundManager.PlaySound(SoundManager.Instance.Sounds.FWNWhirlwind);
     }
 
     private void ResetGamestate()

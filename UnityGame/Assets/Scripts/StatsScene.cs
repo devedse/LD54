@@ -20,6 +20,8 @@ public class StatsScene : MonoBehaviour
         Trophies.Add(CreateTrophyCard(x => x.Stats.BigfiteWins, players, "Grand Prize Winner", new Color(255 / 255f, 52 / 255f, 101 / 255f), new Vector3(0, 4f, 0)));
         Trophies.Add(CreateTrophyCard(x => x.Stats.MinigameWins, players, "Minigame Master", new Color(108 / 255f, 118 / 255f, 203 / 255f), new Vector3(4, 3.75f, 0)));
         Trophies.Add(CreateTrophyCard(x => x.Stats.LastPaces, players, "Participation Award", new Color(246 / 255f, 196 / 255f, 197 / 255f), new Vector3(8, 3.5f, 0)));
+
+        SoundManager.PlaySound(SoundManager.Instance.Sounds.ShowTrophiesScene);
     }
 
     private void Update()

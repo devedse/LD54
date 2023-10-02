@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d72a7e9d1d3cce429f4d85c7ee23f08, type: 3}
+  m_Name: Sounds
+  m_EditorClassIdentifier: 
+  ButtonClick: {fileID: 8300000, guid: dfe8ce0b67256c0439f9d3b9f1586d51, type: 3}
+  JoinedLobby: {fileID: 8300000, guid: f5ef60d6fbf18b84390a63409aecc150, type: 3}
+  NextGameLoaded: {fileID: 8300000, guid: 5ac3ac75528fcfb45b1baa30c167d66e, type: 3}
+  FinishCountdown: {fileID: 0}
+  FinishGame: {fileID: 0}
+  ShowClaimReward: {fileID: 0}
+  ShowStats: {fileID: 0}
+  CheesePlayerFinishedStack: {fileID: 8300000, guid: bb2ef5fb1982bbe4fbc74be65c630980,
+    type: 3}
+  CheesePlayerRemovedBlock: {fileID: 8300000, guid: b3764c3f54fd5694e86fe30736590968,
+    type: 3}
+  FlappyFlap: {fileID: 8300000, guid: a226bdcbfcebf8f4dad009bb7d72d637, type: 3}
+  FWNSpray: {fileID: 8300000, guid: 1a14632fbf519dd41a270bd8ceb30bc6, type: 3}
+  FWNWhirlwind: {fileID: 8300000, guid: 05c5024b89647b44d995b633d99443d7, type: 3}
+  FWNDeath: {fileID: 8300000, guid: d8b893702d43d0f488782bb3869c2026, type: 3}
+  AwardChooseShip: {fileID: 0}
+  AwardChooseSlot: {fileID: 0}
+  AwardChosenAndDone: {fileID: 0}
+  ShowTrophiesScene: {fileID: 0}
+  CountdownNumberChanged: {fileID: 8300000, guid: 5ac3ac75528fcfb45b1baa30c167d66e,
+    type: 3}

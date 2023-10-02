@@ -80,6 +80,7 @@ public class MG2 : MonoBehaviour
             if (button == 1 && pressed)
             {
                 rigidBody.velocity = new Vector3(0, 15, 0);
+                SoundManager.PlaySound(SoundManager.Instance.Sounds.FlappyFlap);
             }
             else if (button == 0)
             {

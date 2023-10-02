@@ -37,11 +37,14 @@ public class CountdownCanvasScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        var prevCountdown = countdownTime;
         if (startTime + timePerSecond <= Time.time)
         {
             startTime += timePerSecond;
             countdownTime--;
         }
+        if (prevCountdown != countdownTime && countdownTime <= 3 && countdownTime > 0)
+            SoundManager.PlaySound(SoundManager.Instance.Sounds.CountdownNumberChanged);
 
         if (!string.IsNullOrWhiteSpace(OverrideText))
         {

@@ -102,10 +102,15 @@ public class MG1 : MonoBehaviour
         cdUI.transform.localPosition = new Vector3(gimmePos.positions[player], -2.5f, -gimmePos.scale - 0.01f) + new Vector3(0, 0, -.15f);
         var meshRender = cdUI.GetComponentInChildren<MeshRenderer>();
 
-        var madTexture = MinigameManager.Instance?.SignalR?.GetPlayerByNumber(player)?.PlayerMad?.texture;
+        var pc = MinigameManager.Instance?.SignalR?.GetPlayerByNumber(player);
+        var madTexture = pc?.PlayerMad?.texture;
         if (madTexture != null)
         {
             meshRender.material.mainTexture = madTexture;
+        }
+        if (pc)
+        {
+            SoundManager.PlaySound(pc.Template.SoundAngry);
         }
 
         while (Time.time - start < 1f)
@@ -150,6 +155,11 @@ public class MG1 : MonoBehaviour
                     //Debug.Log("Player " + player + " won this round");
                     MinigameManager.Instance.SignalR.GetPlayerByNumber(player).ChangeScore(Mathf.Max(3 - playersFinished, 0));
                     playersFinished++;
+                    SoundManager.PlaySound(SoundManager.Instance.Sounds.CheesePlayerFinishedStack);
+                }
+                else
+                {
+                    SoundManager.PlaySound(SoundManager.Instance.Sounds.CheesePlayerRemovedBlock);
                 }
             }
             else

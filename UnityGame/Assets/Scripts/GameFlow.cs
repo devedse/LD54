@@ -28,12 +28,15 @@ public class GameFlow : MonoBehaviour
         StartCountdown.Invoke();
         if (MinigameManager.Instance.ScoreCanvas)
             MinigameManager.Instance.ScoreCanvas.SetActive(true);
+
+        SoundManager.PlaySound(SoundManager.Instance.Sounds.FinishTutorial);
     }
 
     public void FinishCountdown()
     {
         Debug.Log("GameFlow: FinishCountdown");
         StartGame.Invoke();
+        SoundManager.PlaySound(SoundManager.Instance.Sounds.FinishCountdown);
     }
 
     public void SkipTut()
@@ -43,6 +46,7 @@ public class GameFlow : MonoBehaviour
 
     public void EndGame()
     {
+        SoundManager.PlaySound(SoundManager.Instance.Sounds.FinishGame);
         Debug.Log("GameFlow: EndGame");
         if (MinigameManager.Instance.ScoreCanvas)
             MinigameManager.Instance.ScoreCanvas.SetActive(false);
@@ -84,9 +88,11 @@ public class GameFlow : MonoBehaviour
     {
         if (MinigameManager.Instance.GoToStatsNext)
         {
+            SoundManager.PlaySound(SoundManager.Instance.Sounds.ShowStats);
             MinigameManager.ShowStatsScene();
             return;
         }
+        SoundManager.PlaySound(SoundManager.Instance.Sounds.ShowClaimReward);
 
         Debug.Log("GameFlow: ClaimReward");
         if (MinigameManager.Instance.ScoreCanvas)

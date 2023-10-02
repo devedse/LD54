@@ -48,6 +48,7 @@ public class AwardSceneStuff : MonoBehaviour
         Player.OnButton0Press.AddListener(() => SelectPlayer(true));
         Player.OnButton2Press.AddListener(() => SelectPlayer(false));
         Player.OnButton1Press.AddListener(() => ChooseCurrentShip());
+        SoundManager.PlaySound(SoundManager.Instance.Sounds.AwardChooseShip);
 
         MidButton.text = $"Add {RewardInstance.GetComponent<Module>().DisplayName} to the ship of {Player.PlayerName}";
         HelpText.text = $"Congratulations, {Player.PlayerName}! You have won the right to place module {RewardInstance.GetComponent<Module>().DisplayName} on a ship of your choice! This module is {(MinigameManager.Instance.AllModules.Positives.Any(x => x.GetComponent<Module>().ModuleType == RewardInstance.GetComponent<Module>().ModuleType) ? "helpful" : "harmful")} to a ship!";
@@ -60,6 +61,11 @@ public class AwardSceneStuff : MonoBehaviour
         Player.OnButton0Press.AddListener(() => ApplyToSlot(0));
         Player.OnButton1Press.AddListener(() => ApplyToSlot(1));
         Player.OnButton2Press.AddListener(() => ApplyToSlot(2));
+
+        SoundManager.PlaySound(SoundManager.Instance.Sounds.AwardChooseSlot);
+
+        var state = CurrentShipOwnerIndex == Player.PlayerIndex ? FaceType.Happy : FaceType.Mad;
+        SoundManager.PlaySound(state == FaceType.Happy ? Player.Template.SoundHappy : Player.Template.SoundAngry);
 
         HelpText.text = $"Please choose a slot to place the {RewardInstance.GetComponent<Module>().DisplayName} on!";
         var leftMod = ssf.FrontSocket.GetComponent<Module>();
@@ -88,6 +94,7 @@ public class AwardSceneStuff : MonoBehaviour
         current.SetModuleForSlot(slot, RewardPrefab.GetComponent<Module>().ModuleType);
         Player.ResetButtonBindings();
         StartCoroutine(SwapAndEnd(slot));
+        SoundManager.PlaySound(SoundManager.Instance.Sounds.AwardChosenAndDone);
     }
 
     private IEnumerator SwapAndEnd(int slot)
@@ -119,7 +126,8 @@ public class AwardSceneStuff : MonoBehaviour
         ShipInstance.transform.position = Target.position;
         ShipInstance.transform.LookAt(-Spawn.position);
         ssf = ShipInstance.GetComponent<SpaceShipFiller>();
-        ssf.SetProps(MinigameManager.Instance.SignalR.GetPlayerByNumber(CurrentShipOwnerIndex), CurrentShipOwnerIndex == Player.PlayerIndex ? FaceType.Happy : FaceType.Mad);
+        var state = CurrentShipOwnerIndex == Player.PlayerIndex ? FaceType.Happy : FaceType.Mad;
+        ssf.SetProps(MinigameManager.Instance.SignalR.GetPlayerByNumber(CurrentShipOwnerIndex), state);
 
         StartCoroutine(AnimateSeat());
         yield return new WaitForSeconds(5);
