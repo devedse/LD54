@@ -16,7 +16,7 @@ MonoBehaviour:
   JoinedLobby: {fileID: 8300000, guid: f5ef60d6fbf18b84390a63409aecc150, type: 3}
   NextGameLoaded: {fileID: 8300000, guid: 5ac3ac75528fcfb45b1baa30c167d66e, type: 3}
   FinishCountdown: {fileID: 8300000, guid: 4f012d61a20d3344dac066704165a0d8, type: 3}
-  FinishGame: {fileID: 8300000, guid: 073afdab08ac19f4abd1dcee53622c04, type: 3}
+  FinishGame: {fileID: 0}
   ShowClaimReward: {fileID: 0}
   ShowStats: {fileID: 8300000, guid: 92272f63d97d8ce4fb0c7c9d88ad5104, type: 3}
   CheesePlayerFinishedStack: {fileID: 8300000, guid: bb2ef5fb1982bbe4fbc74be65c630980,

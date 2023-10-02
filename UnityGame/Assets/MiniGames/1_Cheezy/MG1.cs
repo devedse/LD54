@@ -155,7 +155,7 @@ public class MG1 : MonoBehaviour
                     //Debug.Log("Player " + player + " won this round");
                     MinigameManager.Instance.SignalR.GetPlayerByNumber(player).ChangeScore(Mathf.Max(3 - playersFinished, 0));
                     playersFinished++;
-                    SoundManager.PlaySound(SoundManager.Instance.Sounds.CheesePlayerFinishedStack);
+                    //SoundManager.PlaySound(SoundManager.Instance.Sounds.CheesePlayerFinishedStack);
                 }
                 else
                 {
