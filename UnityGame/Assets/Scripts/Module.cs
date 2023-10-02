@@ -32,7 +32,7 @@ public class Module : MonoBehaviour
 
         if (value > 0)
         {
-            return $"{name}: <color=green>{value.ToString("0.##")}</color>\n";
+            return $"{name}: <color=green>+{value.ToString("0.##")}</color>\n";
         }
         else
         {

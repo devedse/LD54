@@ -347,6 +347,8 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 13d8f765a57aaff4b8e6e126454adb82, type: 2}
   - {fileID: 2100000, guid: fad6833a8d774d644b1a3572839f573e, type: 2}
   CooldownUI: {fileID: 82226256}
+  PlayerTagPrefab: {fileID: 5634148726937294452, guid: 1849ac1cae5cdf74db140b5bbbb3ac4e,
+    type: 3}
 --- !u!1001 &827150058
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -29,6 +29,7 @@ public class MG1 : MonoBehaviour
     private Dictionary<int, bool> PlayerOnCooldown = new Dictionary<int, bool>();
 
     public GameObject CooldownUI;
+    public GameObject PlayerTagPrefab;
 
     private int playersFinished = 0;
 
@@ -38,6 +39,13 @@ public class MG1 : MonoBehaviour
         playerCount = MinigameManager.Instance.SignalR.Players.Count;
 
         NewRound();
+        foreach (Transform child in allChildObjectStuff.transform)
+        {
+            var ptp = Instantiate(PlayerTagPrefab);
+            ptp.transform.position = /*child.position + (Vector3.up * 0) + */new Vector3(child.position.x, -4.25f, -.3f);
+            ptp.GetComponent<FloatingPlayerTag>().SetPlayer(MinigameManager.Instance.SignalR.Players.OrderBy(x => x.Value.PlayerIndex).ToList()[int.Parse(child.name)].Value);
+        }
+
     }
 
     public void StartGame()
@@ -55,10 +63,14 @@ public class MG1 : MonoBehaviour
     {
         foreach (Transform player in allChildObjectStuff.transform)
         {
-            var playerScore = playerCurRound[int.Parse(player.name)];
+            var playerIndex = int.Parse(player.name);
+            var playerScore = playerCurRound[playerIndex];
             //Lerp local position using offset per cheese * playerScore
             var lerpY = Mathf.Lerp(player.localPosition.y, (offsetYPerCheese * currentScale) * -playerScore, Time.deltaTime * 5f);
             player.localPosition = new Vector3(player.localPosition.x, lerpY, player.localPosition.z);
+
+            if (player.childCount > 0)
+                player.GetChild(0).localEulerAngles = new Vector3(0, Mathf.Sin((Time.time + playerIndex) * 8) * 5, 0);
         }
     }
 
@@ -87,7 +99,7 @@ public class MG1 : MonoBehaviour
         PlayerOnCooldown[player] = true;
 
         var cdUI = GameObject.Instantiate(CooldownUI);
-        cdUI.transform.localPosition = new Vector3(gimmePos.positions[player], -2.5f, -gimmePos.scale - 0.01f);
+        cdUI.transform.localPosition = new Vector3(gimmePos.positions[player], -2.5f, -gimmePos.scale - 0.01f) + new Vector3(0, 0, -.15f);
         var meshRender = cdUI.GetComponentInChildren<MeshRenderer>();
 
         var madTexture = MinigameManager.Instance?.SignalR?.GetPlayerByNumber(player)?.PlayerMad?.texture;
@@ -193,7 +205,6 @@ public class MG1 : MonoBehaviour
             rootPlayerObjects.Add(ga);
             playerCurRound.Add(0);
         }
-
 
         for (int y = 0; y < cheeseCountPerRound[currentRound]; y++)
         {
