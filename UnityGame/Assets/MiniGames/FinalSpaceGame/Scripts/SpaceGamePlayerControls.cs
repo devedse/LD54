@@ -141,15 +141,14 @@ public class PlayerControls : MonoBehaviour
 
     private void GetHit(float damageModifier)
     {
+        CurrentHealth -= Math.Max(2, (DefaultDamage * damageModifier) - (ArmorModifier * 5));
+
+        hud_Health.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, CurrentHealth);
+
+
         if (CurrentHealth <= 0)
         {
             Destroy(gameObject);
-        }
-        else
-        {
-            CurrentHealth -= Math.Max(2, (DefaultDamage * damageModifier) - (ArmorModifier * 5));
-
-            hud_Health.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, CurrentHealth);
         }
     }
 }
