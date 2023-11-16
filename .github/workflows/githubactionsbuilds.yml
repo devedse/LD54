@@ -37,7 +37,7 @@ jobs:
 
     - run: find .
 
-    - uses: game-ci/unity-builder@v3
+    - uses: game-ci/unity-builder@v4
       name: Build WebGL
       env:
         UNITY_LICENSE: ${{ secrets.UNITY_LICENSE_FILE }}
@@ -111,7 +111,7 @@ jobs:
     #       UnityGame/Library
     #     key: build_linux_StandaloneWindows64
 
-    - uses: game-ci/unity-builder@v3
+    - uses: game-ci/unity-builder@v4
       name: Build StandaloneWindows64
       env:
         UNITY_LICENSE: ${{ secrets.UNITY_LICENSE_FILE }}
@@ -147,7 +147,7 @@ jobs:
     - uses: actions/checkout@v4
 
 
-    - uses: game-ci/unity-builder@v3
+    - uses: game-ci/unity-builder@v4
       name: Build StandaloneLinux64
       env:
         UNITY_LICENSE: ${{ secrets.UNITY_LICENSE_FILE }}
@@ -229,7 +229,7 @@ jobs:
   #       username: devedse
   #       password: ${{ secrets.DOCKERHUBTOKEN }}
 
-  #   - uses: game-ci/unity-builder@v3
+  #   - uses: game-ci/unity-builder@v4
   #     name: Build StandaloneWindows64
   #     env:
   #       UNITY_LICENSE: ${{ secrets.UNITY_LICENSE_FILE }}
